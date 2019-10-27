@@ -23,6 +23,7 @@
 #include <QWizard>
 #include <QWizardPage>
 #include <QVBoxLayout>
+#include <QGridLayout>
 #include <QPushButton>
 #include <QMenu>
 #include <QMenuBar>
@@ -55,6 +56,7 @@
 #include <winbase.h>
 
 typedef bool T_Bool;
+typedef std::string T_String;
 
 #include "serialportutilities.h"
 #include "json.hpp"
@@ -68,6 +70,7 @@ typedef bool T_Bool;
 #include "wizardconfigpage3.h"
 #include "wizardconfigpage4.h"
 #include "wizardconfigpage5.h"
+#include "wizardconfigpage6.h"
 #include "wizardconfig.h"
 
 #endif // INCLUDE_H

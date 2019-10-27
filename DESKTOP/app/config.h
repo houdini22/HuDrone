@@ -52,6 +52,13 @@ class Config
             }
             return _data.get<T_Bool>();
         }
+        T_JSON getArray(T_ConfigPaths paths) {
+            T_JSON _data = this->getData();
+            for (size_t i = 0; i < paths.size(); i += 1) {
+                _data = _data[paths.at(i)];
+            }
+            return _data;
+        }
         void modify(QString op, QString path, QString value) {
             T_JSON _data = this->getData();
 
@@ -132,6 +139,12 @@ class Config
                 result["disarming"]["time"] = 1000;
 
                 result["throttleMode"]["step"] = 20;
+
+                // from http in future
+                std::map<std::string, std::string> c_map({{"name", "FS-IA6B"}, {"label", "FlySky FS-IA6B"}});
+                std::vector<std::map<std::string, std::string>> c_array;
+                c_array.push_back(c_map);
+                result["receivers"] = c_array;
 
                 T_OFStream _out(this->getFilePath().toStdString());
                 _out << result.dump();

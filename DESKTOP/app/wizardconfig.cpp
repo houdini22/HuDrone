@@ -10,6 +10,7 @@ WizardConfig::WizardConfig(QWidget *parent) : QWizard(parent) {
     addPage(new WizardConfigPage3);
     addPage(new WizardConfigPage4);
     addPage(new WizardConfigPage5);
+    addPage(new WizardConfigPage6);
 
     setWindowTitle("Configuration Wizard");
 }

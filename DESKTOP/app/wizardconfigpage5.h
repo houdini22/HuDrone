@@ -11,6 +11,9 @@ public:
 private:
     QVBoxLayout * _layout;
     QListWidget * _list_widget;
+public slots:
+    void onListItemClicked(QListWidgetItem *);
+    void showEvent(QShowEvent *);
 };
 
 #endif // WIZARDCONFIGINTROPAGE5_H

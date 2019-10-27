@@ -9,8 +9,7 @@ class WizardConfigPage6 : public QWizardPage
 public:
     WizardConfigPage6(QWidget * parent = 0);
 private:
-    QLabel * _label;
-    QVBoxLayout * _layout;
+    QHBoxLayout * _layout;
 };
 
 #endif // WIZARDCONFIGINTROPAGE6_H
