@@ -12,7 +12,8 @@ WizardConfigPage5::WizardConfigPage5(QWidget *parent) : QWizardPage(parent) {
     int i = 0;
     for (T_JSON::iterator it = receivers.begin(); it != receivers.end(); ++it, i += 1) {
         T_JSON value = it.value();
-        T_String label1 = value["label"].get<std::string>();
+
+        T_String label1 = value["label"].get<T_String>();
         QString label2(label1.c_str());
 
         QListWidgetItem * newItem = new QListWidgetItem();
@@ -28,10 +29,15 @@ WizardConfigPage5::WizardConfigPage5(QWidget *parent) : QWizardPage(parent) {
 }
 
 
-void WizardConfigPage5::onListItemClicked(QListWidgetItem *) {
-    this->wizard()->button(QWizard::NextButton)->setEnabled(true);
+void WizardConfigPage5::onListItemClicked(QListWidgetItem * item) {
+    WizardConfig * wizard = (WizardConfig *) this->wizard();
+    wizard->getConfiguration()->modify("add", "/receiver", item->text());
+    wizard->next();
+
+    wizard->button(QWizard::NextButton)->setEnabled(true);
 }
 
-void WizardConfigPage5::showEvent(QShowEvent *) {
-    this->wizard()->button(QWizard::NextButton)->setEnabled(false);
+void WizardConfigPage5::showEvent(QShowEvent * ) {
+    WizardConfig * wizard = (WizardConfig *) this->wizard();
+    wizard->button(QWizard::NextButton)->setEnabled(false);
 }

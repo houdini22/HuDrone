@@ -36,11 +36,15 @@ void WizardConfigPage2::showEvent(QShowEvent *) {
 }
 
 void WizardConfigPage2::handleButtonGlove() {
-    Config::getInstance().modify("replace", "/steeringMode", "glove");
-    this->wizard()->next();
+    WizardConfig * wizard = (WizardConfig *) this->wizard();
+
+    wizard->getConfiguration()->modify("add", "/device", "glove");
+    wizard->next();
 }
 
 void WizardConfigPage2::handleButtonGamepad() {
-    Config::getInstance().modify("replace", "/steeringMode", "gamepad");
-    this->wizard()->next();
+    WizardConfig * wizard = (WizardConfig *) this->wizard();
+
+    wizard->getConfiguration()->modify("add", "/device", "gamepad");
+    wizard->next();
 }

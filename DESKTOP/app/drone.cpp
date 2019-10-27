@@ -5,11 +5,12 @@ Drone::Drone(MainWindow * window) {
     this->_window = window;
     this->_wizard_config = nullptr;
 
-    if (!Config::getInstance().getBool({"configurationWizard", "firstConfiguration"})) {
+    if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardConfig();
     }
 
     QMenu * menu = this->_window->menuBar()->findChild<QMenu*>(QString("menuHuDrone"));
+
     foreach (QAction *action, menu->actions()) {
         if (action->objectName().compare("actionSettings") == 0) {
             connect(action, SIGNAL(triggered(bool)), this, SLOT(handleMenuActionsSettingsTriggered(bool)));

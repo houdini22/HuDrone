@@ -9,6 +9,12 @@ class WizardConfig : public QWizard
 public:
     WizardConfig(QWidget *parent = 0);
     void accept() override;
+    Config * getConfiguration();
+protected:
+    Config * _configuration;
+    void saveConfiguration();
+protected slots:
+    void onFinish();
 };
 
 #endif // WIZARDCONFIG_H
