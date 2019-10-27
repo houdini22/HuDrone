@@ -1,13 +1,17 @@
 #include "include.h"
 
 WizardConfigPage5::WizardConfigPage5(QWidget *parent) : QWizardPage(parent) {
-    setTitle("Your are ready to program your HuDrone Box.");
-
-    _label = new QLabel("Leave your HuDrone Box connected and click Next.");
-    _label->setWordWrap(true);
+    setTitle("Choose your drone receiver from list below.");
 
     _layout = new QVBoxLayout;
-    _layout->addWidget(_label);
+
+    _list_widget = new QListWidget(this);
+
+    QListWidgetItem * newItem = new QListWidgetItem;
+    newItem->setText("FlySky FS-IA6B");
+    _list_widget->insertItem(0, newItem);
+
+    _layout->addWidget(_list_widget);
 
     setLayout(_layout);
 }

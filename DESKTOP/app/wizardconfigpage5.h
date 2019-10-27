@@ -9,8 +9,8 @@ class WizardConfigPage5 : public QWizardPage
 public:
     WizardConfigPage5(QWidget * parent = 0);
 private:
-    QLabel * _label;
     QVBoxLayout * _layout;
+    QListWidget * _list_widget;
 };
 
-#endif // WIZARDCONFIGINTROPAGE4_H
+#endif // WIZARDCONFIGINTROPAGE5_H
