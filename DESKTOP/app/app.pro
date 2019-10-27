@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui serialport qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -19,12 +19,14 @@ SOURCES += \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
+    threadboxconnect.cpp \
+    SerialPort.cpp \
     wizardconfig.cpp \
     wizardconfigpage1.cpp \
     wizardconfigpage2.cpp \
     wizardconfigpage3.cpp \
     wizardconfigpage4.cpp \
-    wizardconfigpage5.cpp
+    wizardconfigpage5.cpp \
 
 HEADERS += \
     config.h \
@@ -32,6 +34,9 @@ HEADERS += \
     filesystem.h \
     include.h \
     mainwindow.h \
+    serialportutilities.h \
+    threadboxconnect.h \
+    SerialPort.h \
     wizardconfig.h \
     wizardconfigpage1.h \
     wizardconfigpage2.h \

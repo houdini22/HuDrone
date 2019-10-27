@@ -15,3 +15,20 @@ WizardConfigPage3::WizardConfigPage3(QWidget *parent) : QWizardPage(parent) {
 
     setLayout(_layout);
 }
+
+void WizardConfigPage3::showEvent(QShowEvent *) {
+    this->wizard()->button(QWizard::NextButton)->setEnabled(false);
+
+    _thread_box_connect = new ThreadBoxConnect();
+    connect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
+    _thread_box_connect->start();
+}
+
+void WizardConfigPage3::handleArduinoConnected(SerialPort * arduino) {
+    _label_status->setStyleSheet("QLabel { color: green}");
+    _label_status->setText("connected.");
+
+    emit(arduinoConnected(arduino));
+
+    this->wizard()->button(QWizard::NextButton)->setEnabled(true);
+}

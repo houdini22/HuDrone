@@ -3,6 +3,8 @@
 
 #include "include.h"
 
+class ThreadBoxConnect;
+
 class WizardConfigPage3 : public QWizardPage
 {
     Q_OBJECT
@@ -12,6 +14,12 @@ private:
     QLabel * _label;
     QLabel * _label_status;
     QVBoxLayout * _layout;
+    ThreadBoxConnect * _thread_box_connect;
+private slots:
+    void showEvent(QShowEvent *);
+    void handleArduinoConnected(SerialPort *);
+signals:
+    void arduinoConnected(SerialPort *);
 };
 
 #endif // WIZARDCONFIGINTROPAGE3_H

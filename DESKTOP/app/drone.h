@@ -16,6 +16,10 @@ public:
     MainWindow * _window;
     WizardConfig * _wizard_config;
 protected:
+    void openWizardConfig();
+private slots:
+    void handleMenuActionsSettingsTriggered(bool);
+    void handleMenuActionsExitTriggered(bool);
 };
 
 #endif // DRONE_H

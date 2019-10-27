@@ -24,7 +24,12 @@
 #include <QWizardPage>
 #include <QVBoxLayout>
 #include <QPushButton>
-#include <QPalette>
+#include <QMenu>
+#include <QMenuBar>
+#include <QtQml>
+#include <QtQuick/QQuickView>
+#include <QtSerialPort/QSerialPortInfo>
+#include <QList>
 
 #include <vector>
 #include <list>
@@ -46,11 +51,14 @@
 #include <fileapi.h>
 #include <stdio.h>
 #include <set>
-
-#include "json.hpp"
+#include <winbase.h>
 
 typedef bool T_Bool;
 
+#include "serialportutilities.h"
+#include "json.hpp"
+#include "SerialPort.h"
+#include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"
 #include "drone.h"
