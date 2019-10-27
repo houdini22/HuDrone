@@ -16,12 +16,29 @@ WizardConfigPage3::WizardConfigPage3(QWidget *parent) : QWizardPage(parent) {
     setLayout(_layout);
 }
 
+void WizardConfigPage3::onWizardClose() {
+    qDebug() << "Wizard closed.";
+    _thread_box_connect->terminate();
+    _thread_box_connect->wait();
+
+    disconnect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
+    disconnect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
+
+    delete _thread_box_connect;
+    _thread_box_connect = nullptr;
+}
+
 void WizardConfigPage3::showEvent(QShowEvent *) {
+    disconnect( this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
+    connect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
+
     this->wizard()->button(QWizard::NextButton)->setEnabled(false);
 
-    _thread_box_connect = new ThreadBoxConnect();
-    connect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
-    _thread_box_connect->start();
+    if (_thread_box_connect == nullptr) {
+        _thread_box_connect = new ThreadBoxConnect();
+        connect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
+        _thread_box_connect->start();
+    }
 }
 
 void WizardConfigPage3::handleArduinoConnected(SerialPort * arduino) {

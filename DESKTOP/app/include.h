@@ -30,6 +30,7 @@
 #include <QtQuick/QQuickView>
 #include <QtSerialPort/QSerialPortInfo>
 #include <QList>
+#include <QApplication>
 
 #include <vector>
 #include <list>

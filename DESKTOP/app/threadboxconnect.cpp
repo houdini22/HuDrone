@@ -7,18 +7,21 @@ ThreadBoxConnect::ThreadBoxConnect(): QThread() {
 void ThreadBoxConnect::run() {
     while (1) {
         QList<QSerialPortInfo> ports = SerialPortUtilities::getAvailablePorts();
-        SerialPort * arduino;
 
         for (int i = 0; i < ports.size(); i += 1) {
             const char * portName = ports.at(i).portName().toStdString().c_str();
-            arduino = new SerialPort((char *) portName);
+            SerialPort * arduino = new SerialPort((char *) portName);
+
+            qDebug() << "PORT: " << portName;
+
             int errors = 0;
+
             while (!arduino->isConnected()) {
-                QThread::msleep(100);
-                qDebug() << "Waiting...";
+                QThread::msleep(2000);
+                qDebug() << "Waiting..." << errors << "..." << portName;
                 errors += 1;
 
-                if (errors == 10) {
+                if (errors == 5) {
                     delete arduino;
                     arduino = nullptr;
                     break;
@@ -31,14 +34,20 @@ void ThreadBoxConnect::run() {
 
             if (arduino->isConnected()) {
                 char incomingData[255];
-                arduino->readSerialPort(incomingData, 255);
-                if (strcmp(incomingData, "Hello.") == 0) {
+                arduino->readSerialPort(incomingData, 6);
+                QString data(incomingData);
+
+                qDebug() << data;
+
+                if (data.contains("Hello.")) {
+                    qDebug() << "Connected.";
                     emit arduinoConnected(arduino);
-                    break;
+                    return;
                 }
             }
         }
 
-        QThread::msleep(1000);
+        qDebug() << "Sleeping...";
+        QThread::msleep(2000);
     }
 }

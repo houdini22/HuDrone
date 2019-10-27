@@ -36,7 +36,7 @@ void Drone::handleMenuActionsSettingsTriggered(bool triggered) {
 }
 
 void Drone::handleMenuActionsExitTriggered(bool triggered) {
-    this->_window->close();
+    QApplication::quit();
 }
 
 void Drone::start() {
