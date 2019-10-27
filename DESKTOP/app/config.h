@@ -7,6 +7,7 @@ typedef QString T_Path;
 typedef nlohmann::json T_JSON;
 typedef std::ifstream T_IFStream;
 typedef std::ofstream T_OFStream;
+typedef std::vector<std::string> T_ConfigPaths;
 
 #define CONFIG_FILE_NAME "config.json"
 
@@ -25,9 +26,8 @@ class Config
                     this->_data = T_JSON::parse(_handle);
                     this->_is_opened = true;
                 }
-
-                return this;
             }
+            return this;
         }
         T_JSON getData() {
             this->open();
@@ -44,9 +44,16 @@ class Config
                  _out.close();
              }
         }
+        T_Bool getBool(T_ConfigPaths paths) {
+            T_JSON _data = this->getData();
+            for (size_t i = 0; i < paths.size(); i += 1) {
+                _data = _data[paths.at(i)];
+            }
+            return _data.get<T_Bool>();
+        }
     private:
         Config() {
-            this->_directory_path = FileSystem::getUserDirectory();
+            this->_directory_path = FileSystem::getUserDirectory() + "/HuDrone/";
             this->_file_path = this->_directory_path + CONFIG_FILE_NAME;
             this->create();
         }
@@ -72,6 +79,8 @@ class Config
 
             if (!FileSystem::isFile(this->getFilePath())) {
                 T_JSON result;
+
+                result["configurationWizard"]["firstConfiguration"] = false;
 
                 result["radio"]["leftX"]["middle"] = 1500;
                 result["radio"]["leftX"]["min"] = 1100;

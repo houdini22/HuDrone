@@ -27,10 +27,16 @@
     <property name="title">
      <string>HuDrone</string>
     </property>
+    <addaction name="actionExit"/>
    </widget>
    <addaction name="menuHuDrone"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
+  <action name="actionExit">
+   <property name="text">
+    <string>Exit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>

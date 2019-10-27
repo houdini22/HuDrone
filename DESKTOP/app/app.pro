@@ -18,14 +18,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     drone.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    wizardconfig.cpp \
+    wizardconfigintropage.cpp
 
 HEADERS += \
     config.h \
     drone.h \
     filesystem.h \
     include.h \
-    mainwindow.h
+    mainwindow.h \
+    wizardconfig.h \
+    wizardconfigintropage.h
 
 FORMS += \
     mainwindow.ui

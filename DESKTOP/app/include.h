@@ -20,6 +20,9 @@
 #include <QGroupBox>
 #include <QMouseEvent>
 #include <QRadioButton>
+#include <QWizard>
+#include <QWizardPage>
+#include <QVBoxLayout>
 
 #include <vector>
 #include <list>
@@ -48,5 +51,7 @@ typedef bool T_Bool;
 #include "filesystem.h"
 #include "config.h"
 #include "drone.h"
+#include "wizardconfigintropage.h"
+#include "wizardconfig.h"
 
 #endif // INCLUDE_H

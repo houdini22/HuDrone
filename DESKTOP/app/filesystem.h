@@ -9,26 +9,26 @@ public:
         CreateDirectoryA(_path.toStdString().c_str(), NULL);
     }
     static T_Bool isDirectory(QString _path) {
-      DWORD ftyp = GetFileAttributesA(_path.toStdString().c_str());
+        DWORD ftyp = GetFileAttributesA(_path.toStdString().c_str());
 
-      if (ftyp == INVALID_FILE_ATTRIBUTES)
+        if (ftyp == INVALID_FILE_ATTRIBUTES)
+            return false;
+
+        if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
+            return true;
+
         return false;
-
-      if (ftyp & FILE_ATTRIBUTE_DIRECTORY)
-        return true;
-
-      return false;
     }
     static T_Bool isFile(QString _path) {
-      DWORD ftyp = GetFileAttributesA(_path.toStdString().c_str());
+        std::ifstream f;
+        f.open(_path.toStdString());
 
-      if (ftyp == INVALID_FILE_ATTRIBUTES)
+        if (f.is_open()) {
+            f.close();
+            return true;
+        }
+
         return false;
-
-      if (ftyp & FILE_ATTRIBUTE_NORMAL)
-        return true;
-
-      return false;
     }
     static T_Bool createFile(QString _path) {
         HANDLE h = CreateFileA(_path.toStdString().c_str(),     // name of the file
@@ -46,7 +46,7 @@ public:
         return false;
     }
     static QString getUserDirectory() {
-        char * _dir = getenv("USER");
+        char * _dir = getenv("APPDATA");
         return QString(_dir);
     }
 };
