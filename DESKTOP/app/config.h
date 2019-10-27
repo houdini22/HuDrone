@@ -25,6 +25,7 @@ class Config
                     T_IFStream _handle(this->getFilePath().toStdString());
                     this->_data = T_JSON::parse(_handle);
                     this->_is_opened = true;
+                    _handle.close();
                 }
             }
             return this;
@@ -50,6 +51,26 @@ class Config
                 _data = _data[paths.at(i)];
             }
             return _data.get<T_Bool>();
+        }
+        void modify(QString op, QString path, QString value) {
+            T_JSON _data = this->getData();
+
+            if (op.compare("replace") == 0) {
+                try {
+                    std::map<std::string, std::string> c_map({{"op", op.toStdString()}, {"path", path.toStdString()}, {"value", value.toStdString()}});
+                    std::vector<std::map<std::string, std::string>> c_array;
+                    c_array.push_back(c_map);
+                    _data = _data.patch(c_array);
+                } catch (std::out_of_range ex) {
+                    std::map<std::string, std::string> c_map({{"op", "add"}, {"path", path.toStdString()}, {"value", value.toStdString()}});
+                    std::vector<std::map<std::string, std::string>> c_array;
+                    c_array.push_back(c_map);
+                    _data = _data.patch(c_array);
+                }
+            }
+
+            this->_data = _data;
+            this->save();
         }
     private:
         Config() {

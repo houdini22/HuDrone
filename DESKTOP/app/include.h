@@ -23,6 +23,8 @@
 #include <QWizard>
 #include <QWizardPage>
 #include <QVBoxLayout>
+#include <QPushButton>
+#include <QPalette>
 
 #include <vector>
 #include <list>
@@ -43,6 +45,7 @@
 #include <windows.h>
 #include <fileapi.h>
 #include <stdio.h>
+#include <set>
 
 #include "json.hpp"
 
@@ -51,7 +54,11 @@ typedef bool T_Bool;
 #include "filesystem.h"
 #include "config.h"
 #include "drone.h"
-#include "wizardconfigintropage.h"
+#include "wizardconfigpage1.h"
+#include "wizardconfigpage2.h"
+#include "wizardconfigpage3.h"
+#include "wizardconfigpage4.h"
+#include "wizardconfigpage5.h"
 #include "wizardconfig.h"
 
 #endif // INCLUDE_H

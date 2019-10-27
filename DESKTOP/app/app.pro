@@ -20,7 +20,11 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     wizardconfig.cpp \
-    wizardconfigintropage.cpp
+    wizardconfigpage1.cpp \
+    wizardconfigpage2.cpp \
+    wizardconfigpage3.cpp \
+    wizardconfigpage4.cpp \
+    wizardconfigpage5.cpp
 
 HEADERS += \
     config.h \
@@ -29,7 +33,11 @@ HEADERS += \
     include.h \
     mainwindow.h \
     wizardconfig.h \
-    wizardconfigintropage.h
+    wizardconfigpage1.h \
+    wizardconfigpage2.h \
+    wizardconfigpage3.h \
+    wizardconfigpage4.h \
+    wizardconfigpage5.h
 
 FORMS += \
     mainwindow.ui
