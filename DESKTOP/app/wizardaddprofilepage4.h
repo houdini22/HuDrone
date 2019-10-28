@@ -1,16 +1,16 @@
-#ifndef WIZARDCONFIGINTROPAGE6_H
-#define WIZARDCONFIGINTROPAGE6_H
+#ifndef WIZARDADDPROFILEPAGE4_H
+#define WIZARDADDPROFILEPAGE4_H
 
 #include "include.h"
 
 class WizardConfigChannelTabs;
 class MyLineEdit;
 
-class WizardConfigPage6 : public QWizardPage
+class WizardAddProfilePage4 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage6(Config * configuration, Receivers * receivers);
+    WizardAddProfilePage4(Config * configuration, Receivers * receivers);
 private:
     int getValueFromChannel(int channelNumber, T_String value);
     void showEvent(QShowEvent *event);
@@ -23,4 +23,4 @@ public slots:
     void textEdited(QString, QString);
 };
 
-#endif // WIZARDCONFIGINTROPAGE6_H
+#endif // WIZARDADDPROFILEPAGE4_H

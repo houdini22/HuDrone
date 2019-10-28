@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardConfigPage2::WizardConfigPage2(Config * configuration) : QWizardPage(0) {
+WizardAddProfilePage2::WizardAddProfilePage2(Config * configuration) : QWizardPage(0) {
     this->_configuration = configuration;
 
     setTitle("Choose your steering feature.");
@@ -33,16 +33,16 @@ WizardConfigPage2::WizardConfigPage2(Config * configuration) : QWizardPage(0) {
     setLayout(_layout);
 }
 
-void WizardConfigPage2::showEvent(QShowEvent *) {
+void WizardAddProfilePage2::showEvent(QShowEvent *) {
     this->wizard()->button(QWizard::NextButton)->setEnabled(false);
 }
 
-void WizardConfigPage2::handleButtonGlove() {
+void WizardAddProfilePage2::handleButtonGlove() {
     this->_configuration->modify("add", "/device", "glove");
     this->wizard()->next();
 }
 
-void WizardConfigPage2::handleButtonGamepad() {
+void WizardAddProfilePage2::handleButtonGamepad() {
     this->_configuration->modify("add", "/device", "gamepad");
     this->wizard()->next();
 }

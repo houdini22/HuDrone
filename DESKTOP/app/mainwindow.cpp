@@ -4,8 +4,9 @@
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    this->_drone = new Drone(this);
+    setFixedSize(width(), height());
 
+    this->_drone = new Drone(this);
     connect(this->_drone, SIGNAL(configurationChanged()), this, SLOT(configurationChanged()));
 
     this->renderMenu();
@@ -15,8 +16,16 @@ void MainWindow::configurationChanged() {
     this->renderMenu();
 }
 
+void MainWindow::slotAddProfileTriggered(bool) {
+    this->_drone->openWizardAddProfile();
+}
+
 void MainWindow::renderMenu() {
     disconnect(this, SLOT(profileItemTriggered(MyMenuAction*, bool)));
+    disconnect(this, SLOT(slotAddProfileTriggered(bool)));
+
+    QAction * addProfileAction = this->menuWidget()->findChild<QAction *>("actionAddProfile");
+    connect(addProfileAction, SIGNAL(triggered(bool)), this, SLOT(slotAddProfileTriggered(bool)));
 
     QMenu * profilesMenu = this->menuWidget()->findChild<QMenu *>("menuSavedProfiles");
     profilesMenu->clear();
@@ -55,7 +64,7 @@ void MainWindow::renderMenu() {
     }
 }
 
-void MainWindow::profileItemTriggered(MyMenuAction * action, bool triggered) {
+void MainWindow::profileItemTriggered(MyMenuAction * action, bool) {
     if (action->getParameter("action").compare("delete") == 0) {
         if (QMessageBox::question(this, "Confirm", "Are you sure to delete?", QMessageBox::Yes | QMessageBox::No) == QMessageBox::Yes) {
             T_JSON config = Config::getInstance().getData();
@@ -81,6 +90,8 @@ void MainWindow::profileItemTriggered(MyMenuAction * action, bool triggered) {
 
             connect(this->_wizard_upload, SIGNAL(finished(int)), this, SLOT(wizardUploadFinished(int)));
         }
+    } else if (action->getParameter("action").compare("edit") == 0) {
+
     }
 }
 

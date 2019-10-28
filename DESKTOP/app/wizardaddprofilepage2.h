@@ -1,13 +1,13 @@
-#ifndef WIZARDCONFIGINTROPAGE2_H
-#define WIZARDCONFIGINTROPAGE2_H
+#ifndef WIZARDADDPROFILEPAGE2_H
+#define WIZARDADDPROFILEPAGE2_H
 
 #include "include.h"
 
-class WizardConfigPage2 : public QWizardPage
+class WizardAddProfilePage2 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage2(Config * configuration);
+    WizardAddProfilePage2(Config * configuration);
 private:
     QPushButton * _button_glove;
     QPushButton * _button_gamepad;

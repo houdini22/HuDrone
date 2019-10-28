@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardConfigPage5::WizardConfigPage5(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+WizardAddProfilePage3::WizardAddProfilePage3(Config * configuration, Receivers * receivers) : QWizardPage(0) {
     this->_configuration = configuration;
     this->_receivers = receivers;
 
@@ -27,7 +27,7 @@ WizardConfigPage5::WizardConfigPage5(Config * configuration, Receivers * receive
 }
 
 
-void WizardConfigPage5::onListItemClicked(QListWidgetItem * item) {
+void WizardAddProfilePage3::onListItemClicked(QListWidgetItem * item) {
     this->_configuration->modify("add", "/receiver", item->text());
 
     T_JSON radio = T_JSON::object();
@@ -50,6 +50,6 @@ void WizardConfigPage5::onListItemClicked(QListWidgetItem * item) {
     this->wizard()->button(QWizard::NextButton)->setEnabled(item->isSelected());
 }
 
-void WizardConfigPage5::showEvent(QShowEvent * ) {
+void WizardAddProfilePage3::showEvent(QShowEvent * ) {
     this->wizard()->button(QWizard::NextButton)->setEnabled(false);
 }

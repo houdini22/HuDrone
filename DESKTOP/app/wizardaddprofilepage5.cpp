@@ -1,10 +1,10 @@
 #include "include.h"
 
-WizardConfigPage8::WizardConfigPage8(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+WizardAddProfilePage5::WizardAddProfilePage5(Config * configuration, Receivers * receivers) : QWizardPage(0) {
     this->_configuration = configuration;
     this->_receivers = receivers;
 
-    setTitle("Verify or correct DISARMING engine values.");
+    setTitle("Verify or correct ARMING engine values.");
 
     _layout = new QHBoxLayout;
 
@@ -19,7 +19,7 @@ WizardConfigPage8::WizardConfigPage8(Config * configuration, Receivers * receive
     setLayout(_layout);
 }
 
-void WizardConfigPage8::showEvent(QShowEvent *) {
+void WizardAddProfilePage5::showEvent(QShowEvent *) {
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
 
     }

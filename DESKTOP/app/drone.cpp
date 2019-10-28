@@ -3,10 +3,10 @@
 
 Drone::Drone(MainWindow * window) {
     this->_window = window;
-    this->_wizard_config = nullptr;
+    this->_wizard_add_profile = nullptr;
 
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
-        this->openWizardConfig();
+        this->openWizardAddProfile();
     }
 
     QMenu * menu = this->_window->menuBar()->findChild<QMenu*>(QString("menuHuDrone"));
@@ -20,20 +20,20 @@ Drone::Drone(MainWindow * window) {
     }
 }
 
-void Drone::openWizardConfig() {
-    if (this->_wizard_config) {
-        this->_wizard_config->close();
-        delete this->_wizard_config;
-        this->_wizard_config = nullptr;
+void Drone::openWizardAddProfile() {
+    if (this->_wizard_add_profile) {
+        this->_wizard_add_profile->close();
+        delete this->_wizard_add_profile;
+        this->_wizard_add_profile = nullptr;
     }
 
-    this->_wizard_config = new WizardConfig(this->_window, this);
-    this->_wizard_config->show();
-    this->_wizard_config->stackUnder(this->_window);
+    this->_wizard_add_profile = new WizardAddProfile(this->_window, this);
+    this->_wizard_add_profile->show();
+    this->_wizard_add_profile->stackUnder(this->_window);
 }
 
 void Drone::handleMenuActionsSettingsTriggered(bool triggered) {
-    this->openWizardConfig();
+    this->openWizardAddProfile();
 }
 
 void Drone::handleMenuActionsExitTriggered(bool triggered) {

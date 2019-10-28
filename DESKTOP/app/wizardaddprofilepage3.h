@@ -1,13 +1,13 @@
-#ifndef WIZARDCONFIGINTROPAGE5_H
-#define WIZARDCONFIGINTROPAGE5_H
+#ifndef WIZARDADDPROFILEPAGE3_H
+#define WIZARDADDPROFILEPAGE3_H
 
 #include "include.h"
 
-class WizardConfigPage5 : public QWizardPage
+class WizardAddProfilePage3 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage5(Config * configuration, Receivers * receivers);
+    WizardAddProfilePage3(Config * configuration, Receivers * receivers);
 private:
     QVBoxLayout * _layout;
     QListWidget * _list_widget;
@@ -18,4 +18,4 @@ public slots:
     void showEvent(QShowEvent *);
 };
 
-#endif // WIZARDCONFIGINTROPAGE5_H
+#endif // WIZARDADDPROFILEPAGE3_H

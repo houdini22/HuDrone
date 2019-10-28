@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardConfigPage1::WizardConfigPage1(QWidget *parent) : QWizardPage(parent) {
+WizardAddProfilePage1::WizardAddProfilePage1(QWidget *parent) : QWizardPage(parent) {
     setTitle("Create your configuration profile.");
 
     _label = new QLabel("This wizard will setup HuDrone™ Software and HuDrone™ Box.");

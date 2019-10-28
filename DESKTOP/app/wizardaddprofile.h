@@ -1,15 +1,15 @@
-#ifndef WIZARDCONFIG_H
-#define WIZARDCONFIG_H
+#ifndef WIZARDADDPROFILE_H
+#define WIZARDADDPROFILE_H
 
 #include "include.h"
 
 class Drone;
 
-class WizardConfig : public QWizard
+class WizardAddProfile : public QWizard
 {
     Q_OBJECT
 public:
-    WizardConfig(QWidget *parent, Drone * drone);
+    WizardAddProfile(QWidget *parent, Drone * drone);
     void accept() override;
     Config * getConfiguration();
     Receivers * getReceivers();
@@ -22,4 +22,4 @@ protected slots:
     void onFinish();
 };
 
-#endif // WIZARDCONFIG_H
+#endif // WIZARDADDPROFILE_H

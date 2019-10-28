@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardConfigPage9::WizardConfigPage9(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+WizardAddProfilePage7::WizardAddProfilePage7(Config * configuration, Receivers * receivers) : QWizardPage(0) {
     this->_configuration = configuration;
     this->_receivers = receivers;
 
@@ -20,7 +20,7 @@ WizardConfigPage9::WizardConfigPage9(Config * configuration, Receivers * receive
     setLayout(_layout);
 }
 
-void WizardConfigPage9::showEvent(QShowEvent *) {
+void WizardAddProfilePage7::showEvent(QShowEvent *) {
     QString name = QString(this->_configuration->getString({"receiver"}).c_str());
     name += "; ";
     name += QString(this->_configuration->getString({"device"}).c_str());
@@ -29,6 +29,6 @@ void WizardConfigPage9::showEvent(QShowEvent *) {
     this->_configuration->modify("add", "/name", name);
 }
 
-void WizardConfigPage9::nameInputTextEdited(const QString & text) {
+void WizardAddProfilePage7::nameInputTextEdited(const QString & text) {
     this->_configuration->modify("replace", "/name", text);
 }

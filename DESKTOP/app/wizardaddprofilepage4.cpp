@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardConfigPage6::WizardConfigPage6(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers * receivers) : QWizardPage(0) {
     this->_configuration = configuration;
     this->_receivers = receivers;
 
@@ -64,12 +64,12 @@ WizardConfigPage6::WizardConfigPage6(Config * configuration, Receivers * receive
     setLayout(_layout);
 }
 
-int WizardConfigPage6::getValueFromChannel(int channelNumber, T_String value) {
+int WizardAddProfilePage4::getValueFromChannel(int channelNumber, T_String value) {
     T_String receiverName = this->_configuration->getString({"receiver"});
     return this->_receivers->getValueFromChannel(receiverName, channelNumber, value);
 }
 
-void WizardConfigPage6::showEvent(QShowEvent *) {
+void WizardAddProfilePage4::showEvent(QShowEvent *) {
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
         MyLineEdit * minInput = this->_inputs[i]["min"];
         MyLineEdit * middleInput = this->_inputs[i]["middle"];
@@ -93,7 +93,7 @@ void WizardConfigPage6::showEvent(QShowEvent *) {
     }
 }
 
-void WizardConfigPage6::textEdited(QString text, QString id) {
+void WizardAddProfilePage4::textEdited(QString text, QString id) {
     QStringList split = id.split("/");
     this->_configuration->modify("replace", "/radio/" + id, text);
 }

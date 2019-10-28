@@ -27,5 +27,6 @@ private slots:
     void configurationChanged();
     void profileItemTriggered(MyMenuAction *, bool);
     void wizardUploadFinished(int);
+    void slotAddProfileTriggered(bool);
 };
 #endif // MAINWINDOW_H

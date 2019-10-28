@@ -5,7 +5,7 @@
 #include "mainwindow.h"
 
 class MainWindow;
-class WizardConfig;
+class WizardAddProfile;
 
 class Drone : public QObject
 {
@@ -14,10 +14,10 @@ public:
     Drone(MainWindow * window);
     void start();
     MainWindow * _window;
-    WizardConfig * _wizard_config;
+    WizardAddProfile * _wizard_add_profile;
     void notifyConfigurationChanged();
+    void openWizardAddProfile();
 protected:
-    void openWizardConfig();
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);

@@ -21,16 +21,16 @@ SOURCES += \
     mainwindow.cpp \
     threadboxconnect.cpp \
     SerialPort.cpp \
-    wizardconfig.cpp \
+    wizardaddprofile.cpp \
+    wizardaddprofilepage1.cpp \
+    wizardaddprofilepage2.cpp \
+    wizardaddprofilepage3.cpp \
+    wizardaddprofilepage4.cpp \
+    wizardaddprofilepage5.cpp \
+    wizardaddprofilepage6.cpp \
+    wizardaddprofilepage7.cpp \
     wizardconfigchanneltabs.cpp \
     wizardconfiggeneralchanneltab.cpp \
-    wizardconfigpage1.cpp \
-    wizardconfigpage2.cpp \
-    wizardconfigpage5.cpp \
-    wizardconfigpage6.cpp \
-    wizardconfigpage7.cpp \
-    wizardconfigpage8.cpp \
-    wizardconfigpage9.cpp \
     wizardupload.cpp \
     wizarduploadpage1.cpp \
     wizarduploadpage2.cpp \
@@ -49,16 +49,16 @@ HEADERS += \
     serialportutilities.h \
     threadboxconnect.h \
     SerialPort.h \
-    wizardconfig.h \
+    wizardaddprofile.h \
+    wizardaddprofilepage1.h \
+    wizardaddprofilepage2.h \
+    wizardaddprofilepage3.h \
+    wizardaddprofilepage4.h \
+    wizardaddprofilepage5.h \
+    wizardaddprofilepage6.h \
+    wizardaddprofilepage7.h \
     wizardconfigchanneltabs.h \
     wizardconfiggeneralchanneltab.h \
-    wizardconfigpage1.h \
-    wizardconfigpage2.h \
-    wizardconfigpage5.h \
-    wizardconfigpage6.h \
-    wizardconfigpage7.h \
-    wizardconfigpage8.h \
-    wizardconfigpage9.h \
     wizardupload.h \
     wizarduploadpage1.h \
     wizarduploadpage2.h \
