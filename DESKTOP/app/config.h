@@ -24,6 +24,11 @@ class Config
             return newInstance;
         }
 
+        static Config * createInstance(QString fileName) {
+            Config * newInstance = new Config(fileName);
+            return newInstance;
+        }
+
         Config * open() {
             if (!this->isOpened()) {
                 if (FileSystem::isFile(this->getFilePath())) {
@@ -60,6 +65,13 @@ class Config
             }
             return _data.get<T_Bool>();
         }
+        T_String getString(T_ConfigPaths paths) {
+            T_JSON _data = this->getData();
+            for (size_t i = 0; i < paths.size(); i += 1) {
+                _data = _data[paths.at(i)];
+            }
+            return _data.get<T_String>();
+        }
         T_JSON getArray(T_ConfigPaths paths) {
             T_JSON _data = this->getData();
             for (size_t i = 0; i < paths.size(); i += 1) {
@@ -90,9 +102,7 @@ class Config
             }
 
             this->_data = _data;
-            if (!this->_is_virtual_instance) {
-                this->save();
-            }
+            this->save();
         }
     private:
         Config() {
@@ -100,10 +110,16 @@ class Config
             this->_file_path = this->_directory_path + CONFIG_FILE_NAME;
             this->create();
         }
-        Config(T_Bool isVirtualInstance) {
-            this->_is_virtual_instance = isVirtualInstance;
-            this->_is_opened = isVirtualInstance;
+        Config(T_Bool) {
+            this->_is_virtual_instance = true;
+            this->_is_opened = true;
             this->_data = T_JSON::object();
+        }
+        Config (QString fileName) {
+            this->_directory_path = FileSystem::getUserDirectory() + "/HuDrone/";
+            this->_file_path = this->_directory_path + fileName;
+            this->_is_virtual_instance = true;
+            this->open();
         }
         Config(Config const&);
         void operator=(Config const&);
@@ -132,15 +148,6 @@ class Config
                 result["profiles"] = T_JSON::array();
 
                 // from http in future
-
-
-                T_JSON receiver = T_JSON::object();
-                receiver["label"] = "FlySky FS-IA6B";
-
-                T_JSON receivers = T_JSON::array();
-                receivers.push_back(receiver);
-
-                result["receivers"] = receivers;
 
                 T_OFStream _out(this->getFilePath().toStdString());
                 _out << result.dump();

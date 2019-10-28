@@ -10,8 +10,10 @@ public:
     WizardConfig(QWidget *parent = 0);
     void accept() override;
     Config * getConfiguration();
+    Receivers * getReceivers();
 protected:
     Config * _configuration;
+    Receivers * _receivers;
     void saveConfiguration();
 protected slots:
     void onFinish();

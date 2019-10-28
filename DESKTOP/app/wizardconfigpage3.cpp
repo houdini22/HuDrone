@@ -17,7 +17,6 @@ WizardConfigPage3::WizardConfigPage3(QWidget *parent) : QWizardPage(parent) {
 }
 
 void WizardConfigPage3::onWizardClose() {
-    qDebug() << "Wizard closed.";
     _thread_box_connect->terminate();
     _thread_box_connect->wait();
 

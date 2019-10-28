@@ -1,59 +1,105 @@
 #include "include.h"
 
-WizardConfigPage6::WizardConfigPage6(QWidget *parent) : QWizardPage(parent) {
-    setTitle("Verify or correct 'min' and 'max' values for radio channels.");
+WizardConfigPage6::WizardConfigPage6(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+    this->_configuration = configuration;
+    this->_receivers = receivers;
+
+    setTitle("Verify or correct values for radio channels.");
 
     _layout = new QHBoxLayout;
 
-    for (int i = 1, row = 0; i <= 8; i += 2, row += 1) {
-        QGridLayout * layout2 = new QGridLayout;
+    _tabs = new WizardConfigChannelTabs();
+    _layout->addWidget(_tabs->getTabWidget(), 1);
+    _layout->addStretch(0);
 
-        for (int j = i, k = 0; j <= i + 1; j += 1, k += 1) {
-            QGridLayout * layout3 = new QGridLayout;
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        MyLineEdit * minInput = new MyLineEdit();
+        MyLineEdit * middleInput = new MyLineEdit();
+        MyLineEdit * maxInput = new MyLineEdit();
+        MyLineEdit * defaultInput = new MyLineEdit();
 
-            QLabel * label = new QLabel;
-            label->setText("Channel " + QString::number((i + k)));
-            label->setStyleSheet("font-weight: bold");
+        minInput->setID(QString::number(channelNumber) + "/min");
+        middleInput->setID(QString::number(channelNumber) + "/middle");
+        maxInput->setID(QString::number(channelNumber) + "/max");
+        defaultInput->setID(QString::number(channelNumber) + "/default");
 
-            QLineEdit * min = new QLineEdit(QString("channel" + QString(i + k) + "min"));
-            min->setText(QString::number((int) 1100));
+        minInput->setValidator(new QIntValidator(0, 2000));
+        middleInput->setValidator(new QIntValidator(0, 2000));
+        maxInput->setValidator(new QIntValidator(0, 2000));
+        defaultInput->setValidator(new QIntValidator(0, 2000));
 
-            QLineEdit * middle = new QLineEdit(QString("channel" + QString(i + k) + "middle"));
-            middle->setText(QString::number((int) 1500));
+        connect(minInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
+        connect(middleInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
+        connect(maxInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
+        connect(defaultInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
 
-            QLineEdit * max = new QLineEdit(QString("channel" + QString(i + k) + "max"));
-            max->setText(QString::number((int) 1900));
-
-            min->setValidator(new QIntValidator(0, 2000, _layout));
-            middle->setValidator(new QIntValidator(0, 2000, _layout));
-            max->setValidator(new QIntValidator(0, 2000, _layout));
-
-            QLabel * minLabel = new QLabel;
-            minLabel->setText("min");
-
-            QLabel * middleLabel = new QLabel;
-            middleLabel->setText("middle");
-
-            QLabel * maxLabel = new QLabel;
-            maxLabel->setText("max");
+        this->_inputs[i]["min"] = minInput;
+        this->_inputs[i]["middle"] = middleInput;
+        this->_inputs[i]["max"] = maxInput;
+        this->_inputs[i]["default"] = defaultInput;
 
 
-            layout3->addWidget(label, 0, 0, Qt::AlignCenter);
+        QLabel * minLabel = new QLabel;
+        QLabel * middleLabel = new QLabel;
+        QLabel * maxLabel = new QLabel;
+        QLabel * defaultLabel = new QLabel;
 
-            layout3->addWidget(minLabel, 1, 0);
-            layout3->addWidget(min, 1, 1);
+        minLabel->setText("Minimum sent value");
+        middleLabel->setText("Middle sent value");
+        maxLabel->setText("Maximum sent value");
+        defaultLabel->setText("Initial sent value");
 
-            layout3->addWidget(middleLabel, 2, 0);
-            layout3->addWidget(middle, 2, 1);
+        _tabs->getTab(i)->layout()->addWidget(minLabel);
+        _tabs->getTab(i)->layout()->addWidget(minInput);
 
-            layout3->addWidget(maxLabel, 3, 0);
-            layout3->addWidget(max, 3, 1);
+        _tabs->getTab(i)->layout()->addWidget(middleLabel);
+        _tabs->getTab(i)->layout()->addWidget(middleInput);
 
-            layout2->addLayout(layout3, k, row);
-        }
+        _tabs->getTab(i)->layout()->addWidget(maxLabel);
+        _tabs->getTab(i)->layout()->addWidget(maxInput);
 
-        _layout->addLayout(layout2);
+        _tabs->getTab(i)->layout()->addWidget(defaultLabel);
+        _tabs->getTab(i)->layout()->addWidget(defaultInput);
     }
 
     setLayout(_layout);
+}
+
+int WizardConfigPage6::getValueFromChannel(int channelNumber, T_String value) {
+    T_String receiverName = this->_configuration->getString({"receiver"});
+    return this->_receivers->getValueFromChannel(receiverName, channelNumber, value);
+}
+
+void WizardConfigPage6::showEvent(QShowEvent *) {
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        QLineEdit * minInput = this->_inputs[i]["min"];
+        QLineEdit * middleInput = this->_inputs[i]["middle"];
+        QLineEdit * maxInput = this->_inputs[i]["max"];
+        QLineEdit * defaultInput = this->_inputs[i]["default"];
+
+        QString minValue = QString::number(this->getValueFromChannel(channelNumber, "min"));
+        QString middleValue = QString::number(this->getValueFromChannel(channelNumber, "middle"));
+        QString maxValue = QString::number(this->getValueFromChannel(channelNumber, "max"));
+        QString defaultValue = QString::number(this->getValueFromChannel(channelNumber, "default"));
+
+        minInput->setText(minValue);
+        middleInput->setText(middleValue);
+        maxInput->setText(maxValue);
+        defaultInput->setText(defaultValue);
+
+        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber), "{}");
+
+        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/min", minValue);
+        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/middle", middleValue);
+        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/max", maxValue);
+        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/default", defaultValue);
+    }
+}
+
+void WizardConfigPage6::textEdited(QString text, QString id) {
+    QStringList split = id.split("/");
+    int channelNumber = QString(split.at(0)).toInt();
+    QString name = split.at(1);
+
+    this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/" + name, text);
 }

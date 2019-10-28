@@ -58,13 +58,17 @@
 typedef bool T_Bool;
 typedef std::string T_String;
 
+#include "mylineedit.h"
 #include "serialportutilities.h"
 #include "json.hpp"
 #include "SerialPort.h"
 #include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"
+#include "receivers.h"
 #include "drone.h"
+#include "wizardconfiggeneralchanneltab.h"
+#include "wizardconfigchanneltabs.h"
 #include "wizardconfigpage1.h"
 #include "wizardconfigpage2.h"
 #include "wizardconfigpage3.h"

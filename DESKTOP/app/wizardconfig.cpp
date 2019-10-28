@@ -5,18 +5,17 @@ WizardConfig::WizardConfig(QWidget *parent) : QWizard(parent) {
     this->setWindowFlag(Qt::WindowSystemMenuHint, false);
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
+    this->_configuration = Config::createInstance();
+    this->_receivers = Receivers::fromConfig();
+
     addPage(new WizardConfigPage1);
-    addPage(new WizardConfigPage2);
-    addPage(new WizardConfigPage3);
-    addPage(new WizardConfigPage4);
-    addPage(new WizardConfigPage5);
-    addPage(new WizardConfigPage6);
-    addPage(new WizardConfigPage7);
-    addPage(new WizardConfigPage8);
+    addPage(new WizardConfigPage2(this->_configuration));
+    addPage(new WizardConfigPage5(this->_configuration, this->_receivers));
+    addPage(new WizardConfigPage6(this->_configuration, this->_receivers));
+    addPage(new WizardConfigPage7(this->_configuration, this->_receivers));
+    addPage(new WizardConfigPage8(this->_configuration, this->_receivers));
 
     setWindowTitle("Configuration Wizard");
-
-    this->_configuration = Config::createInstance();
 
     connect(this, SIGNAL(finished(int)), this, SLOT(onFinish()));
 }
@@ -30,7 +29,6 @@ void WizardConfig::onFinish() {
 }
 
 void WizardConfig::saveConfiguration() {
-    std::cout << this->_configuration->getData().dump();
     T_JSON data = Config::getInstance().getData();
     data["profiles"].push_back(this->getConfiguration()->getData());
     Config::getInstance().setData(data)->save();
@@ -38,4 +36,8 @@ void WizardConfig::saveConfiguration() {
 
 Config * WizardConfig::getConfiguration() {
     return this->_configuration;
+}
+
+Receivers * WizardConfig::getReceivers() {
+    return this->_receivers;
 }

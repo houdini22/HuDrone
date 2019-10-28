@@ -1,6 +1,8 @@
 #include "include.h"
 
-WizardConfigPage2::WizardConfigPage2(QWidget *parent) : QWizardPage(parent) {
+WizardConfigPage2::WizardConfigPage2(Config * configuration) : QWizardPage(0) {
+    this->_configuration = configuration;
+
     setTitle("Choose your steering feature.");
 
     _button_glove = new QPushButton();
@@ -36,15 +38,11 @@ void WizardConfigPage2::showEvent(QShowEvent *) {
 }
 
 void WizardConfigPage2::handleButtonGlove() {
-    WizardConfig * wizard = (WizardConfig *) this->wizard();
-
-    wizard->getConfiguration()->modify("add", "/device", "glove");
-    wizard->next();
+    this->_configuration->modify("add", "/device", "glove");
+    this->wizard()->next();
 }
 
 void WizardConfigPage2::handleButtonGamepad() {
-    WizardConfig * wizard = (WizardConfig *) this->wizard();
-
-    wizard->getConfiguration()->modify("add", "/device", "gamepad");
-    wizard->next();
+    this->_configuration->modify("add", "/device", "gamepad");
+    this->wizard()->next();
 }

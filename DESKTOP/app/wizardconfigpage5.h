@@ -7,10 +7,12 @@ class WizardConfigPage5 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage5(QWidget * parent = 0);
+    WizardConfigPage5(Config * configuration, Receivers * receivers);
 private:
     QVBoxLayout * _layout;
     QListWidget * _list_widget;
+    Config * _configuration;
+    Receivers * _receivers;
 public slots:
     void onListItemClicked(QListWidgetItem *);
     void showEvent(QShowEvent *);

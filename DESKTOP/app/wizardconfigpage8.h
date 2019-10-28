@@ -7,9 +7,14 @@ class WizardConfigPage8 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage8(QWidget * parent = 0);
+    WizardConfigPage8(Config * configuration, Receivers * receivers);
+    T_JSON getValueFromChannel(int channelNumber, T_String value);
+    void showEvent(QShowEvent *);
 private:
     QHBoxLayout * _layout;
+    Config * _configuration;
+    Receivers * _receivers;
+    WizardConfigChannelTabs * _tabs;
 };
 
 #endif // WIZARDCONFIGINTROPAGE8_H

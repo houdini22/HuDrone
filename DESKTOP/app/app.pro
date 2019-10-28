@@ -22,6 +22,8 @@ SOURCES += \
     threadboxconnect.cpp \
     SerialPort.cpp \
     wizardconfig.cpp \
+    wizardconfigchanneltabs.cpp \
+    wizardconfiggeneralchanneltab.cpp \
     wizardconfigpage1.cpp \
     wizardconfigpage2.cpp \
     wizardconfigpage3.cpp \
@@ -37,10 +39,14 @@ HEADERS += \
     filesystem.h \
     include.h \
     mainwindow.h \
+    mylineedit.h \
+    receivers.h \
     serialportutilities.h \
     threadboxconnect.h \
     SerialPort.h \
     wizardconfig.h \
+    wizardconfigchanneltabs.h \
+    wizardconfiggeneralchanneltab.h \
     wizardconfigpage1.h \
     wizardconfigpage2.h \
     wizardconfigpage3.h \
