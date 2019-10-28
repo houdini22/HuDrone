@@ -26,13 +26,15 @@ SOURCES += \
     wizardconfiggeneralchanneltab.cpp \
     wizardconfigpage1.cpp \
     wizardconfigpage2.cpp \
-    wizardconfigpage3.cpp \
-    wizardconfigpage4.cpp \
     wizardconfigpage5.cpp \
     wizardconfigpage6.cpp \
     wizardconfigpage7.cpp \
     wizardconfigpage8.cpp \
-    wizardconfigpage9.cpp
+    wizardconfigpage9.cpp \
+    wizardupload.cpp \
+    wizarduploadpage1.cpp \
+    wizarduploadpage2.cpp \
+    wizarduploadpage3.cpp
 
 HEADERS += \
     config.h \
@@ -41,6 +43,7 @@ HEADERS += \
     include.h \
     mainwindow.h \
     mylineedit.h \
+    mymenuaction.h \
     receivers.h \
     serialportutilities.h \
     threadboxconnect.h \
@@ -50,13 +53,15 @@ HEADERS += \
     wizardconfiggeneralchanneltab.h \
     wizardconfigpage1.h \
     wizardconfigpage2.h \
-    wizardconfigpage3.h \
-    wizardconfigpage4.h \
     wizardconfigpage5.h \
     wizardconfigpage6.h \
     wizardconfigpage7.h \
     wizardconfigpage8.h \
-    wizardconfigpage9.h
+    wizardconfigpage9.h \
+    wizardupload.h \
+    wizarduploadpage1.h \
+    wizarduploadpage2.h \
+    wizarduploadpage3.h
 
 FORMS += \
     mainwindow.ui

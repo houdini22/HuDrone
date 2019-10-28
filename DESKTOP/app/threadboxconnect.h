@@ -9,8 +9,12 @@ class ThreadBoxConnect : public QThread
 public:
     explicit ThreadBoxConnect();
     void run();
+protected:
+    SerialPort * _arduino = nullptr;
 signals:
     void arduinoConnected(SerialPort *);
+public slots:
+    void terminate();
 };
 
 #endif // THREADBOXCONNECT_H

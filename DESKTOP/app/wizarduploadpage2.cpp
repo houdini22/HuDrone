@@ -1,13 +1,13 @@
 #include "include.h"
 
-WizardConfigPage3::WizardConfigPage3(QWidget *parent) : QWizardPage(parent) {
+WizardUploadPage2::WizardUploadPage2(QWidget *parent) : QWizardPage(parent) {
     setTitle("Connect your HuDrone Box to the computer with USB cable.");
 
     _label = new QLabel("Status:");
     _label->setWordWrap(true);
 
-    _label_status = new QLabel("not connected.");
-    _label_status->setStyleSheet("QLabel { color: red }");
+    _label_status = new QLabel("not detected");
+    _label_status->setStyleSheet("QLabel { color: red; font-size: 20px; }");
 
     _layout = new QVBoxLayout;
     _layout->addWidget(_label);
@@ -16,7 +16,7 @@ WizardConfigPage3::WizardConfigPage3(QWidget *parent) : QWizardPage(parent) {
     setLayout(_layout);
 }
 
-void WizardConfigPage3::onWizardClose() {
+void WizardUploadPage2::onWizardClose() {
     _thread_box_connect->terminate();
     _thread_box_connect->wait();
 
@@ -27,7 +27,7 @@ void WizardConfigPage3::onWizardClose() {
     _thread_box_connect = nullptr;
 }
 
-void WizardConfigPage3::showEvent(QShowEvent *) {
+void WizardUploadPage2::showEvent(QShowEvent *) {
     disconnect( this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
     connect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
 
@@ -40,11 +40,16 @@ void WizardConfigPage3::showEvent(QShowEvent *) {
     }
 }
 
-void WizardConfigPage3::handleArduinoConnected(SerialPort * arduino) {
-    _label_status->setStyleSheet("QLabel { color: green}");
-    _label_status->setText("connected.");
+void WizardUploadPage2::handleArduinoConnected(SerialPort * arduino) {
+    _label_status->setStyleSheet("QLabel { color: green; font-size: 20px; }");
+    _label_status->setText("detected");
 
     emit(arduinoConnected(arduino));
+
+    _thread_box_connect->terminate();
+    _thread_box_connect->wait();
+    delete _thread_box_connect;
+    _thread_box_connect = nullptr;
 
     this->wizard()->button(QWizard::NextButton)->setEnabled(true);
 }

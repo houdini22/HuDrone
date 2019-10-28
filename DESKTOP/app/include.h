@@ -32,6 +32,7 @@
 #include <QtSerialPort/QSerialPortInfo>
 #include <QList>
 #include <QApplication>
+#include <QMessageBox>
 
 #include <vector>
 #include <list>
@@ -58,6 +59,7 @@
 typedef bool T_Bool;
 typedef std::string T_String;
 
+#include "mymenuaction.h"
 #include "mylineedit.h"
 #include "serialportutilities.h"
 #include "json.hpp"
@@ -71,13 +73,15 @@ typedef std::string T_String;
 #include "wizardconfigchanneltabs.h"
 #include "wizardconfigpage1.h"
 #include "wizardconfigpage2.h"
-#include "wizardconfigpage3.h"
-#include "wizardconfigpage4.h"
 #include "wizardconfigpage5.h"
 #include "wizardconfigpage6.h"
 #include "wizardconfigpage7.h"
 #include "wizardconfigpage8.h"
 #include "wizardconfigpage9.h"
 #include "wizardconfig.h"
+#include "wizarduploadpage1.h"
+#include "wizarduploadpage2.h"
+#include "wizarduploadpage3.h"
+#include "wizardupload.h"
 
 #endif // INCLUDE_H

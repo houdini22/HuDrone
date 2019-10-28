@@ -1,15 +1,15 @@
-#ifndef WIZARDCONFIGINTROPAGE3_H
-#define WIZARDCONFIGINTROPAGE3_H
+#ifndef WIZARDUPLOADPAGE_H
+#define WIZARDUPLOADPAGE_H
 
 #include "include.h"
 
 class ThreadBoxConnect;
 
-class WizardConfigPage3 : public QWizardPage
+class WizardUploadPage2 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardConfigPage3(QWidget *parent = 0);
+    WizardUploadPage2(QWidget *parent = 0);
 private:
     QLabel * _label;
     QLabel * _label_status;
@@ -23,4 +23,4 @@ signals:
     void arduinoConnected(SerialPort *);
 };
 
-#endif // WIZARDCONFIGINTROPAGE3_H
+#endif // WIZARDUPLOADPAGE_H
