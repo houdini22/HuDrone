@@ -79,6 +79,13 @@ class Config
             }
             return _data;
         }
+        T_JSON getObject(T_ConfigPaths paths) {
+            T_JSON _data = this->getData();
+            for (size_t i = 0; i < paths.size(); i += 1) {
+                _data = _data[paths.at(i)];
+            }
+            return _data;
+        }
         void modify(QString op, QString path, QString value) {
             T_JSON _data = this->getData();
 

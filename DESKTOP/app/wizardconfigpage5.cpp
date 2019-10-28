@@ -29,7 +29,24 @@ WizardConfigPage5::WizardConfigPage5(Config * configuration, Receivers * receive
 
 void WizardConfigPage5::onListItemClicked(QListWidgetItem * item) {
     this->_configuration->modify("add", "/receiver", item->text());
-    this->_configuration->modify("add", "/radio", "{}");
+
+    T_JSON radio = T_JSON::object();
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        T_JSON _v = T_JSON::object();
+        _v["min"] = 0;
+        _v["middle"] = 0;
+        _v["max"] = 0;
+        _v["default"] = 0;
+        _v["arming"] = T_JSON::array();
+        _v["disarming"] = T_JSON::array();
+
+        radio[QString("channel" + QString::number(channelNumber)).toStdString()] = _v;
+    }
+
+    T_JSON data = this->_configuration->getData();
+    data["radio"] = radio;
+    this->_configuration->setData(data);
+
     this->wizard()->button(QWizard::NextButton)->setEnabled(item->isSelected());
 }
 

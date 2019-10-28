@@ -18,10 +18,10 @@ WizardConfigPage6::WizardConfigPage6(Config * configuration, Receivers * receive
         MyLineEdit * maxInput = new MyLineEdit();
         MyLineEdit * defaultInput = new MyLineEdit();
 
-        minInput->setID(QString::number(channelNumber) + "/min");
-        middleInput->setID(QString::number(channelNumber) + "/middle");
-        maxInput->setID(QString::number(channelNumber) + "/max");
-        defaultInput->setID(QString::number(channelNumber) + "/default");
+        minInput->setID("channel" + QString::number(channelNumber) + "/min");
+        middleInput->setID("channel" + QString::number(channelNumber) + "/middle");
+        maxInput->setID("channel" + QString::number(channelNumber) + "/max");
+        defaultInput->setID("channel" + QString::number(channelNumber) + "/default");
 
         minInput->setValidator(new QIntValidator(0, 2000));
         middleInput->setValidator(new QIntValidator(0, 2000));
@@ -37,7 +37,6 @@ WizardConfigPage6::WizardConfigPage6(Config * configuration, Receivers * receive
         this->_inputs[i]["middle"] = middleInput;
         this->_inputs[i]["max"] = maxInput;
         this->_inputs[i]["default"] = defaultInput;
-
 
         QLabel * minLabel = new QLabel;
         QLabel * middleLabel = new QLabel;
@@ -72,10 +71,10 @@ int WizardConfigPage6::getValueFromChannel(int channelNumber, T_String value) {
 
 void WizardConfigPage6::showEvent(QShowEvent *) {
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        QLineEdit * minInput = this->_inputs[i]["min"];
-        QLineEdit * middleInput = this->_inputs[i]["middle"];
-        QLineEdit * maxInput = this->_inputs[i]["max"];
-        QLineEdit * defaultInput = this->_inputs[i]["default"];
+        MyLineEdit * minInput = this->_inputs[i]["min"];
+        MyLineEdit * middleInput = this->_inputs[i]["middle"];
+        MyLineEdit * maxInput = this->_inputs[i]["max"];
+        MyLineEdit * defaultInput = this->_inputs[i]["default"];
 
         QString minValue = QString::number(this->getValueFromChannel(channelNumber, "min"));
         QString middleValue = QString::number(this->getValueFromChannel(channelNumber, "middle"));
@@ -87,19 +86,14 @@ void WizardConfigPage6::showEvent(QShowEvent *) {
         maxInput->setText(maxValue);
         defaultInput->setText(defaultValue);
 
-        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber), "{}");
-
-        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/min", minValue);
-        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/middle", middleValue);
-        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/max", maxValue);
-        this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/default", defaultValue);
+        this->_configuration->modify("add", "/radio/" + minInput->getID(), minValue);
+        this->_configuration->modify("add", "/radio/" + middleInput->getID(), middleValue);
+        this->_configuration->modify("add", "/radio/" + maxInput->getID(), maxValue);
+        this->_configuration->modify("add", "/radio/" + defaultInput->getID(), defaultValue);
     }
 }
 
 void WizardConfigPage6::textEdited(QString text, QString id) {
     QStringList split = id.split("/");
-    int channelNumber = QString(split.at(0)).toInt();
-    QString name = split.at(1);
-
-    this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/" + name, text);
+    this->_configuration->modify("replace", "/radio/" + id, text);
 }

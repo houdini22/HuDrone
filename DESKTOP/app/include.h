@@ -77,6 +77,7 @@ typedef std::string T_String;
 #include "wizardconfigpage6.h"
 #include "wizardconfigpage7.h"
 #include "wizardconfigpage8.h"
+#include "wizardconfigpage9.h"
 #include "wizardconfig.h"
 
 #endif // INCLUDE_H

@@ -4,6 +4,7 @@
 #include "include.h"
 
 class WizardConfigChannelTabs;
+class MyLineEdit;
 
 class WizardConfigPage6 : public QWizardPage
 {
@@ -17,7 +18,7 @@ private:
     Config * _configuration;
     Receivers * _receivers;
     WizardConfigChannelTabs * _tabs;
-    std::map<int, std::map<T_String, QLineEdit *>> _inputs;
+    std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
 public slots:
     void textEdited(QString, QString);
 };

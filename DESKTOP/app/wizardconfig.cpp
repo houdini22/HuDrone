@@ -14,6 +14,7 @@ WizardConfig::WizardConfig(QWidget *parent) : QWizard(parent) {
     addPage(new WizardConfigPage6(this->_configuration, this->_receivers));
     addPage(new WizardConfigPage7(this->_configuration, this->_receivers));
     addPage(new WizardConfigPage8(this->_configuration, this->_receivers));
+    addPage(new WizardConfigPage9(this->_configuration, this->_receivers));
 
     setWindowTitle("Configuration Wizard");
 

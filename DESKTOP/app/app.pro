@@ -31,7 +31,8 @@ SOURCES += \
     wizardconfigpage5.cpp \
     wizardconfigpage6.cpp \
     wizardconfigpage7.cpp \
-    wizardconfigpage8.cpp
+    wizardconfigpage8.cpp \
+    wizardconfigpage9.cpp
 
 HEADERS += \
     config.h \
@@ -54,7 +55,8 @@ HEADERS += \
     wizardconfigpage5.h \
     wizardconfigpage6.h \
     wizardconfigpage7.h \
-    wizardconfigpage8.h
+    wizardconfigpage8.h \
+    wizardconfigpage9.h
 
 FORMS += \
     mainwindow.ui

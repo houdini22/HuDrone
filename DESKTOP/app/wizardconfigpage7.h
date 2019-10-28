@@ -8,7 +8,6 @@ class WizardConfigPage7 : public QWizardPage
     Q_OBJECT
 public:
     WizardConfigPage7(Config * configuration, Receivers * receivers);
-    T_JSON getValueFromChannel(int channelNumber, T_String value);
     void showEvent(QShowEvent *);
 private:
     QHBoxLayout * _layout;
