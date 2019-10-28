@@ -3,7 +3,6 @@
 
 Drone::Drone(MainWindow * window) {
     this->_window = window;
-    this->_wizard_add_profile = nullptr;
 
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();
@@ -30,6 +29,30 @@ void Drone::openWizardAddProfile() {
     this->_wizard_add_profile = new WizardAddProfile(this->_window, this);
     this->_wizard_add_profile->show();
     this->_wizard_add_profile->stackUnder(this->_window);
+}
+
+void Drone::openWizardUpload() {
+    if (this->_wizard_add_profile) {
+        this->_wizard_add_profile->close();
+        delete this->_wizard_add_profile;
+        this->_wizard_add_profile = nullptr;
+    }
+
+    this->_wizard_upload = new WizardUpload(this->_window, this);
+    this->_wizard_upload->show();
+    this->_wizard_upload->stackUnder(this->_window);
+}
+
+void Drone::openDialogEditProfile(QString name) {
+    if (this->_dialog_edit_profile) {
+        this->_dialog_edit_profile->close();
+        delete this->_dialog_edit_profile;
+        this->_dialog_edit_profile = nullptr;
+    }
+
+    this->_dialog_edit_profile = new DialogEditProfile(this->_window, name);
+    this->_dialog_edit_profile->show();
+    this->_dialog_edit_profile->stackUnder(this->_window);
 }
 
 void Drone::handleMenuActionsSettingsTriggered(bool triggered) {

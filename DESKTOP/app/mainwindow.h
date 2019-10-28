@@ -22,11 +22,9 @@ private:
     Ui::MainWindow *ui;
     Drone * _drone;
     void renderMenu();
-    WizardUpload * _wizard_upload = nullptr;
 private slots:
     void configurationChanged();
     void profileItemTriggered(MyMenuAction *, bool);
-    void wizardUploadFinished(int);
     void slotAddProfileTriggered(bool);
 };
 #endif // MAINWINDOW_H

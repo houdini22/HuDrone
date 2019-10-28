@@ -95,23 +95,12 @@ void MainWindow::profileItemTriggered(MyMenuAction * action, bool) {
             this->renderMenu();
         }
     } else if (action->getParameter("action").compare("upload") == 0) {
-        if (this->_wizard_upload == nullptr) {
-            this->_wizard_upload = new WizardUpload(this->window(), this->_drone);
-            this->_wizard_upload->show();
-            this->_wizard_upload->stackUnder(this->window());
-
-            connect(this->_wizard_upload, SIGNAL(finished(int)), this, SLOT(wizardUploadFinished(int)));
-        }
+        this->_drone->openWizardUpload();
     } else if (action->getParameter("action").compare("edit") == 0) {
-
+        this->_drone->openDialogEditProfile(action->getParameter("name"));
     } else if (action->getParameter("action").compare("newProfile") == 0) {
         this->_drone->openWizardAddProfile();
     }
-}
-
-void MainWindow::wizardUploadFinished(int) {
-    delete this->_wizard_upload;
-    this->_wizard_upload = nullptr;
 }
 
 MainWindow::~MainWindow() {

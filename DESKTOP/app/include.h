@@ -33,6 +33,7 @@
 #include <QList>
 #include <QApplication>
 #include <QMessageBox>
+#include <QDialogButtonBox>
 
 #include <vector>
 #include <list>
@@ -59,6 +60,7 @@
 typedef bool T_Bool;
 typedef std::string T_String;
 
+#include "dialogeditprofile.h"
 #include "mymenuaction.h"
 #include "mylineedit.h"
 #include "serialportutilities.h"
