@@ -24,12 +24,15 @@ WizardConfig::WizardConfig(QWidget *parent, Drone * drone) : QWizard(parent) {
 }
 
 void WizardConfig::accept() {
+    this->saveConfiguration();
+    this->_drone->notifyConfigurationChanged();
+
     QDialog::accept();
 }
 
 void WizardConfig::onFinish() {
-    this->saveConfiguration();
-    this->_drone->notifyConfigurationChanged();
+    delete this->_receivers;
+    delete this->_configuration;
 }
 
 void WizardConfig::saveConfiguration() {
