@@ -47,15 +47,6 @@
     <property name="title">
      <string>Profiles</string>
     </property>
-    <widget class="QMenu" name="menuSavedProfiles">
-     <property name="title">
-      <string>Saved profiles</string>
-     </property>
-    </widget>
-    <addaction name="separator"/>
-    <addaction name="actionAddProfile"/>
-    <addaction name="separator"/>
-    <addaction name="menuSavedProfiles"/>
    </widget>
    <addaction name="menuHuDrone"/>
    <addaction name="menuProfiles"/>
@@ -74,6 +65,11 @@
   <action name="actionAddProfile">
    <property name="text">
     <string>Add profile...</string>
+   </property>
+  </action>
+  <action name="actionNewProfile">
+   <property name="text">
+    <string>New Profile...</string>
    </property>
   </action>
  </widget>
