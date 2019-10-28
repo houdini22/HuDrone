@@ -15,11 +15,14 @@ public:
     void start();
     MainWindow * _window;
     WizardConfig * _wizard_config;
+    void notifyConfigurationChanged();
 protected:
     void openWizardConfig();
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);
+signals:
+    void configurationChanged();
 };
 
 #endif // DRONE_H

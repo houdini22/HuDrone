@@ -19,9 +19,8 @@ public:
 private:
     Ui::MainWindow *ui;
     Drone * _drone;
-    void showEvent(QShowEvent *event);
-    void resizeEvent(QResizeEvent *event);
+    void renderMenu();
 private slots:
-    void setup();
+    void configurationChanged();
 };
 #endif // MAINWINDOW_H

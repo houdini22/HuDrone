@@ -1,6 +1,8 @@
 #include "include.h"
 
-WizardConfig::WizardConfig(QWidget *parent) : QWizard(parent) {
+WizardConfig::WizardConfig(QWidget *parent, Drone * drone) : QWizard(parent) {
+    this->_drone = drone;
+
     this->setWindowFlag(Qt::WindowCloseButtonHint, false);
     this->setWindowFlag(Qt::WindowSystemMenuHint, false);
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
@@ -27,6 +29,7 @@ void WizardConfig::accept() {
 
 void WizardConfig::onFinish() {
     this->saveConfiguration();
+    this->_drone->notifyConfigurationChanged();
 }
 
 void WizardConfig::saveConfiguration() {

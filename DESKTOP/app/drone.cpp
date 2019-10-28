@@ -27,7 +27,7 @@ void Drone::openWizardConfig() {
         this->_wizard_config = nullptr;
     }
 
-    this->_wizard_config = new WizardConfig(this->_window);
+    this->_wizard_config = new WizardConfig(this->_window, this);
     this->_wizard_config->show();
     this->_wizard_config->stackUnder(this->_window);
 }
@@ -42,4 +42,8 @@ void Drone::handleMenuActionsExitTriggered(bool triggered) {
 
 void Drone::start() {
 
+}
+
+void Drone::notifyConfigurationChanged() {
+    emit configurationChanged();
 }

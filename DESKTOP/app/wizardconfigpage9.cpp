@@ -21,11 +21,9 @@ WizardConfigPage9::WizardConfigPage9(Config * configuration, Receivers * receive
 }
 
 void WizardConfigPage9::showEvent(QShowEvent *) {
-    QString name = "Device: ";
+    QString name = QString(this->_configuration->getString({"receiver"}).c_str());
+    name += "; ";
     name += QString(this->_configuration->getString({"device"}).c_str());
-    name += ". Receiver: ";
-    name += QString(this->_configuration->getString({"receiver"}).c_str());
-    name += ".";
 
     this->_name_input->setText(name);
     this->_configuration->modify("add", "/name", name);
