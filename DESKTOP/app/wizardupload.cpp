@@ -10,6 +10,7 @@ WizardUpload::WizardUpload(QWidget *parent, Drone * drone) : QWizard(parent) {
     addPage(new WizardUploadPage1);
     addPage(new WizardUploadPage2);
     addPage(new WizardUploadPage3);
+    addPage(new WizardUploadPage4);
 
     setWindowTitle("Upload wizard");
 

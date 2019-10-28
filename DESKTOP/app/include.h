@@ -82,6 +82,7 @@ typedef std::string T_String;
 #include "wizarduploadpage1.h"
 #include "wizarduploadpage2.h"
 #include "wizarduploadpage3.h"
+#include "wizarduploadpage4.h"
 #include "wizardupload.h"
 
 #endif // INCLUDE_H

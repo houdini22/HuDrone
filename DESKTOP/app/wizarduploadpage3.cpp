@@ -1,9 +1,9 @@
 #include "include.h"
 
 WizardUploadPage3::WizardUploadPage3(QWidget *parent) : QWizardPage(parent) {
-    setTitle("Your are ready to program your HuDrone Box.");
+    setTitle("Summary HuDrone™ Sofware to upload.");
 
-    _label = new QLabel("Leave your HuDrone Box connected and click Next.");
+    _label = new QLabel("Leave your HuDrone™ Box connected and click Next.");
     _label->setWordWrap(true);
 
     _layout = new QVBoxLayout;

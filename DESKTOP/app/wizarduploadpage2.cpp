@@ -1,7 +1,7 @@
 #include "include.h"
 
 WizardUploadPage2::WizardUploadPage2(QWidget *parent) : QWizardPage(parent) {
-    setTitle("Connect your HuDrone Box to the computer with USB cable.");
+    setTitle("Connect your HuDrone™ Box to the computer with USB cable.");
 
     _label = new QLabel("Status:");
     _label->setWordWrap(true);

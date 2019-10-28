@@ -34,7 +34,8 @@ SOURCES += \
     wizardupload.cpp \
     wizarduploadpage1.cpp \
     wizarduploadpage2.cpp \
-    wizarduploadpage3.cpp
+    wizarduploadpage3.cpp \
+    wizarduploadpage4.cpp
 
 HEADERS += \
     config.h \
@@ -61,7 +62,8 @@ HEADERS += \
     wizardupload.h \
     wizarduploadpage1.h \
     wizarduploadpage2.h \
-    wizarduploadpage3.h
+    wizarduploadpage3.h \
+    wizarduploadpage4.h
 
 FORMS += \
     mainwindow.ui
