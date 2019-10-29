@@ -57,20 +57,25 @@
 #include <set>
 #include <winbase.h>
 
+#include "json.hpp"
+
 typedef bool T_Bool;
 typedef std::string T_String;
+typedef nlohmann::json T_JSON;
 
-#include "dialogeditprofile.h"
 #include "mymenuaction.h"
 #include "mylineedit.h"
+
+#include "dialogeditprofile.h"
 #include "serialportutilities.h"
-#include "json.hpp"
 #include "SerialPort.h"
 #include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"
 #include "receivers.h"
 #include "drone.h"
+#include "tabseditprofilegeneraltab.h"
+#include "tabseditprofile.h"
 #include "wizardconfiggeneralchanneltab.h"
 #include "wizardconfigchanneltabs.h"
 #include "wizardaddprofilepage1.h"

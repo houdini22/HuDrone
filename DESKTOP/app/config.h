@@ -4,7 +4,6 @@
 #include "include.h"
 
 typedef QString T_Path;
-typedef nlohmann::json T_JSON;
 typedef std::ifstream T_IFStream;
 typedef std::ofstream T_OFStream;
 typedef std::vector<std::string> T_ConfigPaths;

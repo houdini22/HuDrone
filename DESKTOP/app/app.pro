@@ -20,6 +20,8 @@ SOURCES += \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
+    tabseditprofile.cpp \
+    tabseditprofilegeneraltab.cpp \
     threadboxconnect.cpp \
     SerialPort.cpp \
     wizardaddprofile.cpp \
@@ -49,6 +51,8 @@ HEADERS += \
     mymenuaction.h \
     receivers.h \
     serialportutilities.h \
+    tabseditprofile.h \
+    tabseditprofilegeneraltab.h \
     threadboxconnect.h \
     SerialPort.h \
     wizardaddprofile.h \
