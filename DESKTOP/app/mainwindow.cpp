@@ -61,15 +61,22 @@ void MainWindow::renderMenu() {
                 ->setText("Delete...")
                 ->setParameter("action", "delete")
                 ->setParameter("name", name);
+        auto flyAction = MyMenuAction::factory(profileMenu)
+                ->setText("Fly...")
+                ->setParameter("action", "fly")
+                ->setParameter("name", name);
 
         connect(uploadAction, SIGNAL(myTriggered(MyMenuAction *, bool)), this, SLOT(profileItemTriggered(MyMenuAction *, bool)));
         connect(editAction, SIGNAL(myTriggered(MyMenuAction *, bool)), this, SLOT(profileItemTriggered(MyMenuAction *, bool)));
         connect(deleteAction, SIGNAL(myTriggered(MyMenuAction *, bool)), this, SLOT(profileItemTriggered(MyMenuAction *, bool)));
+        connect(flyAction, SIGNAL(myTriggered(MyMenuAction *, bool)), this, SLOT(profileItemTriggered(MyMenuAction *, bool)));
 
         profileMenu->addAction(uploadAction);
         profileMenu->addSeparator();
         profileMenu->addAction(editAction);
         profileMenu->addAction(deleteAction);
+        profileMenu->addSeparator();
+        profileMenu->addAction(flyAction);
         profileMenu->setTitle(name);
 
         menuProfiles__profilesAll->addMenu(profileMenu);
@@ -100,6 +107,8 @@ void MainWindow::profileItemTriggered(MyMenuAction * action, bool) {
         this->_drone->openDialogEditProfile(action->getParameter("name"));
     } else if (action->getParameter("action").compare("newProfile") == 0) {
         this->_drone->openWizardAddProfile();
+    } else if (action->getParameter("action").compare("fly") == 0) {
+        this->_drone->openDialogFly();
     }
 }
 

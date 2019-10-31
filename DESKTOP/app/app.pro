@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     dialogeditprofile.cpp \
+    dialogflywindow.cpp \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -43,6 +44,7 @@ SOURCES += \
 HEADERS += \
     config.h \
     dialogeditprofile.h \
+    dialogflywindow.h \
     drone.h \
     filesystem.h \
     include.h \

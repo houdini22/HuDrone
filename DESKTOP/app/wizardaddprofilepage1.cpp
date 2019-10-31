@@ -3,7 +3,7 @@
 WizardAddProfilePage1::WizardAddProfilePage1(QWidget *parent) : QWizardPage(parent) {
     setTitle("Create your configuration profile.");
 
-    _label = new QLabel("This wizard will setup HuDrone™ Software and HuDrone™ Box.");
+    _label = new QLabel("This wizard will setup new profile for HuDrone™ Box.");
     _label->setWordWrap(true);
 
     _layout = new QVBoxLayout;

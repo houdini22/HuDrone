@@ -8,6 +8,7 @@ class MainWindow;
 class WizardAddProfile;
 class WizardUpload;
 class DialogEditProfile;
+class DialogFlyWindow;
 
 class Drone : public QObject
 {
@@ -19,9 +20,11 @@ public:
     WizardAddProfile * _wizard_add_profile = nullptr;
     WizardUpload * _wizard_upload = nullptr;
     DialogEditProfile * _dialog_edit_profile = nullptr;
+    DialogFlyWindow * _dialog_fly = nullptr;
     void notifyConfigurationChanged();
     void openWizardAddProfile();
     void openWizardUpload();
+    void openDialogFly();
     void openDialogEditProfile(QString name);
 protected:
 private slots:

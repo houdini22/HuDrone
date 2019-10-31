@@ -19,6 +19,18 @@ Drone::Drone(MainWindow * window) {
     }
 }
 
+void Drone::openDialogFly() {
+    if (this->_dialog_fly) {
+        this->_dialog_fly->close();
+        delete this->_dialog_fly;
+        this->_dialog_fly = nullptr;
+    }
+
+    this->_dialog_fly = new DialogFlyWindow(this->_window, this);
+    this->_dialog_fly->show();
+    this->_dialog_fly->stackUnder(this->_window);
+}
+
 void Drone::openWizardAddProfile() {
     if (this->_wizard_add_profile) {
         this->_wizard_add_profile->close();
