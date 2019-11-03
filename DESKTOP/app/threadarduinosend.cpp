@@ -69,6 +69,7 @@ QString ThreadArduinoSend::createAxisBuffer(int leftX, int leftY, int rightX, in
 }
 
 void ThreadArduinoSend::run() {
+    return;
     nlohmann::json data;// = Storage::getInstance().getData();
 
     bool startMode = false;
@@ -82,7 +83,7 @@ void ThreadArduinoSend::run() {
     int sendingThrustUp = 0;
     int sendingThrustDown = 0;
 
-    int timeSleep = 40;
+    unsigned long timeSleep = 40;
 
     while (1) {
         QThread::msleep(timeSleep);

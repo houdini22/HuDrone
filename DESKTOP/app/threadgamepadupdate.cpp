@@ -7,6 +7,7 @@ ThreadGamepadUpdate::ThreadGamepadUpdate(SteeringRegistry * registry, Drone * dr
 }
 
 void ThreadGamepadUpdate::run() {
+    return;
     while (1) {
         QThread::msleep(40);
 
