@@ -15,7 +15,6 @@ class Drone : public QObject
     Q_OBJECT
 public:
     Drone(MainWindow * window);
-    void start();
     MainWindow * _window;
     WizardAddProfile * _wizard_add_profile = nullptr;
     WizardUpload * _wizard_upload = nullptr;
@@ -30,6 +29,10 @@ protected:
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);
+    void handleDialogFlyClosed();
+    void handleWizardAddProfileClosed();
+    void handleWizardUploadClosed();
+    void handleDialogEditProfileClosed();
 signals:
     void configurationChanged();
 };

@@ -3,11 +3,12 @@
 DialogFlyWindow::DialogFlyWindow(QWidget *parent, Drone * drone) : QDialog(parent) {
     this->_drone = drone;
 
-    setWindowTitle(QString("Fly"));
-    setFixedSize(500, 309);
+    this->setWindowTitle(QString("Fly"));
+    this->setFixedSize(800, 688);
 
     this->setWindowFlag(Qt::WindowSystemMenuHint, false);
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
+    this->setWindowFlag(Qt::WindowStaysOnTopHint, true);
 
     _layout = new QGridLayout;
 

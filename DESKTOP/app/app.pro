@@ -18,13 +18,27 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     dialogeditprofile.cpp \
     dialogflywindow.cpp \
+    dialogthrottlemodesettings.cpp \
     drone.cpp \
+    gamepad.cpp \
     main.cpp \
     mainwindow.cpp \
+    receivers.cpp \
+    sendingarduino.cpp \
+    sendinginterface.cpp \
+    sendingregistry.cpp \
+    steering.cpp \
+    steeringregistry.cpp \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
+    threadarduinoconnect.cpp \
+    threadarduinodetect.cpp \
+    threadarduinoping.cpp \
+    threadarduinosend.cpp \
     threadboxconnect.cpp \
     SerialPort.cpp \
+    threadgamepad.cpp \
+    threadgamepadupdate.cpp \
     wizardaddprofile.cpp \
     wizardaddprofilepage1.cpp \
     wizardaddprofilepage2.cpp \
@@ -42,21 +56,38 @@ SOURCES += \
     wizarduploadpage4.cpp
 
 HEADERS += \
+    buttons.h \
     config.h \
     dialogeditprofile.h \
     dialogflywindow.h \
+    dialogthrottlemodesettings.h \
     drone.h \
+    dronemodes.h \
     filesystem.h \
+    gamepad.h \
     include.h \
+    json.hpp \
     mainwindow.h \
     mylineedit.h \
     mymenuaction.h \
     receivers.h \
+    sendingarduino.h \
+    sendinginterface.h \
+    sendingregistry.h \
     serialportutilities.h \
+    steering.h \
+    steeringregistry.h \
     tabseditprofile.h \
     tabseditprofilegeneraltab.h \
+    threadarduinoconnect.h \
+    threadarduinodetect.h \
+    threadarduinoping.h \
+    threadarduinosend.h \
     threadboxconnect.h \
     SerialPort.h \
+    threadgamepad.h \
+    threadgamepadupdate.h \
+    ui_dialogthrottleradiosettings.h \
     wizardaddprofile.h \
     wizardaddprofilepage1.h \
     wizardaddprofilepage2.h \
@@ -74,6 +105,7 @@ HEADERS += \
     wizarduploadpage4.h
 
 FORMS += \
+    dialogthrottlemodesettings.ui \
     mainwindow.ui
 
 # Default rules for deployment.

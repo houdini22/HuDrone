@@ -20,51 +20,66 @@ Drone::Drone(MainWindow * window) {
 }
 
 void Drone::openDialogFly() {
-    if (this->_dialog_fly) {
-        this->_dialog_fly->close();
-        delete this->_dialog_fly;
-        this->_dialog_fly = nullptr;
-    }
-
     this->_dialog_fly = new DialogFlyWindow(this->_window, this);
     this->_dialog_fly->show();
     this->_dialog_fly->stackUnder(this->_window);
+    connect(this->_dialog_fly, SIGNAL(close()), this, SLOT(handleDialogFlyClosed()));
+}
+
+void Drone::handleDialogFlyClosed() {
+    if (this->_dialog_fly) {
+        this->_dialog_fly->close();
+        disconnect(this->_dialog_fly, SIGNAL(close()), this, SLOT(handleDialogFlyClosed()));
+        delete this->_dialog_fly;
+        this->_dialog_fly = nullptr;
+    }
 }
 
 void Drone::openWizardAddProfile() {
-    if (this->_wizard_add_profile) {
-        this->_wizard_add_profile->close();
-        delete this->_wizard_add_profile;
-        this->_wizard_add_profile = nullptr;
-    }
-
     this->_wizard_add_profile = new WizardAddProfile(this->_window, this);
     this->_wizard_add_profile->show();
     this->_wizard_add_profile->stackUnder(this->_window);
+    connect(this->_wizard_add_profile, SIGNAL(close()), this, SLOT(handleWizardAddProfileClosed()));
 }
 
-void Drone::openWizardUpload() {
+void Drone::handleWizardAddProfileClosed() {
     if (this->_wizard_add_profile) {
         this->_wizard_add_profile->close();
+        disconnect(this->_wizard_add_profile, SIGNAL(close()), this, SLOT(handleWizardAddProfileClosed()));
         delete this->_wizard_add_profile;
         this->_wizard_add_profile = nullptr;
     }
+}
 
+void Drone::openWizardUpload() {
     this->_wizard_upload = new WizardUpload(this->_window, this);
     this->_wizard_upload->show();
     this->_wizard_upload->stackUnder(this->_window);
+    connect(this->_wizard_upload, SIGNAL(close()), this, SLOT(handleWizardUploadClosed()));
+}
+
+void Drone::handleWizardUploadClosed() {
+    if (this->_wizard_upload) {
+        this->_wizard_upload->close();
+        disconnect(this->_wizard_upload, SIGNAL(close()), this, SLOT(handleWizardUploadClosed()));
+        delete this->_wizard_upload;
+        this->_wizard_upload = nullptr;
+    }
 }
 
 void Drone::openDialogEditProfile(QString name) {
-    if (this->_dialog_edit_profile) {
-        this->_dialog_edit_profile->close();
-        delete this->_dialog_edit_profile;
-        this->_dialog_edit_profile = nullptr;
-    }
-
     this->_dialog_edit_profile = new DialogEditProfile(this->_window, name);
     this->_dialog_edit_profile->show();
     this->_dialog_edit_profile->stackUnder(this->_window);
+}
+
+void Drone::handleDialogEditProfileClosed() {
+    if (this->_dialog_edit_profile) {
+        this->_dialog_edit_profile->close();
+        disconnect(this->_dialog_edit_profile, SIGNAL(close()), this, SLOT(handleDialogEditProfileClosed()));
+        delete this->_dialog_edit_profile;
+        this->_dialog_edit_profile = nullptr;
+    }
 }
 
 void Drone::handleMenuActionsSettingsTriggered(bool triggered) {
@@ -73,10 +88,6 @@ void Drone::handleMenuActionsSettingsTriggered(bool triggered) {
 
 void Drone::handleMenuActionsExitTriggered(bool triggered) {
     QApplication::quit();
-}
-
-void Drone::start() {
-
 }
 
 void Drone::notifyConfigurationChanged() {

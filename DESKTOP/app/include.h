@@ -58,6 +58,7 @@
 #include <winbase.h>
 
 #include "json.hpp"
+#include "SerialPort.h"
 
 typedef bool T_Bool;
 typedef std::string T_String;
@@ -66,9 +67,25 @@ typedef nlohmann::json T_JSON;
 #include "mymenuaction.h"
 #include "mylineedit.h"
 
+#include "threadgamepad.h"
+#include "dialogthrottlemodesettings.h"
+#include "buttons.h"
+#include "dronemodes.h"
+#include "steeringregistry.h"
+#include "steering.h"
+#include "sendingregistry.h"
+#include "sendinginterface.h"
+#include "sendingarduino.h"
+#include "threadarduinodetect.h"
+#include "threadarduinoconnect.h"
+#include "threadarduinoping.h"
+#include "threadarduinosend.h"
+#include "threadgamepadupdate.h"
+#include "steering.h"
+
 #include "dialogeditprofile.h"
 #include "serialportutilities.h"
-#include "SerialPort.h"
+
 #include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"

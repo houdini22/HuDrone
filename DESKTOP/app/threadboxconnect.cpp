@@ -18,8 +18,6 @@ void ThreadBoxConnect::run() {
             const char * portName = ports.at(i).portName().toStdString().c_str();
             this->_arduino = new SerialPort((char *) portName);
 
-            qDebug() << "PORT: " << portName;
-
             int errors = 0;
 
             while (!this->_arduino->isConnected()) {
@@ -43,8 +41,6 @@ void ThreadBoxConnect::run() {
                 this->_arduino->readSerialPort(incomingData, 6);
                 QString data(incomingData);
 
-                qDebug() << data;
-
                 if (data.contains("Hello.")) {
                     qDebug() << "Connected.";
                     emit arduinoConnected(this->_arduino);
@@ -53,7 +49,6 @@ void ThreadBoxConnect::run() {
             }
         }
 
-        qDebug() << "Sleeping...";
         QThread::msleep(2000);
     }
 }
