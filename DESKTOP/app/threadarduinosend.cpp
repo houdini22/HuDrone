@@ -11,7 +11,7 @@ ThreadArduinoSend::ThreadArduinoSend(Drone * drone, SendingRegistry * registry):
 
 void ThreadArduinoSend::send(QString buffer) {
     try {
-        this->sendingData->service->Write(buffer.toStdString());
+        //this->sendingData->service->Write(buffer.toStdString());
     } catch(std::runtime_error ex) {
 
     }
