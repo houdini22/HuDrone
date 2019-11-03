@@ -15,6 +15,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+LIBS += -ludev
+
 SOURCES += \
     dialogeditprofile.cpp \
     dialogflywindow.cpp \
@@ -36,7 +38,6 @@ SOURCES += \
     threadarduinoping.cpp \
     threadarduinosend.cpp \
     threadboxconnect.cpp \
-    SerialPort.cpp \
     threadgamepad.cpp \
     threadgamepadupdate.cpp \
     wizardaddprofile.cpp \
@@ -84,10 +85,13 @@ HEADERS += \
     threadarduinoping.h \
     threadarduinosend.h \
     threadboxconnect.h \
-    SerialPort.h \
     threadgamepad.h \
     threadgamepadupdate.h \
     ui_dialogthrottleradiosettings.h \
+    vendor/Serial_LINUX/SerialPort.h \
+    vendor/Serial_LINUX/SerialPortConstants.h \
+    vendor/Serial_LINUX/SerialStream.h \
+    vendor/Serial_LINUX/SerialStreamBuf.h \
     wizardaddprofile.h \
     wizardaddprofilepage1.h \
     wizardaddprofilepage2.h \
@@ -112,3 +116,10 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    vendor/Serial_LINUX/libserial.a \
+    vendor/Serial_LINUX/libserial.so \
+    vendor/Serial_LINUX/libserial.so.1 \
+    vendor/Serial_LINUX/libserial.so.1.0.0 \
+    vendor/Serial_LINUX/libserialmod.so

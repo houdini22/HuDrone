@@ -69,7 +69,7 @@ QString ThreadArduinoSend::createAxisBuffer(int leftX, int leftY, int rightX, in
 }
 
 void ThreadArduinoSend::run() {
-    nlohmann::json data = Storage::getInstance().getData();
+    nlohmann::json data;// = Storage::getInstance().getData();
 
     bool startMode = false;
     int sendingStart = 0;
@@ -89,7 +89,7 @@ void ThreadArduinoSend::run() {
 
         Modes * modes = this->drone->getModes();
         ButtonsPressed buttons = this->steeringData->buttonsPressed;
-        nlohmann::json data = Storage::getInstance().getData();
+        nlohmann::json data;// = Storage::getInstance().getData();
 
         if (this->sendingData->mode == MODE_ARDUINO_CONNECTED) {
             if (modes->mouseSteering) {

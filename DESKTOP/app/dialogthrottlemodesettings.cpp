@@ -11,22 +11,14 @@ DialogThrottleModeSettings::DialogThrottleModeSettings(QWidget *parent) :
     QDialogButtonBox * buttonBox = this->findChild<QDialogButtonBox *>(QString("buttonBox"));
     connect(buttonBox, SIGNAL(accepted()), this, SLOT(signalAccepted()));
 
-    nlohmann::json data = Storage::getInstance().getData();
-
     QLineEdit * inputStep = this->findChild<QLineEdit *>(QString("inputStep"));
 
-    inputStep->setText(QString::number((int) data["throttleMode"]["step"].get<int>()));
+    inputStep->setText(QString::number((int) 25));
     inputStep->setValidator( new QIntValidator(0, 2000, this));
   }
 
 void DialogThrottleModeSettings::signalAccepted() {
     QLineEdit * inputStep = this->findChild<QLineEdit *>(QString("inputStep"));
-    nlohmann::json data = Storage::getInstance().getData();
-
-    int step = std::atoi(inputStep->text().toStdString().c_str());
-    data["throttleMode"]["step"] = step;
-
-    Storage::getInstance().setData(data)->save();
 }
 
 DialogThrottleModeSettings::~DialogThrottleModeSettings() {

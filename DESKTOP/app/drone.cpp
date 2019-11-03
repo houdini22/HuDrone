@@ -3,6 +3,25 @@
 
 Drone::Drone(MainWindow * window) {
     this->_window = window;
+    this->modes = new Modes;
+
+    this->steeringRegistry = new SteeringRegistry(this);
+    this->gamepad0 = new SteeringGamepad0(this, this->steeringRegistry);
+    this->steeringRegistry->add(this->gamepad0);
+    connect(this->steeringRegistry, SIGNAL(signalSteeringDataChanged(SteeringData*)), this, SLOT(slotSteeringDataChanged(SteeringData*)));
+
+    //this->gamepad1 = new SteeringGamepad1(this, this->steeringRegistry);
+    //this->steeringRegistry->add(this->gamepad1);
+
+    this->sendingRegistry = new SendingRegistry(this);
+    this->sendingRegistry->add(new SendingArduino(this, this->sendingRegistry));
+    connect(this->sendingRegistry, SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)), this, SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->sendingRegistry->start();
+    this->steeringRegistry->start();
+
+    this->sendingRegistry->startThreads();
+    this->steeringRegistry->startThreads();
 
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();
@@ -82,14 +101,40 @@ void Drone::handleDialogEditProfileClosed() {
     }
 }
 
-void Drone::handleMenuActionsSettingsTriggered(bool triggered) {
+void Drone::handleMenuActionsSettingsTriggered(bool) {
     this->openWizardAddProfile();
 }
 
-void Drone::handleMenuActionsExitTriggered(bool triggered) {
+void Drone::handleMenuActionsExitTriggered(bool) {
     QApplication::quit();
 }
 
 void Drone::notifyConfigurationChanged() {
     emit configurationChanged();
+}
+
+
+void Drone::slotSteeringDataChanged(SteeringData * data) {
+    emit signalSteeringDataChanged(data);
+}
+
+void Drone::slotSendingsDataChanged(QHash<QString,SendingData*> * data) {
+    emit signalSendingsDataChanged(data);
+}
+
+void Drone::setModes(Modes * modes) {
+    this->modes = modes;
+    emit signalModesChanged(modes);
+}
+
+Modes * Drone::getModes() {
+    return this->modes;
+}
+
+SteeringGamepad0 * Drone::getGamepad0() {
+    return this->gamepad0;
+}
+
+SteeringGamepad1 * Drone::getGamepad1() {
+    return this->gamepad1;
 }

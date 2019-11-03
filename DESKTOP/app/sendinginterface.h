@@ -10,7 +10,7 @@ struct SendingData {
     QString name = "";
     int mode = MODE_ARDUINO_DISCONNECTED;
     QString deviceString = "";
-    SerialPort * service = NULL;
+    LibSerial::SerialPort * service = NULL;
 };
 
 class SendingInterface {

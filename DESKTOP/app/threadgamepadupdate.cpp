@@ -10,7 +10,7 @@ void ThreadGamepadUpdate::run() {
     while (1) {
         QThread::msleep(40);
 
-        nlohmann::json data = Storage::getInstance().getData();
+        nlohmann::json data;// = Storage::getInstance().getData();
         SteeringData * steeringData = this->steeringData;
         Modes * modes = this->drone->getModes();
 

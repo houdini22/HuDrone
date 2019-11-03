@@ -10,9 +10,9 @@ public:
     explicit ThreadBoxConnect();
     void run();
 protected:
-    SerialPort * _arduino = nullptr;
+    LibSerial::SerialPort * _arduino = nullptr;
 signals:
-    void arduinoConnected(SerialPort *);
+    void arduinoConnected(LibSerial::SerialPort *);
 public slots:
     void terminate();
 };

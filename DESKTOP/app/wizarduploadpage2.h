@@ -1,5 +1,5 @@
-#ifndef WIZARDUPLOADPAGE_H
-#define WIZARDUPLOADPAGE_H
+#ifndef WIZARDUPLOADPAGE2_H
+#define WIZARDUPLOADPAGE2_H
 
 #include "include.h"
 
@@ -18,9 +18,9 @@ private:
 private slots:
     void showEvent(QShowEvent *);
     void onWizardClose();
-    void handleArduinoConnected(SerialPort *);
+    void handleArduinoConnected(LibSerial::SerialPort *);
 signals:
-    void arduinoConnected(SerialPort *);
+    void arduinoConnected(LibSerial::SerialPort *);
 };
 
-#endif // WIZARDUPLOADPAGE_H
+#endif // WIZARDUPLOADPAGE2_H

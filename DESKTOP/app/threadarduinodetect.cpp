@@ -5,6 +5,7 @@ QString detectDevice()  {
     int i;
     QString deviceStr = "";
 
+    /*
     for (i = 0; i < 16; i++) {
         int fd;
         QString tmpDeviceStr = "/dev/ttyACM";
@@ -17,6 +18,7 @@ QString detectDevice()  {
             break;
         }
     }
+    */
 
     return deviceStr;
 }

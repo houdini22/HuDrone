@@ -5,6 +5,7 @@
 
 class FileSystem {
 public:
+#ifdef WIN32
     static void createDirectory(QString _path) {
         CreateDirectoryA(_path.toStdString().c_str(), NULL);
     }
@@ -49,6 +50,28 @@ public:
         char * _dir = getenv("APPDATA");
         return QString(_dir);
     }
+#endif
+#ifndef WIN32
+    static void createDirectory(QString _path) {
+        std::experimental::filesystem::create_directory(std::experimental::filesystem::path(_path.toStdString()));
+    }
+    static T_Bool isDirectory(QString _path) {
+        return std::experimental::filesystem::is_directory(std::experimental::filesystem::path(_path.toStdString()));
+    }
+    static T_Bool isFile(QString _path) {
+        return std::experimental::filesystem::exists(std::experimental::filesystem::path(_path.toStdString())) && !FileSystem::isDirectory(_path);
+    }
+    static T_Bool createFile(QString _path) {
+        std::ofstream file(_path.toStdString());
+        file << "";
+        file.close();
+
+        return FileSystem::isFile(_path);
+    }
+    static QString getUserDirectory() {
+        return QString(getenv("HOME"));
+    }
+#endif
 };
 
 #endif // FILESYSTEM_H

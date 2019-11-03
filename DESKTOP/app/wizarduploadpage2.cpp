@@ -40,7 +40,7 @@ void WizardUploadPage2::showEvent(QShowEvent *) {
     }
 }
 
-void WizardUploadPage2::handleArduinoConnected(SerialPort * arduino) {
+void WizardUploadPage2::handleArduinoConnected(LibSerial::SerialPort * arduino) {
     _label_status->setStyleSheet("QLabel { color: green; font-size: 20px; }");
     _label_status->setText("detected");
 

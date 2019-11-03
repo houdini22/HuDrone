@@ -10,6 +10,7 @@ ThreadArduinoPing::ThreadArduinoPing(SendingRegistry * registry): QThread()
 void ThreadArduinoPing::run() {
     while (1) {
         if (this->sendingData->mode == MODE_ARDUINO_CONNECTED) {
+            /*
             SerialPort * arduino = this->sendingData->service;
 
             try {
@@ -23,6 +24,7 @@ void ThreadArduinoPing::run() {
 
                 emit signalSendingDataChanged(this->sendingData);
             }
+            */
         }
 
         QThread::msleep(100);

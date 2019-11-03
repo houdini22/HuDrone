@@ -4,14 +4,17 @@ ThreadBoxConnect::ThreadBoxConnect(): QThread() {}
 
 void ThreadBoxConnect::terminate() {
     QThread::terminate();
+#ifdef WIN32
     if (this->_arduino != nullptr) {
         this->_arduino->closeSerial();
         delete this->_arduino;
     }
+#endif
 }
 
 void ThreadBoxConnect::run() {
     while (1) {
+#ifdef WIN32
         QList<QSerialPortInfo> ports = SerialPortUtilities::getAvailablePorts();
 
         for (int i = 0; i < ports.size(); i += 1) {
@@ -50,6 +53,7 @@ void ThreadBoxConnect::run() {
         }
 
         QThread::msleep(2000);
+#endif
     }
 }
 

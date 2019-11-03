@@ -51,14 +51,24 @@
 #include <iostream>
 #include <dirent.h>
 #include <fstream>
-#include <windows.h>
-#include <fileapi.h>
 #include <stdio.h>
 #include <set>
+
+#ifdef WIN32
+#include <windows.h>
+#include <fileapi.h>
 #include <winbase.h>
+#endif
+
+#ifndef WIN32
+#include "vendor/Serial_LINUX/SerialPort.h"
+#include "vendor/Serial_LINUX/SerialStream.h"
+#include "gamepad.h"
+#include <sys/stat.h>
+#include "experimental/filesystem"
+#endif
 
 #include "json.hpp"
-#include "SerialPort.h"
 
 typedef bool T_Bool;
 typedef std::string T_String;
@@ -82,10 +92,8 @@ typedef nlohmann::json T_JSON;
 #include "threadarduinosend.h"
 #include "threadgamepadupdate.h"
 #include "steering.h"
-
 #include "dialogeditprofile.h"
 #include "serialportutilities.h"
-
 #include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"
