@@ -18,9 +18,9 @@ private:
 private slots:
     void showEvent(QShowEvent *);
     void onWizardClose();
-    void handleArduinoConnected(LibSerial::SerialPort *);
+    void handleArduinoConnected(QSerialPort *);
 signals:
-    void arduinoConnected(LibSerial::SerialPort *);
+    void arduinoConnected(QSerialPort *);
 };
 
 #endif // WIZARDUPLOADPAGE2_H

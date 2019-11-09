@@ -34,6 +34,7 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <QDialogButtonBox>
+#include <QSerialPort>
 
 #include <vector>
 #include <list>
@@ -61,8 +62,6 @@
 #endif
 
 #ifndef WIN32
-#include "vendor/Serial_LINUX/SerialPort.h"
-#include "vendor/Serial_LINUX/SerialStream.h"
 #include "gamepad.h"
 #include <sys/stat.h>
 #include "experimental/filesystem"
@@ -86,8 +85,6 @@ typedef nlohmann::json T_JSON;
 #include "sendingregistry.h"
 #include "sendinginterface.h"
 #include "sendingarduino.h"
-#include "threadarduinodetect.h"
-#include "threadarduinoconnect.h"
 #include "threadarduinoping.h"
 #include "threadarduinosend.h"
 #include "threadgamepadupdate.h"

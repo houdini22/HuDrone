@@ -8,13 +8,18 @@ class ThreadBoxConnect : public QThread
     Q_OBJECT
 public:
     explicit ThreadBoxConnect();
+    explicit ThreadBoxConnect(SendingRegistry *);
     void run();
 protected:
-    LibSerial::SerialPort * _arduino = nullptr;
+    QSerialPort * _arduino = nullptr;
+    SendingRegistry * _registry = nullptr;
+    SendingData * _sending_data = nullptr;
 signals:
-    void arduinoConnected(LibSerial::SerialPort *);
+    void arduinoConnected(QSerialPort *);
+    void signalSendingDataChanged(SendingData *);
 public slots:
     void terminate();
+    void slotSendingDataChanged(SendingData *);
 };
 
 #endif // THREADBOXCONNECT_H

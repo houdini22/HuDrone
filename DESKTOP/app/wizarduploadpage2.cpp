@@ -20,7 +20,7 @@ void WizardUploadPage2::onWizardClose() {
     _thread_box_connect->terminate();
     _thread_box_connect->wait();
 
-    disconnect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
+    disconnect(_thread_box_connect, SIGNAL(arduinoConnected(QSerialPort *)), this, SLOT(handleArduinoConnected(QSerialPort *)));
     disconnect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
 
     delete _thread_box_connect;
@@ -35,16 +35,16 @@ void WizardUploadPage2::showEvent(QShowEvent *) {
 
     if (_thread_box_connect == nullptr) {
         _thread_box_connect = new ThreadBoxConnect();
-        connect(_thread_box_connect, SIGNAL(arduinoConnected(SerialPort *)), this, SLOT(handleArduinoConnected(SerialPort *)));
+        connect(_thread_box_connect, SIGNAL(arduinoConnected(QSerialPort *)), this, SLOT(handleArduinoConnected(QSerialPort *)));
         _thread_box_connect->start();
     }
 }
 
-void WizardUploadPage2::handleArduinoConnected(LibSerial::SerialPort * arduino) {
+void WizardUploadPage2::handleArduinoConnected(QSerialPort * arduino) {
     _label_status->setStyleSheet("QLabel { color: green; font-size: 20px; }");
     _label_status->setText("detected");
 
-    emit(arduinoConnected(arduino));
+    emit arduinoConnected(arduino);
 
     _thread_box_connect->terminate();
     _thread_box_connect->wait();

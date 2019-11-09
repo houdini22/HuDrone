@@ -3,8 +3,7 @@
 
 #include "include.h"
 
-class ThreadArduinoConnect;
-class ThreadArduinoDetect;
+class ThreadBoxConnect;
 class ThreadArduinoPing;
 class ThreadArduinoSend;
 
@@ -14,8 +13,7 @@ public:
     SendingArduino(Drone * drone, SendingRegistry * registry);
     void start() override;
 private:
-    ThreadArduinoConnect * threadArduinoConnect;
-    ThreadArduinoDetect * threadArduinoDetect;
+    ThreadBoxConnect * threadBoxConnect;
     ThreadArduinoPing * threadArduinoPing;
     ThreadArduinoSend * threadArduinoSend;
 public slots:

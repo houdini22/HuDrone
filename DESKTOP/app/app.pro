@@ -34,8 +34,6 @@ SOURCES += \
     steeringregistry.cpp \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
-    threadarduinoconnect.cpp \
-    threadarduinodetect.cpp \
     threadarduinoping.cpp \
     threadarduinosend.cpp \
     threadboxconnect.cpp \
@@ -81,18 +79,12 @@ HEADERS += \
     steeringregistry.h \
     tabseditprofile.h \
     tabseditprofilegeneraltab.h \
-    threadarduinoconnect.h \
-    threadarduinodetect.h \
     threadarduinoping.h \
     threadarduinosend.h \
     threadboxconnect.h \
     threadgamepad.h \
     threadgamepadupdate.h \
     ui_dialogthrottleradiosettings.h \
-    vendor/Serial_LINUX/SerialPort.h \
-    vendor/Serial_LINUX/SerialPortConstants.h \
-    vendor/Serial_LINUX/SerialStream.h \
-    vendor/Serial_LINUX/SerialStreamBuf.h \
     wizardaddprofile.h \
     wizardaddprofilepage1.h \
     wizardaddprofilepage2.h \
@@ -118,9 +110,4 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-DISTFILES += \
-    vendor/Serial_LINUX/libserial.a \
-    vendor/Serial_LINUX/libserial.so \
-    vendor/Serial_LINUX/libserial.so.1 \
-    vendor/Serial_LINUX/libserial.so.1.0.0 \
-    vendor/Serial_LINUX/libserialmod.so
+DISTFILES +=

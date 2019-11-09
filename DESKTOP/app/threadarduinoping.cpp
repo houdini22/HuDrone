@@ -10,21 +10,18 @@ ThreadArduinoPing::ThreadArduinoPing(SendingRegistry * registry): QThread()
 void ThreadArduinoPing::run() {
     while (1) {
         if (this->sendingData->mode == MODE_ARDUINO_CONNECTED) {
-            /*
-            SerialPort * arduino = this->sendingData->service;
+            QSerialPort * arduino = this->sendingData->service;
+            arduino->write("p", 1);
 
-            try {
-                arduino->Write("p");
-            } catch (std::runtime_error) {
+            if (false) {
                 this->sendingData->mode = MODE_ARDUINO_DISCONNECTED;
                 this->sendingData->deviceString = "";
-                this->sendingData->service->Close();
+                this->sendingData->service->close();
                 delete this->sendingData->service;
-                this->sendingData->service = NULL;
+                this->sendingData->service = nullptr;
 
                 emit signalSendingDataChanged(this->sendingData);
             }
-            */
         }
 
         QThread::msleep(100);
