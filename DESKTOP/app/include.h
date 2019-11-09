@@ -35,6 +35,7 @@
 #include <QMessageBox>
 #include <QDialogButtonBox>
 #include <QSerialPort>
+#include <QComboBox>
 
 #include <vector>
 #include <list>
@@ -69,12 +70,13 @@
 
 #include "json.hpp"
 
+#include "mymenuaction.h"
+#include "mylineedit.h"
+#include "mycombobox.h"
+
 typedef bool T_Bool;
 typedef std::string T_String;
 typedef nlohmann::json T_JSON;
-
-#include "mymenuaction.h"
-#include "mylineedit.h"
 
 #include "threadgamepad.h"
 #include "dialogthrottlemodesettings.h"

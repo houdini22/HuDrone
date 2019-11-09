@@ -9,18 +9,17 @@ class WizardUploadPage2 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardUploadPage2(QWidget *parent = 0);
+    WizardUploadPage2(Drone *);
 private:
     QLabel * _label;
     QLabel * _label_status;
     QVBoxLayout * _layout;
     ThreadBoxConnect * _thread_box_connect = nullptr;
+    Drone * _drone = nullptr;
 private slots:
     void showEvent(QShowEvent *);
     void onWizardClose();
     void handleArduinoConnected(QSerialPort *);
-signals:
-    void arduinoConnected(QSerialPort *);
 };
 
 #endif // WIZARDUPLOADPAGE2_H

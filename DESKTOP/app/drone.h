@@ -32,12 +32,17 @@ public:
     void setModes(Modes * modes);
     SteeringGamepad0 * getGamepad0();
     SteeringGamepad1 * getGamepad1();
+    void setArduino(QSerialPort *);
+    bool hasArduino();
+    void deleteArduino();
 private:
     Modes * modes;
     SteeringRegistry * steeringRegistry;
     SendingRegistry * sendingRegistry;
     SteeringGamepad0 * gamepad0;
     SteeringGamepad1 * gamepad1;
+    bool _has_arduino = false;
+    QSerialPort * _arduino = nullptr;
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);

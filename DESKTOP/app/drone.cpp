@@ -138,3 +138,21 @@ SteeringGamepad0 * Drone::getGamepad0() {
 SteeringGamepad1 * Drone::getGamepad1() {
     return this->gamepad1;
 }
+
+void Drone::setArduino(QSerialPort * arduino) {
+    this->_arduino = arduino;
+    this->_has_arduino = true;
+}
+
+bool Drone::hasArduino() {
+    return this->_has_arduino;
+}
+
+void Drone::deleteArduino() {
+    if (this->_has_arduino) {
+        this->_has_arduino = false;
+        this->_arduino->close();
+        delete this->_arduino;
+        this->_arduino = nullptr;
+    }
+}

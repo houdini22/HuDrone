@@ -1,7 +1,7 @@
 #include "include.h"
 
 WizardUploadPage4::WizardUploadPage4(QWidget *parent) : QWizardPage(parent) {
-    setTitle("Your are ready to upload to HuDrone™ Sofware into your HuDrone™ Box.");
+    setTitle("Your are ready to upload HuDrone™ Sofware into your HuDrone™ Box.");
 
     _layout = new QVBoxLayout;
 

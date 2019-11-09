@@ -8,7 +8,7 @@ WizardUpload::WizardUpload(QWidget *parent, Drone * drone) : QWizard(parent) {
     this->setWindowFlag(Qt::WindowContextHelpButtonHint, false);
 
     addPage(new WizardUploadPage1);
-    addPage(new WizardUploadPage2);
+    addPage(new WizardUploadPage2(this->_drone));
     addPage(new WizardUploadPage3);
     addPage(new WizardUploadPage4);
 
@@ -22,5 +22,5 @@ void WizardUpload::accept() {
 }
 
 void WizardUpload::onFinish() {
-
+    this->_drone->deleteArduino();
 }

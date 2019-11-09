@@ -26,6 +26,9 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
     _layout->addStretch(0);
 
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        this->_combos[channelNumber] = MyComboBox::factory({"---", "thrust", "pitch", "roll", "yaw", "other_1", "other_2", "other_3", "other_4"}, channelNumber);
+        connect(this->_combos[channelNumber], SIGNAL(myTextChanged(QString, int)), this, SLOT(myComboBoxTextChanged(QString, int)));
+
         MyLineEdit * minInput = new MyLineEdit();
         MyLineEdit * middleInput = new MyLineEdit();
         MyLineEdit * maxInput = new MyLineEdit();
@@ -51,15 +54,20 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
         this->_inputs[i]["max"] = maxInput;
         this->_inputs[i]["default"] = defaultInput;
 
+        QLabel * functionLabel = new QLabel;
         QLabel * minLabel = new QLabel;
         QLabel * middleLabel = new QLabel;
         QLabel * maxLabel = new QLabel;
         QLabel * defaultLabel = new QLabel;
 
+        functionLabel->setText("Function");
         minLabel->setText("Minimum sent value");
         middleLabel->setText("Middle sent value");
         maxLabel->setText("Maximum sent value");
         defaultLabel->setText("Initial sent value");
+
+        _tabs->getTab(0)->getTab(i)->layout()->addWidget(functionLabel);
+        _tabs->getTab(0)->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
 
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minInput);
@@ -82,6 +90,11 @@ int DialogEditProfile::getValueFromChannel(int channelNumber, T_String value) {
     return QString(ret.c_str()).toInt();
 }
 
+QString DialogEditProfile::getStringValueFromChannel(int channelNumber, T_String value) {
+    T_String ret = this->_profile_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()][value].get<T_String>();
+    return QString(ret.c_str());
+}
+
 void DialogEditProfile::setValueForChannel(QString channelNumber, QString valueName, QString value) {
     this->_profile_configuration["radio"][channelNumber.toStdString()][valueName.toStdString()] = value.toStdString();
 
@@ -92,6 +105,26 @@ void DialogEditProfile::setValueForChannel(QString channelNumber, QString valueN
         T_String _profileName = profile["name"].get<T_String>();
         if (_profileName.compare(this->_profile_name.toStdString()) == 0) {
             data["profiles"].at(i)["radio"][channelNumber.toStdString()][valueName.toStdString()] = value.toStdString();
+            break;
+        }
+        i += 1;
+    }
+
+    Config::getInstance().setData(data)->save();
+}
+
+void DialogEditProfile::setFunctionValueForChannel(int channelNumber, QString value) {
+    T_String _channel = QString::number(channelNumber).toStdString();
+
+    this->_profile_configuration["radio"][_channel]["function"] = value.toStdString();
+
+    T_JSON data = Config::getInstance().getData();
+    unsigned long long i = 0;
+    for (T_JSON::iterator it = data["profiles"].begin(); it != data["profiles"].end(); ++it) {
+        T_JSON profile = it.value();
+        T_String _profileName = profile["name"].get<T_String>();
+        if (_profileName.compare(this->_profile_name.toStdString()) == 0) {
+            data["profiles"].at(i)["radio"][_channel]["function"] = value.toStdString();
             break;
         }
         i += 1;
@@ -111,11 +144,14 @@ void DialogEditProfile::showEvent(QShowEvent *) {
         QString middleValue = QString::number(this->getValueFromChannel(channelNumber, "middle"));
         QString maxValue = QString::number(this->getValueFromChannel(channelNumber, "max"));
         QString defaultValue = QString::number(this->getValueFromChannel(channelNumber, "default"));
+        QString functionValue = this->getStringValueFromChannel(channelNumber, "function");
 
         minInput->setText(minValue);
         middleInput->setText(middleValue);
         maxInput->setText(maxValue);
         defaultInput->setText(defaultValue);
+
+        this->_combos[channelNumber]->setCurrentText(functionValue);
     }
 }
 
@@ -124,3 +160,15 @@ void DialogEditProfile::textEdited(QString text, QString id) {
     this->setValueForChannel(split.at(0), split.at(1), text);
 }
 
+void DialogEditProfile::myComboBoxTextChanged(QString value, int _channelNumber) {
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        if (value.compare("---") != 0) {
+            if (this->_combos[channelNumber]->currentText().compare(value) == 0 && _channelNumber != channelNumber) {
+                this->_combos[channelNumber]->setCurrentText("---");
+                this->setFunctionValueForChannel(channelNumber, "");
+            } else if (channelNumber == _channelNumber) {
+                this->setFunctionValueForChannel(channelNumber, value);
+            }
+        }
+    }
+}

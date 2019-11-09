@@ -1,6 +1,8 @@
 #include "include.h"
 
-WizardUploadPage2::WizardUploadPage2(QWidget *parent) : QWizardPage(parent) {
+WizardUploadPage2::WizardUploadPage2(Drone * drone) : QWizardPage() {
+    this->_drone = drone;
+
     setTitle("Connect your HuDrone™ Box to the computer with USB cable.");
 
     _label = new QLabel("Status:");
@@ -17,14 +19,18 @@ WizardUploadPage2::WizardUploadPage2(QWidget *parent) : QWizardPage(parent) {
 }
 
 void WizardUploadPage2::onWizardClose() {
-    _thread_box_connect->terminate();
-    _thread_box_connect->wait();
+    if (_thread_box_connect != nullptr) {
+        if (_thread_box_connect->isRunning()) {
+            _thread_box_connect->terminate();
+            _thread_box_connect->wait();
+        }
 
-    disconnect(_thread_box_connect, SIGNAL(arduinoConnected(QSerialPort *)), this, SLOT(handleArduinoConnected(QSerialPort *)));
-    disconnect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
+        disconnect(_thread_box_connect, SIGNAL(arduinoConnected(QSerialPort *)), this, SLOT(handleArduinoConnected(QSerialPort *)));
+        disconnect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
 
-    delete _thread_box_connect;
-    _thread_box_connect = nullptr;
+        delete _thread_box_connect;
+        _thread_box_connect = nullptr;
+    }
 }
 
 void WizardUploadPage2::showEvent(QShowEvent *) {
@@ -44,12 +50,12 @@ void WizardUploadPage2::handleArduinoConnected(QSerialPort * arduino) {
     _label_status->setStyleSheet("QLabel { color: green; font-size: 20px; }");
     _label_status->setText("detected");
 
-    emit arduinoConnected(arduino);
-
     _thread_box_connect->terminate();
     _thread_box_connect->wait();
     delete _thread_box_connect;
     _thread_box_connect = nullptr;
+
+    this->_drone->setArduino(arduino);
 
     this->wizard()->button(QWizard::NextButton)->setEnabled(true);
 }

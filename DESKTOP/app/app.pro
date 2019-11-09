@@ -66,6 +66,7 @@ HEADERS += \
     include.h \
     json.hpp \
     mainwindow.h \
+    mycombobox.h \
     mylineedit.h \
     mymenuaction.h \
     receivers.h \

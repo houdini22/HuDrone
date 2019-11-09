@@ -39,6 +39,7 @@ void WizardAddProfilePage3::onListItemClicked(QListWidgetItem * item) {
         _v["default"] = 0;
         _v["arming"] = T_JSON::array();
         _v["disarming"] = T_JSON::array();
+        _v["function"] = "";
 
         radio[QString("channel" + QString::number(channelNumber)).toStdString()] = _v;
     }
