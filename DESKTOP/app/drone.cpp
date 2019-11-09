@@ -20,8 +20,8 @@ Drone::Drone(MainWindow * window) {
     this->sendingRegistry->start();
     this->steeringRegistry->start();
 
-    this->sendingRegistry->startThreads();
-    this->steeringRegistry->startThreads();
+    //this->sendingRegistry->startThreads();
+    //this->steeringRegistry->startThreads();
 
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();

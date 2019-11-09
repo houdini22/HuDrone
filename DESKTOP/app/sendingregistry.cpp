@@ -12,8 +12,8 @@ void SendingRegistry::add(SendingInterface * handler) {
 
 void SendingRegistry::start() {
     for (int i = 0; i < this->registry.size(); i += 1) {
-        SendingInterface * interface = this->registry.at(i);
-        SendingData * data = interface->getData();
+        SendingInterface * _interface = this->registry.at(i);
+        SendingData * data = _interface->getData();
         this->sendingsData->insert(data->name, data);
         emit signalSendingDataChanged(data);
     }

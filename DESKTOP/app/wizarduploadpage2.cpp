@@ -28,7 +28,7 @@ void WizardUploadPage2::onWizardClose() {
 }
 
 void WizardUploadPage2::showEvent(QShowEvent *) {
-    disconnect( this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
+    disconnect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
     connect(this->wizard()->button(QWizard::CancelButton), SIGNAL(clicked()), this, SLOT(onWizardClose()));
 
     this->wizard()->button(QWizard::NextButton)->setEnabled(false);

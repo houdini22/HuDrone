@@ -14,7 +14,7 @@ void ThreadGamepadUpdate::run() {
         nlohmann::json data;// = Storage::getInstance().getData();
         SteeringData * steeringData = this->steeringData;
         Modes * modes = this->drone->getModes();
-
+/*
         if (steeringData->isConnected) {
             GamepadUpdate();
 
@@ -87,6 +87,7 @@ void ThreadGamepadUpdate::run() {
 
             emit signalButtonsChanged(buttons);
         }
+        */
     }
 }
 

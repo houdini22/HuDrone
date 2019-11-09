@@ -40,7 +40,6 @@
     <property name="title">
      <string>HuDrone</string>
     </property>
-    <addaction name="actionSettings"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuProfiles">

@@ -12,6 +12,8 @@ void ThreadBoxConnect::terminate() {
 }
 
 void ThreadBoxConnect::run() {
+    QString data;
+
     while (1) {
         if (this->_registry != nullptr) {
             if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
@@ -25,6 +27,7 @@ void ThreadBoxConnect::run() {
             qDebug() << ports.at(i).portName();
 
             this->_arduino = new QSerialPort();
+            this->_arduino->open(QIODevice::ReadWrite);
             this->_arduino->setPort(ports.at(i));
             this->_arduino->setBaudRate(QSerialPort::Baud115200);
             this->_arduino->setDataBits(QSerialPort::Data8);
@@ -32,30 +35,40 @@ void ThreadBoxConnect::run() {
             this->_arduino->setStopBits(QSerialPort::OneStop);
             this->_arduino->setFlowControl(QSerialPort::NoFlowControl);
 
-            this->_arduino->open(QIODevice::ReadWrite);
+            int steps = 10;
 
-            for (int i = 0; i < 5; i += 1) {
-                if (!this->_arduino->isOpen()) {
-                    this->_arduino->open(QIODevice::ReadWrite);
-                    QThread::msleep(200);
+            while (!this->_arduino->isOpen()) {
+                this->_arduino->open(QIODevice::ReadWrite);
+
+                if (this->_arduino->isOpen()) {
+                    qDebug() << "Opened, writable.";
+                    this->_arduino->write("h");
+
+                    while(1) {
+                        //QString data = QString(this->_arduino->read(1));
+                        qDebug() << this->_arduino->read(1);
+                        if (data.contains("h")) {
+                            if (this->_registry != nullptr) {
+                                this->_sending_data->service = this->_arduino;
+                                this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
+                                emit signalSendingDataChanged(this->_sending_data);
+                            }
+                            emit arduinoConnected(this->_arduino);
+                            return;
+                        }
+                        QThread::msleep(50);
+                    }
                 } else {
+                    qDebug() << "Connect failed.";
+                    delete this->_arduino;
+                    this->_arduino = nullptr;
+                }
+
+                steps -= 1;
+                if (steps == 0) {
                     break;
                 }
-            }
-
-            if (this->_arduino->isOpen() && this->_arduino->isWritable()) {
-                QString data = this->_arduino->readAll();
-                if (data.contains("Hello.")) {
-                    this->_sending_data->service = this->_arduino;
-                    this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
-                    emit arduinoConnected(this->_arduino);
-                    emit signalSendingDataChanged(this->_sending_data);
-                }
-            } else {
-                this->_arduino->clear();
-                this->_arduino->close();
-                delete this->_arduino;
-                this->_arduino = nullptr;
+                QThread::msleep(50);
             }
         }
 

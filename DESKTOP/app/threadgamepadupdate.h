@@ -16,7 +16,7 @@ private:
     Drone * drone;
     SteeringRegistry * registry;
     SteeringData * steeringData;
-    GAMEPAD_DEVICE gamepad = GAMEPAD_0;
+    //GAMEPAD_DEVICE gamepad = GAMEPAD_0;
 public slots:
     void slotSteeringDataChanged(SteeringData *);
 signals:
