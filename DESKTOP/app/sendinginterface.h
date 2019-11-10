@@ -22,7 +22,7 @@ public:
 protected:
     SendingRegistry * registry;
     Drone * drone;
-    SendingData * data;
+    SendingData * _data;
 };
 
 #endif // SENDINGINTERFACE_H

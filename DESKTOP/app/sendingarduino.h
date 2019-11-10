@@ -14,11 +14,11 @@ public:
     void start() override;
     void stop() override;
 private:
-    ThreadBoxConnect * threadBoxConnect;
-    ThreadArduinoPing * threadArduinoPing;
-    ThreadArduinoSend * threadArduinoSend;
+    ThreadBoxConnect * _thread_box_connect = nullptr;
+    ThreadArduinoPing * _thread_arduino_ping = nullptr;
+    ThreadArduinoSend * _thread_arduino_send = nullptr;
 public slots:
-    void slotSendingDataChanged(SendingData*);
+    void slotSendingDataChanged(SendingData *);
     void slotArduinoConnected(QSerialPort *);
 signals:
     void signalSendingDataChanged(SendingData *);

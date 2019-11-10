@@ -10,5 +10,5 @@ void SendingInterface::start() {}
 void SendingInterface::stop() {}
 
 SendingData * SendingInterface::getData() {
-    return this->data;
+    return this->_data;
 }

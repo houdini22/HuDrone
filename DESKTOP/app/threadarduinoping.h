@@ -5,17 +5,20 @@
 
 class Drone;
 
-class ThreadArduinoPing : public QThread
-{
+class ThreadArduinoPing : public QThread {
     Q_OBJECT
 public:
-    explicit ThreadArduinoPing(SendingRegistry * registry);
+    explicit ThreadArduinoPing(SendingRegistry * _registry);
+    ~ThreadArduinoPing();
     void run();
+    void start();
 private:
-    SendingData * sendingData;
-    SendingRegistry * registry;
+    SendingData * _sending_data = nullptr;
+    SendingRegistry * _registry = nullptr;
+    bool _is_running = false;
 public slots:
     void slotSendingDataChanged(SendingData *);
+    void terminate();
 signals:
     void signalSendingDataChanged(SendingData *);
 };

@@ -4,18 +4,34 @@ ThreadBoxConnect::ThreadBoxConnect(): QThread() {}
 
 ThreadBoxConnect::ThreadBoxConnect(SendingRegistry * registry): QThread() {
     this->_registry = registry;
-    connect(this->_registry, SIGNAL(signalSendingDataChanged(SendingData*)), this, SLOT(slotSendingDataChanged(SendingData *)));
+    connect(this->_registry,
+            SIGNAL(signalSendingDataChanged(SendingData*)),
+            this,
+            SLOT(slotSendingDataChanged(SendingData *)));
+}
+
+ThreadBoxConnect::~ThreadBoxConnect() {
+    disconnect(this->_registry,
+            SIGNAL(signalSendingDataChanged(SendingData*)),
+            this,
+            SLOT(slotSendingDataChanged(SendingData *)));
+}
+
+void ThreadBoxConnect::start() {
+    this->_is_running = true;
+    QThread::start();
 }
 
 void ThreadBoxConnect::terminate() {
+    this->_is_running = false;
     QThread::terminate();
 }
 
 void ThreadBoxConnect::run() {
-    while (1) {
-        if (this->_registry != nullptr && this->_sending_data != nullptr) {
+    while (this->_is_running) {
+        if (this->_registry != nullptr) {
             if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
-                QThread::msleep(1000);
+                QThread::msleep(4000);
                 continue;
             }
         }
