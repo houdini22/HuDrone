@@ -9,7 +9,6 @@ class SendingRegistry;
 struct SendingData {
     QString name = "";
     int mode = MODE_ARDUINO_DISCONNECTED;
-    QString deviceString = "";
     QSerialPort * service = NULL;
 };
 

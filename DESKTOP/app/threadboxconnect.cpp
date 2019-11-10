@@ -68,7 +68,9 @@ void ThreadBoxConnect::run() {
             while (this->_arduino->bytesAvailable() == 0) {
                 qDebug() << "Writing hello message...";
                 this->_arduino->write("h", 1);
-                while (this->_arduino->waitForBytesWritten(4000)) {}
+                if (!this->_arduino->waitForBytesWritten(5000)) {
+
+                }
                 qDebug() << "Sent.";
 
                 QThread::msleep(200);
@@ -85,8 +87,9 @@ void ThreadBoxConnect::run() {
                     this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
                     emit signalSendingDataChanged(this->_sending_data);
                 }
+                this->_arduino->clear();
                 emit arduinoConnected(this->_arduino);
-                return;
+                continue;
             }
 
             qDebug() << "Connect failed.";

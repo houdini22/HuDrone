@@ -31,16 +31,17 @@ void ThreadArduinoPing::run() {
     while (this->_is_running) {
         if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
             QSerialPort * arduino = this->_sending_data->service;
+            qDebug () << "Sending ping...";
             arduino->write("p", 1);
-
-            if (false) {
+            if (!arduino->waitForBytesWritten(1000)) {
                 this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
-                this->_sending_data->deviceString = "";
                 this->_sending_data->service->close();
                 delete this->_sending_data->service;
                 this->_sending_data->service = nullptr;
 
                 emit signalSendingDataChanged(this->_sending_data);
+            } else {
+                qDebug () << "Ping sent.";
             }
         }
 
