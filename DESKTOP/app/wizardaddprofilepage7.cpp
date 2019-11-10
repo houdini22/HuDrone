@@ -4,31 +4,22 @@ WizardAddProfilePage7::WizardAddProfilePage7(Config * configuration, Receivers *
     this->_configuration = configuration;
     this->_receivers = receivers;
 
-    setTitle("Name your Profile");
+    setTitle("Other settings.");
 
     _layout = new QHBoxLayout;
 
-    QLabel * label = new QLabel();
-    label->setText("Name");
+    _group_box_throttle_steps = new QGroupBox();
+    _group_box_throttle_stepsBox->setTitle("Number of Trottle steps");
 
-    this->_name_input = new QLineEdit;
-    connect(this->_name_input, SIGNAL(textEdited(const QString &)), this, SLOT(nameInputTextEdited(const QString &)));
+    _input_throttle_steps = new MyLineEdit();
+    _input_throttle_steps->setText("10");
+    _group_box_throttle_steps->addWidget(_input_throttle_steps);
 
-    _layout->addWidget(label);
-    _layout->addWidget(this->_name_input);
+    _layout->addWidget(_group_box_throttle_steps);
 
     setLayout(_layout);
 }
 
 void WizardAddProfilePage7::showEvent(QShowEvent *) {
-    QString name = QString(this->_configuration->getString({"receiver"}).c_str());
-    name += "; ";
-    name += QString(this->_configuration->getString({"device"}).c_str());
 
-    this->_name_input->setText(name);
-    this->_configuration->modify("add", "/name", name);
-}
-
-void WizardAddProfilePage7::nameInputTextEdited(const QString & text) {
-    this->_configuration->modify("replace", "/name", text);
 }

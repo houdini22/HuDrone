@@ -17,6 +17,7 @@ WizardAddProfile::WizardAddProfile(QWidget *parent, Drone * drone) : QWizard(par
     addPage(new WizardAddProfilePage5(this->_configuration, this->_receivers));
     addPage(new WizardAddProfilePage6(this->_configuration, this->_receivers));
     addPage(new WizardAddProfilePage7(this->_configuration, this->_receivers));
+    addPage(new WizardAddProfilePage8(this->_configuration, this->_receivers));
 
     setWindowTitle("Configuration Wizard");
 

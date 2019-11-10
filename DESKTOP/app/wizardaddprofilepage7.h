@@ -3,19 +3,18 @@
 
 #include "include.h"
 
-class WizardAddProfilePage7 : public QWizardPage
-{
+class WizardAddProfilePage7 : public QWizardPage {
     Q_OBJECT
 public:
     WizardAddProfilePage7(Config * configuration, Receivers * receivers);
     void showEvent(QShowEvent *);
 private:
-    QHBoxLayout * _layout;
-    Config * _configuration;
-    Receivers * _receivers;
-    QLineEdit * _name_input;
-private slots:
-    void nameInputTextEdited(const QString &);
+    QHBoxLayout * _layout = nullptr;
+    Config * _configuration = nullptr;
+    Receivers * _receivers = nullptr;
+    WizardConfigChannelTabs * _tabs = nullptr;
+    MyLineEdit * _input_throttle_steps = nullptr;
+    QGroupBox * _group_box_throttle_steps = nullptr;
 };
 
 #endif // WIZARDADDPROFILEPAGE7_H

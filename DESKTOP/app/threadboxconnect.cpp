@@ -88,8 +88,23 @@ void ThreadBoxConnect::run() {
                             this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
                             emit signalSendingDataChanged(this->_sending_data);
                         }
-                        this->_arduino->clear();
                         emit arduinoConnected(this->_arduino);
+
+                        while (true) {
+                            this->_arduino->write("p", 1);
+                            if (!this->_arduino->waitForBytesWritten(1000)) {
+                                qDebug() << "Timeout.";
+
+                                if (this->_registry != nullptr) {
+                                    this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
+                                    this->_arduino->close();
+                                    emit signalSendingDataChanged(this->_sending_data);
+                                }
+
+                                break;
+                            }
+                            QThread::msleep(100);
+                        }
                     }
                 } else {
                     qDebug() << "Connect failed.";

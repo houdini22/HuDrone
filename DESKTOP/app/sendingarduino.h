@@ -4,7 +4,7 @@
 #include "include.h"
 
 class ThreadBoxConnect;
-class ThreadArduinoPing;
+//class ThreadArduinoPing;
 class ThreadArduinoSend;
 
 class SendingArduino : public QObject, public SendingInterface {
@@ -15,7 +15,7 @@ public:
     void stop() override;
 private:
     ThreadBoxConnect * _thread_box_connect = nullptr;
-    ThreadArduinoPing * _thread_arduino_ping = nullptr;
+    //ThreadArduinoPing * _thread_arduino_ping = nullptr;
     ThreadArduinoSend * _thread_arduino_send = nullptr;
 public slots:
     void slotSendingDataChanged(SendingData *);

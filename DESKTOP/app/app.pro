@@ -1,4 +1,4 @@
-QT       += core gui serialport qml
+QT       += core gui serialport qml gamepad
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -33,7 +33,6 @@ SOURCES += \
     steeringregistry.cpp \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
-    threadarduinoping.cpp \
     threadarduinosend.cpp \
     threadboxconnect.cpp \
     threadgamepad.cpp \
@@ -46,6 +45,7 @@ SOURCES += \
     wizardaddprofilepage5.cpp \
     wizardaddprofilepage6.cpp \
     wizardaddprofilepage7.cpp \
+    wizardaddprofilepage8.cpp \
     wizardconfigchanneltabs.cpp \
     wizardconfiggeneralchanneltab.cpp \
     wizardupload.cpp \
@@ -78,7 +78,6 @@ HEADERS += \
     steeringregistry.h \
     tabseditprofile.h \
     tabseditprofilegeneraltab.h \
-    threadarduinoping.h \
     threadarduinosend.h \
     threadboxconnect.h \
     threadgamepad.h \
@@ -92,6 +91,7 @@ HEADERS += \
     wizardaddprofilepage5.h \
     wizardaddprofilepage6.h \
     wizardaddprofilepage7.h \
+    wizardaddprofilepage8.h \
     wizardconfigchanneltabs.h \
     wizardconfiggeneralchanneltab.h \
     wizardupload.h \
