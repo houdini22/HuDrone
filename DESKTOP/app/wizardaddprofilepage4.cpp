@@ -13,7 +13,7 @@ WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers *
     _layout->addStretch(0);
 
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        this->_combos[channelNumber] = MyComboBox::factory({"---", "thrust", "pitch", "roll", "yaw", "other_1", "other_2", "other_3", "other_4"}, channelNumber);
+        this->_combos[channelNumber] = MyComboBox::factory({"---", "throttle", "pitch", "roll", "yaw", "other_1", "other_2", "other_3", "other_4"}, channelNumber);
         connect(this->_combos[channelNumber], SIGNAL(myTextChanged(QString, int)), this, SLOT(myComboBoxTextChanged(QString, int)));
 
         MyLineEdit * minInput = new MyLineEdit();
@@ -111,9 +111,9 @@ void WizardAddProfilePage4::myComboBoxTextChanged(QString value, int _channelNum
         if (value.compare("---") != 0) {
             if (this->_combos[channelNumber]->currentText().compare(value) == 0 && _channelNumber != channelNumber) {
                 this->_combos[channelNumber]->setCurrentText("---");
-                this->_configuration->modify("add", "/radio/channel" + QString::number(_channelNumber) + "/function", value);
+                this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/function", value);
             } else if (channelNumber == _channelNumber) {
-                this->_configuration->modify("add", "/radio/channel" + QString::number(_channelNumber) + "/function", value);
+                this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/function", value);
             }
         }
     }

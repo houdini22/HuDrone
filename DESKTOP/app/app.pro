@@ -1,4 +1,4 @@
-QT       += core gui serialport qml gamepad
+QT       += core gui serialport qml
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -21,7 +21,6 @@ LIBS += -lstdc++fs
 SOURCES += \
     dialogeditprofile.cpp \
     dialogfly.cpp \
-    dialogthrottlemodesettings.cpp \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -59,7 +58,6 @@ HEADERS += \
     config.h \
     dialogeditprofile.h \
     dialogfly.h \
-    dialogthrottlemodesettings.h \
     drone.h \
     dronemodes.h \
     filesystem.h \
@@ -102,7 +100,6 @@ HEADERS += \
 
 FORMS += \
     dialogfly.ui \
-    dialogthrottlemodesettings.ui \
     mainwindow.ui
 
 # Default rules for deployment.

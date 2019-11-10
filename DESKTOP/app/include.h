@@ -79,7 +79,6 @@ typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
 #include "threadgamepad.h"
-#include "dialogthrottlemodesettings.h"
 #include "buttons.h"
 #include "dronemodes.h"
 #include "steeringregistry.h"

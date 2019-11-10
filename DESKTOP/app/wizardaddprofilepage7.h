@@ -9,12 +9,16 @@ public:
     WizardAddProfilePage7(Config * configuration, Receivers * receivers);
     void showEvent(QShowEvent *);
 private:
-    QHBoxLayout * _layout = nullptr;
+    QVBoxLayout * _layout = nullptr;
     Config * _configuration = nullptr;
     Receivers * _receivers = nullptr;
     WizardConfigChannelTabs * _tabs = nullptr;
     MyLineEdit * _input_throttle_steps = nullptr;
     QGroupBox * _group_box_throttle_steps = nullptr;
+    QLabel * _label_throttle_label = nullptr;
+    QLabel * _label_throttle_value = nullptr;
+private slots:
+    void myTextEdited(QString, QString);
 };
 
 #endif // WIZARDADDPROFILEPAGE7_H
