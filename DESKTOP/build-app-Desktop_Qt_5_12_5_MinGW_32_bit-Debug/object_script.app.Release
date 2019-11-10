@@ -1,8 +1,7 @@
 release/dialogeditprofile.o
-release/dialogflywindow.o
+release/dialogfly.o
 release/dialogthrottlemodesettings.o
 release/drone.o
-release/gamepad.o
 release/main.o
 release/mainwindow.o
 release/receivers.o
@@ -13,12 +12,9 @@ release/steering.o
 release/steeringregistry.o
 release/tabseditprofile.o
 release/tabseditprofilegeneraltab.o
-release/threadarduinoconnect.o
-release/threadarduinodetect.o
 release/threadarduinoping.o
 release/threadarduinosend.o
 release/threadboxconnect.o
-release/SerialPort.o
 release/threadgamepad.o
 release/threadgamepadupdate.o
 release/wizardaddprofile.o
@@ -37,10 +33,11 @@ release/wizarduploadpage2.o
 release/wizarduploadpage3.o
 release/wizarduploadpage4.o
 release/moc_dialogeditprofile.o
-release/moc_dialogflywindow.o
+release/moc_dialogfly.o
 release/moc_dialogthrottlemodesettings.o
 release/moc_drone.o
 release/moc_mainwindow.o
+release/moc_mycombobox.o
 release/moc_mylineedit.o
 release/moc_mymenuaction.o
 release/moc_sendingarduino.o
@@ -49,8 +46,6 @@ release/moc_steering.o
 release/moc_steeringregistry.o
 release/moc_tabseditprofile.o
 release/moc_tabseditprofilegeneraltab.o
-release/moc_threadarduinoconnect.o
-release/moc_threadarduinodetect.o
 release/moc_threadarduinoping.o
 release/moc_threadarduinosend.o
 release/moc_threadboxconnect.o

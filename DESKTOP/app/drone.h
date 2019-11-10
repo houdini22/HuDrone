@@ -8,7 +8,7 @@ class MainWindow;
 class WizardAddProfile;
 class WizardUpload;
 class DialogEditProfile;
-class DialogFlyWindow;
+class DialogFly;
 class SteeringGamepad0;
 class SteeringGamepad1;
 
@@ -21,7 +21,7 @@ public:
     WizardAddProfile * _wizard_add_profile = nullptr;
     WizardUpload * _wizard_upload = nullptr;
     DialogEditProfile * _dialog_edit_profile = nullptr;
-    DialogFlyWindow * _dialog_fly = nullptr;
+    DialogFly * _dialog_fly = nullptr;
     void notifyConfigurationChanged();
     void openWizardAddProfile();
     void openWizardUpload();
@@ -35,6 +35,8 @@ public:
     void setArduino(QSerialPort *);
     bool hasArduino();
     void deleteArduino();
+    void startThreads();
+    void stopThreads();
 private:
     Modes * modes;
     SteeringRegistry * steeringRegistry;

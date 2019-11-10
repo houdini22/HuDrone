@@ -7,6 +7,8 @@ SendingInterface::SendingInterface(Drone * drone, SendingRegistry * registry) {
 
 void SendingInterface::start() {}
 
+void SendingInterface::stop() {}
+
 SendingData * SendingInterface::getData() {
     return this->data;
 }

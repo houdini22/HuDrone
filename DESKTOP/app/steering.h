@@ -25,6 +25,7 @@ class SteeringInterface : public QObject {
 public:
     SteeringInterface(Drone * drone, SteeringRegistry * registry);
     virtual void start();
+    virtual void stop();
     SteeringData * getData();
     void setData(SteeringData * data);
 protected:

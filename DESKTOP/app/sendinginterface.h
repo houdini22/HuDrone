@@ -17,6 +17,7 @@ class SendingInterface {
 public:
     SendingInterface(Drone * drone, SendingRegistry * registry);
     virtual void start();
+    virtual void stop();
     SendingData * getData();
 protected:
     SendingRegistry * registry;

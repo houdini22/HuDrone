@@ -19,7 +19,7 @@ private:
     Receivers * _receivers;
     WizardConfigChannelTabs * _tabs;
     std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
-    std::map<int, MyComboBox> _combos;
+    std::map<int, MyComboBox *> _combos;
     QString getStringValueFromChannel(int, T_String);
 public slots:
     void textEdited(QString, QString);

@@ -20,7 +20,7 @@ LIBS += -lstdc++fs
 
 SOURCES += \
     dialogeditprofile.cpp \
-    dialogflywindow.cpp \
+    dialogfly.cpp \
     dialogthrottlemodesettings.cpp \
     drone.cpp \
     main.cpp \
@@ -58,7 +58,7 @@ HEADERS += \
     buttons.h \
     config.h \
     dialogeditprofile.h \
-    dialogflywindow.h \
+    dialogfly.h \
     dialogthrottlemodesettings.h \
     drone.h \
     dronemodes.h \
@@ -101,6 +101,7 @@ HEADERS += \
     wizarduploadpage4.h
 
 FORMS += \
+    dialogfly.ui \
     dialogthrottlemodesettings.ui \
     mainwindow.ui
 

@@ -43,6 +43,12 @@ void ThreadBoxConnect::run() {
                 QThread::msleep(50);
             }
 
+            if (this->_registry != nullptr) {
+                this->_sending_data->service = this->_arduino;
+                this->_sending_data->mode = MODE_ARDUINO_DETECTED;
+                emit signalSendingDataChanged(this->_sending_data);
+            }
+
             qDebug() << "Opened.";
 
             while (this->_arduino->bytesAvailable() == 0) {

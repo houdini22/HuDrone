@@ -27,6 +27,12 @@ void SendingRegistry::startThreads() {
     }
 }
 
+void SendingRegistry::stopThreads() {
+    for (int i = 0; i < this->registry.size(); i += 1) {
+        this->registry.at(i)->stop();
+    }
+}
+
 void SendingRegistry::slotSendingDataChanged(SendingData * data) {
     this->sendingsData->insert(data->name, data);
     emit signalSendingsDataChanged(this->sendingsData);

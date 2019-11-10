@@ -21,6 +21,16 @@ void SendingArduino::start() {
     this->threadArduinoSend->start();
 }
 
+void SendingArduino::stop() {
+    this->threadBoxConnect->terminate();
+    this->threadArduinoPing->terminate();
+    this->threadArduinoSend->terminate();
+
+    this->threadBoxConnect->wait();
+    this->threadArduinoPing->wait();
+    this->threadArduinoSend->wait();
+}
+
 void SendingArduino::slotSendingDataChanged(SendingData * data) {
     this->data = data;
     emit signalSendingDataChanged(this->data);

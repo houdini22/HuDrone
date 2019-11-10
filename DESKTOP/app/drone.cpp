@@ -20,9 +20,6 @@ Drone::Drone(MainWindow * window) {
     this->sendingRegistry->start();
     this->steeringRegistry->start();
 
-    //this->sendingRegistry->startThreads();
-    //this->steeringRegistry->startThreads();
-
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();
     }
@@ -39,7 +36,7 @@ Drone::Drone(MainWindow * window) {
 }
 
 void Drone::openDialogFly() {
-    this->_dialog_fly = new DialogFlyWindow(this->_window, this);
+    this->_dialog_fly = new DialogFly(this->_window, this);
     this->_dialog_fly->show();
     this->_dialog_fly->stackUnder(this->_window);
     connect(this->_dialog_fly, SIGNAL(close()), this, SLOT(handleDialogFlyClosed()));
@@ -155,4 +152,14 @@ void Drone::deleteArduino() {
         delete this->_arduino;
         this->_arduino = nullptr;
     }
+}
+
+void Drone::startThreads() {
+    this->sendingRegistry->startThreads();
+    this->steeringRegistry->startThreads();
+}
+
+void Drone::stopThreads() {
+    this->sendingRegistry->stopThreads();
+    this->steeringRegistry->stopThreads();
 }

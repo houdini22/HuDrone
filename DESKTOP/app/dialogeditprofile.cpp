@@ -114,7 +114,7 @@ void DialogEditProfile::setValueForChannel(QString channelNumber, QString valueN
 }
 
 void DialogEditProfile::setFunctionValueForChannel(int channelNumber, QString value) {
-    T_String _channel = QString::number(channelNumber).toStdString();
+    T_String _channel = "channel" + QString::number(channelNumber).toStdString();
 
     this->_profile_configuration["radio"][_channel]["function"] = value.toStdString();
 

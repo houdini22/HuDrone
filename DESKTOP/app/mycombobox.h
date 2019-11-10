@@ -16,14 +16,13 @@ public:
         instance->setChannelNumber(channelNumber);
         return instance;
     }
+    MyComboBox(QWidget *parent = 0) : QComboBox(parent) {
+        connect(this, SIGNAL(currentTextChanged(QString)), this, SLOT(emitMyTextChanged(QString)));
+    }
 signals:
     void myTextChanged(QString, int);
 private slots:
     void emitMyTextChanged(QString text) { emit myTextChanged(text, _channel_number); }
-public:
-    MyComboBox(QWidget *parent = 0) : QComboBox(parent) {
-        connect(this, SIGNAL(currentTextChanged(QString)), this, SLOT(emitMyTextChanged(QString)));
-    }
 };
 
 #endif // MYLINEEDIT_H

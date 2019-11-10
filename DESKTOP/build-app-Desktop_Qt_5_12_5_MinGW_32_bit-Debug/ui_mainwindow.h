@@ -70,7 +70,6 @@ public:
 
         menubar->addAction(menuHuDrone->menuAction());
         menubar->addAction(menuProfiles->menuAction());
-        menuHuDrone->addAction(actionSettings);
         menuHuDrone->addAction(actionExit);
 
         retranslateUi(MainWindow);

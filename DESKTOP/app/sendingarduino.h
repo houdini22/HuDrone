@@ -12,6 +12,7 @@ class SendingArduino : public QObject, public SendingInterface {
 public:
     SendingArduino(Drone * drone, SendingRegistry * registry);
     void start() override;
+    void stop() override;
 private:
     ThreadBoxConnect * threadBoxConnect;
     ThreadArduinoPing * threadArduinoPing;

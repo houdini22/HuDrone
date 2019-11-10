@@ -97,7 +97,7 @@ typedef nlohmann::json T_JSON;
 #include "filesystem.h"
 #include "config.h"
 #include "receivers.h"
-#include "dialogflywindow.h"
+#include "dialogfly.h"
 #include "drone.h"
 #include "tabseditprofilegeneraltab.h"
 #include "tabseditprofile.h"

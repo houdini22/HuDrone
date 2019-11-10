@@ -14,6 +14,7 @@ public:
     void add(SteeringInterface * handler);
     void start();
     void startThreads();
+    void stopThreads();
     QHash<QString, SteeringData *> * getData();
 private:
     QList<SteeringInterface *> registry;

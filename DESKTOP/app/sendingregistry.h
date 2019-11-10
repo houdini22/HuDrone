@@ -14,6 +14,7 @@ public:
     void add(SendingInterface * handler);
     void start();
     void startThreads();
+    void stopThreads();
     Modes * getModes();
     void setModes(Modes * modes);
 private:

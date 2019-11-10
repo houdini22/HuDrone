@@ -32,6 +32,11 @@ void SteeringRegistry::startThreads() {
     }
 }
 
+void SteeringRegistry::stopThreads() {
+    for (int i = 0; i < this->registry.size(); i += 1) {
+        this->registry.at(i)->stop();
+    }
+}
 QHash<QString, SteeringData *> * SteeringRegistry::getData() {
     return this->steeringsData;
 }

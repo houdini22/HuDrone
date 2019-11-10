@@ -8,6 +8,8 @@ SteeringInterface::SteeringInterface(Drone * drone, SteeringRegistry * registry)
 
 void SteeringInterface::start() {}
 
+void SteeringInterface::stop() {}
+
 SteeringData * SteeringInterface::getData() {
     return this->data;
 }
