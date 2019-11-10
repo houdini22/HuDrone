@@ -111,7 +111,7 @@ void WizardAddProfilePage4::myComboBoxTextChanged(QString value, int _channelNum
         if (value.compare("---") != 0) {
             if (this->_combos[channelNumber]->currentText().compare(value) == 0 && _channelNumber != channelNumber) {
                 this->_combos[channelNumber]->setCurrentText("---");
-                this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/function", value);
+                this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/function", "---");
             } else if (channelNumber == _channelNumber) {
                 this->_configuration->modify("add", "/radio/channel" + QString::number(channelNumber) + "/function", value);
             }

@@ -50,12 +50,20 @@ void WizardAddProfilePage7::myTextEdited(QString text, QString) {
     int result = 0;
 
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        T_String _function = radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>();
-        if (_function.compare("throttle") == 0) {
-            result = (radio["max"].get<int>() - radio["min"].get<int>()) / text.toInt();
-            break;
+        try {
+            T_String _function = radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>();
+            if (_function.compare("throttle") == 0) {
+                qDebug() << radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<int>();
+                result = (QString((radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>()).c_str()).toInt()
+                           -
+                          QString((radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>()).c_str()).toInt())
+                           /
+                          text.toInt();
+                _label_throttle_value->setText(QString::number(result));
+                break;
+            }
+        } catch(std::domain_error) {
+            qDebug() << "Key not exists.";
         }
     }
-
-    _label_throttle_value->setText(QString::number(result));
 }
