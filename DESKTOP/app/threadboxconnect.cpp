@@ -12,10 +12,8 @@ void ThreadBoxConnect::terminate() {
 }
 
 void ThreadBoxConnect::run() {
-    QString data;
-
     while (1) {
-        if (this->_registry != nullptr) {
+        if (this->_registry != nullptr && this->_sending_data != nullptr) {
             if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
                 QThread::msleep(1000);
                 continue;

@@ -10,15 +10,9 @@ Drone::Drone(MainWindow * window) {
     this->steeringRegistry->add(this->gamepad0);
     connect(this->steeringRegistry, SIGNAL(signalSteeringDataChanged(SteeringData*)), this, SLOT(slotSteeringDataChanged(SteeringData*)));
 
-    //this->gamepad1 = new SteeringGamepad1(this, this->steeringRegistry);
-    //this->steeringRegistry->add(this->gamepad1);
-
     this->sendingRegistry = new SendingRegistry(this);
     this->sendingRegistry->add(new SendingArduino(this, this->sendingRegistry));
     connect(this->sendingRegistry, SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)), this, SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-
-    this->sendingRegistry->start();
-    this->steeringRegistry->start();
 
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();
@@ -110,7 +104,6 @@ void Drone::notifyConfigurationChanged() {
     emit configurationChanged();
 }
 
-
 void Drone::slotSteeringDataChanged(SteeringData * data) {
     emit signalSteeringDataChanged(data);
 }
@@ -154,9 +147,12 @@ void Drone::deleteArduino() {
     }
 }
 
-void Drone::startThreads() {
-    this->sendingRegistry->startThreads();
-    this->steeringRegistry->startThreads();
+void Drone::start() {
+    this->sendingRegistry->start();
+    //this->steeringRegistry->start();
+
+    //this->sendingRegistry->startThreads();
+    //this->steeringRegistry->startThreads();
 }
 
 void Drone::stopThreads() {

@@ -5,13 +5,15 @@ DialogFly::DialogFly(QWidget *parent, Drone * drone) : QDialog(parent), ui(new U
     this->_drone = drone;
 
     ui->setupUi(this);
+}
 
+void DialogFly::showEvent(QShowEvent *) {
     connect(this->_drone,
             SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
             this,
             SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
 
-    this->_drone->startThreads();
+    this->_drone->start();
 }
 
 void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
@@ -33,4 +35,9 @@ void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
 
 void DialogFly::closeEvent(QCloseEvent *) {
     this->_drone->stopThreads();
+
+    disconnect(this->_drone,
+               SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
+               this,
+               SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
 }

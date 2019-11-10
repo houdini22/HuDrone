@@ -18,6 +18,7 @@ private:
     QGridLayout * _layout;
     Ui::DialogFly * ui;
     void closeEvent(QCloseEvent *);
+    void showEvent(QShowEvent *);
 private slots:
     void slotSendingsDataChanged(QHash<QString,SendingData*>*);
 };

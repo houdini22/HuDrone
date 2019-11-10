@@ -35,7 +35,7 @@ public:
     void setArduino(QSerialPort *);
     bool hasArduino();
     void deleteArduino();
-    void startThreads();
+    void start();
     void stopThreads();
 private:
     Modes * modes;
