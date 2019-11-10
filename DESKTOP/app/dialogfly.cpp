@@ -12,6 +12,8 @@ void DialogFly::showEvent(QShowEvent *) {
             SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
             this,
             SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->_drone->start();
 }
 
 void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
@@ -36,4 +38,6 @@ void DialogFly::closeEvent(QCloseEvent *) {
                SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
                this,
                SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->_drone->stop();
 }

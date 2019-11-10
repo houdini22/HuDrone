@@ -31,17 +31,37 @@ void ThreadArduinoPing::run() {
     while (this->_is_running) {
         if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
             QSerialPort * arduino = this->_sending_data->service;
-            qDebug () << "Sending ping...";
-            arduino->write("p", 1);
-            if (!arduino->waitForBytesWritten(1000)) {
-                this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
-                this->_sending_data->service->close();
-                delete this->_sending_data->service;
-                this->_sending_data->service = nullptr;
 
-                emit signalSendingDataChanged(this->_sending_data);
+            qDebug() << "Sending ping...";
+
+            arduino->write("p", 1);
+            if (arduino->waitForBytesWritten(1000)) {
+                qDebug() << "Ping sent.";
+                QThread::msleep(50);
+
+                if (arduino->bytesAvailable() == 0) {
+                    if (arduino->waitForReadyRead(1000)) {
+                        char d;
+                        arduino->read(&d, 1);
+                        if (d == 'p') {
+                            qDebug() << "Pong.";
+                        }
+                    } else {
+                        qDebug() << "No pong.";
+
+                        this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
+                        emit signalSendingDataChanged(this->_sending_data);
+                    }
+                } else {
+                    char d;
+                    arduino->read(&d, 1);
+                    if (d == 'p') {
+                        qDebug() << "Pong.";
+                    }
+                }
             } else {
-                qDebug () << "Ping sent.";
+                this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
+                emit signalSendingDataChanged(this->_sending_data);
             }
         }
 

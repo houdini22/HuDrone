@@ -12,13 +12,15 @@ class ThreadArduinoSend : public QThread
 {
     Q_OBJECT
 public:
-    explicit ThreadArduinoSend(Drone * drone, SendingRegistry * registry);
+    explicit ThreadArduinoSend(Drone * _drone, SendingRegistry * _registry);
     void run();
+    void start();
 private:
-    Drone * drone;
-    SendingRegistry * registry;
-    SendingData * sendingData;
-    SteeringData * steeringData;
+    Drone * _drone;
+    SendingRegistry * _registry;
+    SendingData * _sending_data;
+    SteeringData * _steering_data;
+    bool _is_running = false;
 
     void send(QString buffer);
 
@@ -37,8 +39,9 @@ private:
     int rightX;
     int rightY;
 public slots:
-    void slotSendingDataChanged(SendingData * sendingData);
+    void slotSendingDataChanged(SendingData * _sending_data);
     void slotSteeringDataChanged(SteeringData * steeringsData);
+    void terminate();
 };
 
 #endif // THREADARDUINOSEND_H
