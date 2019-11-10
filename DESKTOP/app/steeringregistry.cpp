@@ -5,6 +5,11 @@ SteeringRegistry::SteeringRegistry(Drone *drone) {
     this->steeringsData = new QHash<QString, SteeringData *>;
 }
 
+SteeringRegistry::~SteeringRegistry() {
+    this->steeringsData->clear();
+    delete this->steeringsData;
+}
+
 void SteeringRegistry::add(SteeringInterface * handler) {
     this->registry.append(handler);
 }

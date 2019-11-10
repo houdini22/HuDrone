@@ -6,6 +6,13 @@ SendingRegistry::SendingRegistry(Drone *drone) {
     this->modes = new Modes;
 }
 
+SendingRegistry::~SendingRegistry() {
+    delete this->modes;
+    this->sendingsData->clear();
+    delete this->sendingsData;
+    this->registry.clear();
+}
+
 void SendingRegistry::add(SendingInterface * handler) {
     this->registry.append(handler);
 }

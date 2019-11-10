@@ -75,8 +75,10 @@ void MainWindow::renderMenu() {
         profileMenu->addSeparator();
         profileMenu->addAction(editAction);
         profileMenu->addAction(deleteAction);
-        profileMenu->addSeparator();
-        profileMenu->addAction(flyAction);
+        if (profile["device"].get<T_String>().compare("gamepad") == 0) {
+            profileMenu->addSeparator();
+            profileMenu->addAction(flyAction);
+        }
         profileMenu->setTitle(name);
 
         menuProfiles__profilesAll->addMenu(profileMenu);

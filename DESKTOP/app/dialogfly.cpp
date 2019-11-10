@@ -12,14 +12,12 @@ void DialogFly::showEvent(QShowEvent *) {
             SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
             this,
             SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-
-    this->_drone->start();
 }
 
 void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
     SendingData * data2 = data->take("arduino0");
 
-    QLabel * label = this->_layout->findChild<QLabel * >(QString("labelDeviceHudroneBox"));
+    QLabel * label = this->ui->labelDeviceHudroneBox;
 
     if (data2->mode == MODE_ARDUINO_DETECTED) {
         label->setDisabled(true);
@@ -34,8 +32,6 @@ void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
 }
 
 void DialogFly::closeEvent(QCloseEvent *) {
-    this->_drone->stopThreads();
-
     disconnect(this->_drone,
                SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
                this,

@@ -19,8 +19,10 @@ private:
     ThreadArduinoSend * threadArduinoSend;
 public slots:
     void slotSendingDataChanged(SendingData*);
+    void slotArduinoConnected(QSerialPort *);
 signals:
     void signalSendingDataChanged(SendingData *);
+    void signalArduinoConnected(QSerialPort *);
 };
 
 #endif // SENDINGARDUINO_H

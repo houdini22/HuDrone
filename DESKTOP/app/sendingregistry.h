@@ -11,6 +11,7 @@ class SendingRegistry : public QObject {
     Q_OBJECT
 public:
     SendingRegistry(Drone * drone);
+    ~SendingRegistry();
     void add(SendingInterface * handler);
     void start();
     void startThreads();

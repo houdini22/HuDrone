@@ -11,6 +11,7 @@ class DialogEditProfile;
 class DialogFly;
 class SteeringGamepad0;
 class SteeringGamepad1;
+class SendingArduino;
 
 class Drone : public QObject
 {
@@ -32,11 +33,11 @@ public:
     void setModes(Modes * modes);
     SteeringGamepad0 * getGamepad0();
     SteeringGamepad1 * getGamepad1();
-    void setArduino(QSerialPort *);
     bool hasArduino();
     void deleteArduino();
     void start();
-    void stopThreads();
+    void stop();
+    void setArduino(QSerialPort *);
 private:
     Modes * modes;
     SteeringRegistry * steeringRegistry;
@@ -45,19 +46,18 @@ private:
     SteeringGamepad1 * gamepad1;
     bool _has_arduino = false;
     QSerialPort * _arduino = nullptr;
+    SendingArduino * _sending_arduino;
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);
-    void handleDialogFlyClosed();
     void handleWizardAddProfileClosed();
     void handleWizardUploadClosed();
     void handleDialogEditProfileClosed();
-
     void slotSteeringDataChanged(SteeringData *);
     void slotSendingsDataChanged(QHash<QString,SendingData*> *);
+    void slotArduinoConnected(QSerialPort *);
 signals:
     void configurationChanged();
-
     void signalModesChanged(Modes * modes);
     void signalSteeringDataChanged(SteeringData *);
     void signalSendingsDataChanged(QHash<QString,SendingData*>*);

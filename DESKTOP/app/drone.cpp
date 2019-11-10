@@ -5,15 +5,6 @@ Drone::Drone(MainWindow * window) {
     this->_window = window;
     this->modes = new Modes;
 
-    this->steeringRegistry = new SteeringRegistry(this);
-    this->gamepad0 = new SteeringGamepad0(this, this->steeringRegistry);
-    this->steeringRegistry->add(this->gamepad0);
-    connect(this->steeringRegistry, SIGNAL(signalSteeringDataChanged(SteeringData*)), this, SLOT(slotSteeringDataChanged(SteeringData*)));
-
-    this->sendingRegistry = new SendingRegistry(this);
-    this->sendingRegistry->add(new SendingArduino(this, this->sendingRegistry));
-    connect(this->sendingRegistry, SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)), this, SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-
     if (Config::getInstance().getArray({"profiles"}).size() == 0) {
         this->openWizardAddProfile();
     }
@@ -30,19 +21,17 @@ Drone::Drone(MainWindow * window) {
 }
 
 void Drone::openDialogFly() {
-    this->_dialog_fly = new DialogFly(this->_window, this);
-    this->_dialog_fly->show();
-    this->_dialog_fly->stackUnder(this->_window);
-    connect(this->_dialog_fly, SIGNAL(close()), this, SLOT(handleDialogFlyClosed()));
-}
-
-void Drone::handleDialogFlyClosed() {
     if (this->_dialog_fly) {
         this->_dialog_fly->close();
-        disconnect(this->_dialog_fly, SIGNAL(close()), this, SLOT(handleDialogFlyClosed()));
+        this->stop();
         delete this->_dialog_fly;
         this->_dialog_fly = nullptr;
     }
+
+    this->_dialog_fly = new DialogFly(this->_window, this);
+    this->_dialog_fly->show();
+    this->_dialog_fly->stackUnder(this->_window);
+    this->start();
 }
 
 void Drone::openWizardAddProfile() {
@@ -129,6 +118,10 @@ SteeringGamepad1 * Drone::getGamepad1() {
     return this->gamepad1;
 }
 
+void Drone::slotArduinoConnected(QSerialPort * arduino) {
+    this->setArduino(arduino);
+}
+
 void Drone::setArduino(QSerialPort * arduino) {
     this->_arduino = arduino;
     this->_has_arduino = true;
@@ -148,14 +141,56 @@ void Drone::deleteArduino() {
 }
 
 void Drone::start() {
-    this->sendingRegistry->start();
-    //this->steeringRegistry->start();
+    this->steeringRegistry = new SteeringRegistry(this);
+    this->gamepad0 = new SteeringGamepad0(this, this->steeringRegistry);
+    this->steeringRegistry->add(this->gamepad0);
+    connect(this->steeringRegistry,
+            SIGNAL(signalSteeringDataChanged(SteeringData*)),
+            this,
+            SLOT(slotSteeringDataChanged(SteeringData*)));
 
-    //this->sendingRegistry->startThreads();
-    //this->steeringRegistry->startThreads();
+    this->sendingRegistry = new SendingRegistry(this);
+
+    this->_sending_arduino = new SendingArduino(this, this->sendingRegistry);
+    this->sendingRegistry->add(this->_sending_arduino);
+    connect(this->_sending_arduino,
+            SIGNAL(signalArduinoConnected(QSerialPort *)),
+            this,
+            SLOT(slotArduinoConnected(QSerialPort *)));
+
+    connect(this->sendingRegistry,
+            SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
+            this,
+            SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->sendingRegistry->start();
+    this->steeringRegistry->start();
+
+    this->sendingRegistry->startThreads();
+    this->steeringRegistry->startThreads();
 }
 
-void Drone::stopThreads() {
+void Drone::stop() {
+    disconnect(this->_sending_arduino,
+            SIGNAL(signalArduinoConnected(QSerialPort *)),
+            this,
+            SLOT(slotArduinoConnected(QSerialPort *)));
+
+    disconnect(this->steeringRegistry,
+               SIGNAL(signalSteeringDataChanged(SteeringData*)),
+               this,
+               SLOT(slotSteeringDataChanged(SteeringData*)));
+
+    disconnect(this->sendingRegistry,
+               SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
+               this,
+               SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->deleteArduino();
+
     this->sendingRegistry->stopThreads();
     this->steeringRegistry->stopThreads();
+
+    delete this->steeringRegistry;
+    delete this->sendingRegistry;
 }
