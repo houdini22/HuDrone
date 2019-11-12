@@ -21,6 +21,7 @@ private:
     void showEvent(QShowEvent *);
 private slots:
     void slotSendingsDataChanged(QHash<QString,SendingData*>*);
+    void slotSteeringDataChanged(QHash<QString,SteeringData*>*);
 };
 
 #endif // DIALOGFLY_H

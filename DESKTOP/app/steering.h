@@ -44,13 +44,10 @@ public:
     SteeringGamepad0(Drone * drone, SteeringRegistry * registry);
     void start() override;
 private:
-    QGamepadManager * _gamepads;
-    QGamepad * _gamepad;
+    QGamepadManager * _gamepads = nullptr;
+    QGamepad * _gamepad = nullptr;
 public slots:
     void slotConnectedGamepadsChanged();
-    void slotGamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value);
-    void slotGamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value);
-    void slotGamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button);
 };
 
 #endif // STEERINGGAMEPAD_H
