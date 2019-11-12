@@ -54,6 +54,7 @@ private slots:
     void handleWizardUploadClosed();
     void handleDialogEditProfileClosed();
     void slotSteeringDataChanged(SteeringData *);
+    void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
     void slotSendingsDataChanged(QHash<QString,SendingData*> *);
     void slotArduinoConnected(QSerialPort *);
 signals:
@@ -61,6 +62,7 @@ signals:
     void signalModesChanged(Modes * modes);
     void signalSteeringDataChanged(SteeringData *);
     void signalSendingsDataChanged(QHash<QString,SendingData*>*);
+    void signalSteeringsDataChanged(QHash<QString, SteeringData *> *);
 };
 
 #endif // DRONE_H

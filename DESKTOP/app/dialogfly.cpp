@@ -13,9 +13,9 @@ void DialogFly::showEvent(QShowEvent *) {
             this,
             SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
     connect(this->_drone,
-            SIGNAL(signalSteeringDataChanged(QHash<QString,SteeringData*>*)),
+            SIGNAL(signalSteeringsDataChanged(QHash<QString,SteeringData*>*)),
             this,
-            SLOT(slotSteeringDataChanged(QHash<QString,SteeringData*>*)));
+            SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
 
     this->_drone->start();
 }
@@ -37,18 +37,29 @@ void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
     }
 }
 
-void DialogFly::slotSteeringDataChanged(QHash<QString,SteeringData*>* data) {
-    SteeringData * data2 = data->take("gamepad0");
+void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
+    SteeringData * gamepad0 = data->take("gamepad0");
+    SteeringData * gamepad1 = data->take("gamepad1");
 
     QLabel * label = this->ui->labelDeviceGamepad0;
-
-    if (data2->isConnected) {
+    if (gamepad0->isConnected) {
         label->setDisabled(false);
         label->setText("connected");
     } else {
         label->setDisabled(true);
         label->setText("connect...");
     }
+
+    /*
+    QLabel * label2 = this->ui->labelDeviceGamepad1;
+    if (gamepad1->isConnected) {
+        label2->setDisabled(false);
+        label2->setText("connected");
+    } else {
+        label2->setDisabled(true);
+        label2->setText("connect...");
+    }
+    */
 }
 
 void DialogFly::closeEvent(QCloseEvent *) {

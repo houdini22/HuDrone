@@ -98,6 +98,10 @@ void Drone::slotSendingsDataChanged(QHash<QString,SendingData*> * data) {
     emit signalSendingsDataChanged(data);
 }
 
+void Drone::slotSteeringsDataChanged(QHash<QString,SteeringData*> * data) {
+    emit signalSteeringsDataChanged(data);
+}
+
 void Drone::setModes(Modes * modes) {
     this->modes = modes;
     emit signalModesChanged(modes);
@@ -145,6 +149,10 @@ void Drone::start() {
             SIGNAL(signalSteeringDataChanged(SteeringData*)),
             this,
             SLOT(slotSteeringDataChanged(SteeringData*)));
+    connect(this->steeringRegistry,
+            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
+            this,
+            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 
     this->sendingRegistry = new SendingRegistry(this);
 
