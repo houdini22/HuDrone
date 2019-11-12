@@ -16,7 +16,7 @@ public:
 private:
     ThreadBoxConnect * _thread_box_connect = nullptr;
     //ThreadArduinoPing * _thread_arduino_ping = nullptr;
-    ThreadArduinoSend * _thread_arduino_send = nullptr;
+    //ThreadArduinoSend * _thread_arduino_send = nullptr;
 public slots:
     void slotSendingDataChanged(SendingData *);
     void slotArduinoConnected(QSerialPort *);

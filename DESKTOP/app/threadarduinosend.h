@@ -1,6 +1,7 @@
 #ifndef THREADARDUINOSEND_H
 #define THREADARDUINOSEND_H
 
+/*
 #include "include.h"
 
 class Drone;
@@ -43,5 +44,6 @@ public slots:
     void slotSteeringDataChanged(SteeringData * steeringsData);
     void terminate();
 };
+*/
 
 #endif // THREADARDUINOSEND_H

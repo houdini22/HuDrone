@@ -30,7 +30,6 @@ WizardAddProfilePage7::WizardAddProfilePage7(Config * configuration, Receivers *
     _label_throttle_label->setText("Throttle value:");
 
     _label_throttle_value = new QLabel();
-    _label_throttle_value->setText("0");
     _label_throttle_value->setStyleSheet("QLabel { font-size: 20px; }");
 
     _layout->addWidget(_group_box_throttle_steps);
@@ -42,23 +41,25 @@ WizardAddProfilePage7::WizardAddProfilePage7(Config * configuration, Receivers *
 }
 
 void WizardAddProfilePage7::showEvent(QShowEvent *) {
-
+    _label_throttle_value->setText(QString::number(this->myTextEdited("10", "")));
 }
 
-void WizardAddProfilePage7::myTextEdited(QString text, QString) {
-    T_JSON radio = this->_configuration->getObject({"radio"});
+int WizardAddProfilePage7::myTextEdited(QString text, QString) {
+    T_JSON data = this->_configuration->getData();
     int result = 0;
+
+    if (text.length() == 0) {
+        return result;
+    }
 
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
         try {
-            T_String _function = radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>();
+            T_String _function = data["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>();
             if (_function.compare("throttle") == 0) {
-                qDebug() << radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<int>();
-                result = (QString((radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>()).c_str()).toInt()
-                           -
-                          QString((radio[(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>()).c_str()).toInt())
-                           /
-                          text.toInt();
+                T_String min = data["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>();
+                T_String max = data["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>();
+
+                result = (QString(max.c_str()).toInt() - QString(min.c_str()).toInt()) / text.toInt();
                 _label_throttle_value->setText(QString::number(result));
                 break;
             }
@@ -66,4 +67,6 @@ void WizardAddProfilePage7::myTextEdited(QString text, QString) {
             qDebug() << "Key not exists.";
         }
     }
+
+    return result;
 }

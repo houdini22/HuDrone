@@ -44,27 +44,13 @@ public:
     SteeringGamepad0(Drone * drone, SteeringRegistry * registry);
     void start() override;
 private:
-    ThreadGamepad0 * threadConnect;
-    ThreadGamepad0Update * threadGamepadUpdate;
+    QGamepadManager * _gamepads;
+    QGamepad * _gamepad;
 public slots:
-    void slotGamepadIsConnected(bool);
-    void slotButtonsChanged(ButtonsPressed);
-};
-
-//
-class SteeringGamepad1 : public SteeringInterface {
-    Q_OBJECT
-public:
-    SteeringGamepad1(Drone * drone, SteeringRegistry * registry);
-    void start() override;
-private:
-    ThreadGamepad1 * threadConnect;
-    ThreadGamepad1Update * threadGamepadUpdate;
-public slots:
-    void slotGamepadIsConnected(bool);
-    void slotButtonsChanged(ButtonsPressed);
-signals:
-    void signalSteeringDataChanged(SteeringData *);
+    void slotConnectedGamepadsChanged();
+    void slotGamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value);
+    void slotGamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value);
+    void slotGamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button);
 };
 
 #endif // STEERINGGAMEPAD_H

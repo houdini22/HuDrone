@@ -36,6 +36,8 @@
 #include <QDialogButtonBox>
 #include <QSerialPort>
 #include <QComboBox>
+#include <QGamepadManager>
+#include <QGamepad>
 
 #include <vector>
 #include <list>

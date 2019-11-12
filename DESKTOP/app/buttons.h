@@ -4,10 +4,10 @@
 #include "include.h"
 
 struct ButtonsPressed {
-    int leftX = 1100;
-    int leftY = 1500;
-    int rightX = 1500;
-    int rightY = 1500;
+    double leftX = 0.0;
+    double leftY = 0.0;
+    double rightX = 0.0;
+    double rightY = 0.0;
     bool start = false;
     bool arming = false;
     bool a = false;

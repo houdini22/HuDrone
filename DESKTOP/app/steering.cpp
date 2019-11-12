@@ -37,57 +37,67 @@ SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * registry) :
     this->data->name = "gamepad0";
     this->data->isEnabled = true;
 
-    this->threadConnect = new ThreadGamepad0();
-    this->threadGamepadUpdate = new ThreadGamepad0Update(this->registry, this->drone);
+    this->_gamepads = QGamepadManager::instance();
+    connect(this->_gamepads, SIGNAL(connectedGamepadsChanged()), this, SLOT(slotConnectedGamepadsChanged()));
 
-    connect(this, SIGNAL(signalSteeringDataChanged(SteeringData*)), this->registry, SLOT(slotSteeringDataChanged(SteeringData*)));
-    connect(this->threadConnect, SIGNAL(signalGamepadIsConnected(bool)), this, SLOT(slotGamepadIsConnected(bool)));
-    connect(this->threadGamepadUpdate, SIGNAL(signalButtonsChanged(ButtonsPressed)), this, SLOT(slotButtonsChanged(ButtonsPressed)));
+    this->slotConnectedGamepadsChanged();
+}
+
+void SteeringGamepad0::slotConnectedGamepadsChanged() {
+    this->data->isConnected = this->_gamepads->isGamepadConnected(0);
+    if (this->_gamepads->isGamepadConnected(0)) {
+        this->_gamepad = new QGamepad(0, this);
+
+        connect(this->_gamepad, SIGNAL(gamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value)), this, SLOT(slotGamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value)));
+        connect(this->_gamepad, SIGNAL(gamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value)), this, SLOT(slotGamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value)));
+        connect(this->_gamepad, SIGNAL(gamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button)), this, SLOT(slotGamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button)));
+    } else {
+        disconnect(this->_gamepad, SIGNAL(gamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value)), this, SLOT(slotGamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value)));
+        disconnect(this->_gamepad, SIGNAL(gamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value)), this, SLOT(slotGamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value)));
+        disconnect(this->_gamepad, SIGNAL(gamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button)), this, SLOT(slotGamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button)));
+
+        delete this->_gamepad;
+    }
+    emit signalSteeringDataChanged(this->data);
+}
+
+void SteeringGamepad0::slotGamepadAxisEvent(int deviceId, QGamepadManager::GamepadAxis axis, double value) {
+    qDebug() << deviceId;
+    if (deviceId == 0) {
+        switch (axis) {
+            case QGamepadManager::GamepadAxis::AxisLeftX:
+                this->data->buttonsPressed.leftX = value;
+                break;
+
+            case QGamepadManager::GamepadAxis::AxisLeftY:
+                this->data->buttonsPressed.leftY = value;
+                break;
+
+            case QGamepadManager::GamepadAxis::AxisRightX:
+                this->data->buttonsPressed.rightX = value;
+                break;
+
+            case QGamepadManager::GamepadAxis::AxisRightY:
+                this->data->buttonsPressed.rightY = value;
+                break;
+
+            default:
+                break;
+        }
+
+        emit signalSteeringDataChanged(this->data);
+        qDebug() << value;
+    }
+}
+
+void SteeringGamepad0::slotGamepadButtonPressEvent(int deviceId, QGamepadManager::GamepadButton button, double value) {
+
+}
+
+void SteeringGamepad0::slotGamepadButtonReleaseEvent(int deviceId, QGamepadManager::GamepadButton button) {
+
 }
 
 void SteeringGamepad0::start() {
-    this->threadConnect->start();
-    this->threadGamepadUpdate->start();
-}
 
-void SteeringGamepad0::slotGamepadIsConnected(bool value) {
-    if (this->data->isConnected != value) {
-        this->data->isConnected = value;
-        emit signalSteeringDataChanged(this->data);
-    }
-}
-
-void SteeringGamepad0::slotButtonsChanged(ButtonsPressed buttons) {
-    this->data->buttonsPressed = buttons;
-    emit signalSteeringDataChanged(this->data);
-}
-
-//
-SteeringGamepad1::SteeringGamepad1(Drone * drone, SteeringRegistry * registry) : SteeringInterface(drone, registry) {
-    this->data = new SteeringData;
-    this->data->name = "gamepad1";
-
-    this->threadConnect = new ThreadGamepad1();
-    this->threadGamepadUpdate = new ThreadGamepad1Update(this->registry, this->drone);
-
-    connect(this, SIGNAL(signalSteeringDataChanged(SteeringData*)), this->registry, SLOT(slotSteeringDataChanged(SteeringData*)));
-    connect(this->threadConnect, SIGNAL(signalGamepadIsConnected(bool)), this, SLOT(slotGamepadIsConnected(bool)));
-    connect(this->threadGamepadUpdate, SIGNAL(signalButtonsChanged(ButtonsPressed)), this, SLOT(slotButtonsChanged(ButtonsPressed)));
-}
-
-void SteeringGamepad1::start() {
-    this->threadConnect->start();
-    this->threadGamepadUpdate->start();
-}
-
-void SteeringGamepad1::slotGamepadIsConnected(bool value) {
-    if (this->data->isConnected != value) {
-        this->data->isConnected = value;
-        emit signalSteeringDataChanged(this->data);
-    }
-}
-
-void SteeringGamepad1::slotButtonsChanged(ButtonsPressed buttons) {
-    this->data->buttonsPressed = buttons;
-    emit signalSteeringDataChanged(this->data);
 }

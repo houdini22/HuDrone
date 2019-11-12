@@ -1,3 +1,4 @@
+/*
 #include "QThread"
 #include "include.h"
 
@@ -332,7 +333,7 @@ void ThreadArduinoSend::run() {
             this->setRadioValues(this->axisValueFromDouble(0), this->axisValueFromDouble(handPosition.y), this->axisValueFromDouble(handPosition.x), this->axisValueFromDouble(handPosition.z));
             this->send(this->createAxisBuffer(this->axisValueFromDouble(0.0), this->axisValueFromDouble(handPosition.y), this->axisValueFromDouble(handPosition.x), this->axisValueFromDouble(handPosition.z)));
         }
-        */
+
     }
 }
 
@@ -382,3 +383,5 @@ void ThreadArduinoSend::slotSteeringDataChanged(SteeringData * steeringData) {
         this->_steering_data = steeringData;
     }
 }
+
+*/

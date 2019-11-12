@@ -53,9 +53,6 @@ WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers *
         maxLabel->setText("Maximum sent value");
         defaultLabel->setText("Initial sent value");
 
-        _tabs->getTab(i)->layout()->addWidget(functionLabel);
-        _tabs->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
-
         _tabs->getTab(i)->layout()->addWidget(minLabel);
         _tabs->getTab(i)->layout()->addWidget(minInput);
 
@@ -67,6 +64,9 @@ WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers *
 
         _tabs->getTab(i)->layout()->addWidget(defaultLabel);
         _tabs->getTab(i)->layout()->addWidget(defaultInput);
+
+        _tabs->getTab(i)->layout()->addWidget(functionLabel);
+        _tabs->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
     }
 
     setLayout(_layout);
@@ -99,11 +99,15 @@ void WizardAddProfilePage4::showEvent(QShowEvent *) {
         this->_configuration->modify("add", "/radio/" + maxInput->getID(), maxValue);
         this->_configuration->modify("add", "/radio/" + defaultInput->getID(), defaultValue);
     }
+
+    this->validate();
 }
 
 void WizardAddProfilePage4::textEdited(QString text, QString id) {
     QStringList split = id.split("/");
     this->_configuration->modify("replace", "/radio/" + id, text);
+
+    this->validate();
 }
 
 void WizardAddProfilePage4::myComboBoxTextChanged(QString value, int _channelNumber) {
@@ -117,4 +121,33 @@ void WizardAddProfilePage4::myComboBoxTextChanged(QString value, int _channelNum
             }
         }
     }
+
+    this->validate();
+}
+
+void WizardAddProfilePage4::validate() {
+    bool enabled = true;
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().length() == 0) {
+            enabled = false;
+            break;
+        }
+        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>().length() == 0) {
+            enabled = false;
+            break;
+        }
+        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>().length() == 0) {
+            enabled = false;
+            break;
+        }
+        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["middle"].get<T_String>().length() == 0) {
+            enabled = false;
+            break;
+        }
+        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["default"].get<T_String>().length() == 0) {
+            enabled = false;
+            break;
+        }
+    }
+    this->wizard()->button(QWizard::NextButton)->setEnabled(enabled);
 }

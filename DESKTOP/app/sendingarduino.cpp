@@ -13,7 +13,7 @@ void SendingArduino::start() {
 
     this->_thread_box_connect = new ThreadBoxConnect(this->registry);
     //this->_thread_arduino_ping = new ThreadArduinoPing(this->registry);
-    this->_thread_arduino_send = new ThreadArduinoSend(this->drone, this->registry);
+    //this->_thread_arduino_send = new ThreadArduinoSend(this->drone, this->registry);
 
     connect(this->_thread_box_connect,
             SIGNAL(signalSendingDataChanged(SendingData *)),
@@ -32,7 +32,7 @@ void SendingArduino::start() {
 
     this->_thread_box_connect->start();
     //this->_thread_arduino_ping->start();
-    this->_thread_arduino_send->start();
+    //this->_thread_arduino_send->start();
 }
 
 void SendingArduino::stop() {
@@ -55,15 +55,15 @@ void SendingArduino::stop() {
 
     this->_thread_box_connect->terminate();
     //this->_thread_arduino_ping->terminate();
-    this->_thread_arduino_send->terminate();
+    //this->_thread_arduino_send->terminate();
 
     this->_thread_box_connect->wait();
     //this->_thread_arduino_ping->wait();
-    this->_thread_arduino_send->wait();
+    //this->_thread_arduino_send->wait();
 
     delete this->_thread_box_connect;
     //delete this->_thread_arduino_ping;
-    delete this->_thread_arduino_send;
+    //delete this->_thread_arduino_send;
 }
 
 void SendingArduino::slotSendingDataChanged(SendingData * data) {

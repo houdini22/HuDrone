@@ -26,7 +26,7 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
     _layout->addStretch(0);
 
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        this->_combos[channelNumber] = MyComboBox::factory({"---", "thrust", "pitch", "roll", "yaw", "other_1", "other_2", "other_3", "other_4"}, channelNumber);
+        this->_combos[channelNumber] = MyComboBox::factory({"---", "throttle", "pitch", "roll", "yaw", "other_1", "other_2", "other_3", "other_4"}, channelNumber);
         connect(this->_combos[channelNumber], SIGNAL(myTextChanged(QString, int)), this, SLOT(myComboBoxTextChanged(QString, int)));
 
         MyLineEdit * minInput = new MyLineEdit();
@@ -66,9 +66,6 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
         maxLabel->setText("Maximum sent value");
         defaultLabel->setText("Initial sent value");
 
-        _tabs->getTab(0)->getTab(i)->layout()->addWidget(functionLabel);
-        _tabs->getTab(0)->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
-
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minInput);
 
@@ -80,6 +77,9 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
 
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(defaultLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(defaultInput);
+
+        _tabs->getTab(0)->getTab(i)->layout()->addWidget(functionLabel);
+        _tabs->getTab(0)->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
     }
 
     setLayout(_layout);
@@ -97,6 +97,22 @@ QString DialogEditProfile::getStringValueFromChannel(int channelNumber, T_String
 
 void DialogEditProfile::setValueForChannel(QString channelNumber, QString valueName, QString value) {
     this->_profile_configuration["radio"][channelNumber.toStdString()][valueName.toStdString()] = value.toStdString();
+
+    if (value.length() == 0) {
+        if (valueName.compare("min") == 0) {
+            value = "1100";
+            this->_inputs[channelNumber.toInt()]["min"]->setText(value);
+        } else if (valueName.compare("max") == 0) {
+            value = "1900";
+            this->_inputs[channelNumber.toInt()]["max"]->setText(value);
+        } else if (valueName.compare("middle") == 0) {
+            value = "1500";
+            this->_inputs[channelNumber.toInt()]["middle"]->setText(value);
+        } else if (valueName.compare("default") == 0) {
+            value = "1500";
+            this->_inputs[channelNumber.toInt()]["default"]->setText(value);
+        }
+    }
 
     T_JSON data = Config::getInstance().getData();
     unsigned long long i = 0;

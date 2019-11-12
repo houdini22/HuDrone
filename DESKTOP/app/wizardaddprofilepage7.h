@@ -18,7 +18,7 @@ private:
     QLabel * _label_throttle_label = nullptr;
     QLabel * _label_throttle_value = nullptr;
 private slots:
-    void myTextEdited(QString, QString);
+    int myTextEdited(QString, QString);
 };
 
 #endif // WIZARDADDPROFILEPAGE7_H
