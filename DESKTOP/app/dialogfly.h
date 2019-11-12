@@ -12,13 +12,14 @@ class Drone;
 class DialogFly : public QDialog {
     Q_OBJECT
 public:
-    DialogFly(QWidget * parent, Drone * drone);
+    DialogFly(QWidget * parent, Drone * drone, QString profileName);
 private:
     Drone * _drone;
     QGridLayout * _layout;
     Ui::DialogFly * ui;
     void closeEvent(QCloseEvent *);
     void showEvent(QShowEvent *);
+    Profile * _profile;
 private slots:
     void slotSendingsDataChanged(QHash<QString,SendingData*>*);
     void slotSteeringsDataChanged(QHash<QString,SteeringData*>*);

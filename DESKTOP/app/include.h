@@ -80,6 +80,7 @@ typedef bool T_Bool;
 typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
+#include "profile.h"
 #include "threadgamepad.h"
 #include "buttons.h"
 #include "dronemodes.h"

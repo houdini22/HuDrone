@@ -110,7 +110,7 @@ void MainWindow::profileItemTriggered(MyMenuAction * action, bool) {
     } else if (action->getParameter("action").compare("newProfile") == 0) {
         this->_drone->openWizardAddProfile();
     } else if (action->getParameter("action").compare("fly") == 0) {
-        this->_drone->openDialogFly();
+        this->_drone->openDialogFly(action->getParameter("name"));
     }
 }
 

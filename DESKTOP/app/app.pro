@@ -24,6 +24,7 @@ SOURCES += \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
+    profile.cpp \
     receivers.cpp \
     sendingarduino.cpp \
     sendinginterface.cpp \
@@ -67,6 +68,7 @@ HEADERS += \
     mycombobox.h \
     mylineedit.h \
     mymenuaction.h \
+    profile.h \
     receivers.h \
     sendingarduino.h \
     sendinginterface.h \

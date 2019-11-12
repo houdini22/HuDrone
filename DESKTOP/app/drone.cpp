@@ -20,13 +20,13 @@ Drone::Drone(MainWindow * window) {
     }
 }
 
-void Drone::openDialogFly() {
+void Drone::openDialogFly(QString name) {
     if (this->_dialog_fly) {
         delete this->_dialog_fly;
         this->_dialog_fly = nullptr;
     }
 
-    this->_dialog_fly = new DialogFly(this->_window, this);
+    this->_dialog_fly = new DialogFly(this->_window, this, name);
     this->_dialog_fly->show();
     this->_dialog_fly->stackUnder(this->_window);
 }
@@ -173,9 +173,9 @@ void Drone::start() {
 
 void Drone::stop() {
     disconnect(this->_sending_arduino,
-            SIGNAL(signalArduinoConnected(QSerialPort *)),
-            this,
-            SLOT(slotArduinoConnected(QSerialPort *)));
+               SIGNAL(signalArduinoConnected(QSerialPort *)),
+               this,
+               SLOT(slotArduinoConnected(QSerialPort *)));
 
     disconnect(this->steeringRegistry,
                SIGNAL(signalSteeringDataChanged(SteeringData*)),
@@ -187,10 +187,10 @@ void Drone::stop() {
                this,
                SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
 
-    this->deleteArduino();
-
     this->sendingRegistry->stopThreads();
     this->steeringRegistry->stopThreads();
+
+    this->deleteArduino();
 
     delete this->steeringRegistry;
     delete this->sendingRegistry;

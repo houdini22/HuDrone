@@ -1,8 +1,18 @@
 #include "include.h"
 #include "ui_dialogfly.h"
 
-DialogFly::DialogFly(QWidget *parent, Drone * drone) : QDialog(parent), ui(new Ui::DialogFly) {
+DialogFly::DialogFly(QWidget *parent, Drone * drone, QString profileName) : QDialog(parent), ui(new Ui::DialogFly) {
     this->_drone = drone;
+
+    T_JSON configProfiles = Config::getInstance().getData()["profiles"];
+
+    for (T_JSON::iterator it = configProfiles.begin(); it != configProfiles.end(); ++it) {
+        T_JSON val = it.value();
+        if (val["name"].get<T_String>().compare(profileName.toStdString()) == 0) {
+            this->_profile = new Profile(val);
+            break;
+        }
+    }
 
     ui->setupUi(this);
 }
@@ -39,9 +49,6 @@ void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
 
 void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
     SteeringData * gamepad0 = data->take("gamepad0");
-    SteeringData * gamepad1 = data->take("gamepad1");
-
-    qDebug() << gamepad0->isConnected;
 
     QLabel * label = this->ui->labelDeviceGamepad0;
     if (gamepad0->isConnected) {
@@ -52,7 +59,13 @@ void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
         label->setText("connect...");
     }
 
+    this->ui->labelLeftX->setText(QString::number(this->_profile->getLeftX(gamepad0->buttonsPressed.leftX)));
+    this->ui->labelLeftY->setText(QString::number(this->_profile->getLeftY(gamepad0->buttonsPressed.leftY)));
+    this->ui->labelRightX->setText(QString::number(this->_profile->getRightX(gamepad0->buttonsPressed.rightX)));
+    this->ui->labelRightY->setText(QString::number(this->_profile->getRightY(gamepad0->buttonsPressed.rightY)));
+
     /*
+    SteeringData * gamepad1 = data->take("gamepad1");
     QLabel * label2 = this->ui->labelDeviceGamepad1;
     if (gamepad1->isConnected) {
         label2->setDisabled(false);
@@ -75,4 +88,6 @@ void DialogFly::closeEvent(QCloseEvent *) {
             SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
 
     this->_drone->stop();
+
+    delete this->_profile;
 }

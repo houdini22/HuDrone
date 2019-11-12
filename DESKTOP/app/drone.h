@@ -26,7 +26,7 @@ public:
     void notifyConfigurationChanged();
     void openWizardAddProfile();
     void openWizardUpload();
-    void openDialogFly();
+    void openDialogFly(QString name);
     void openDialogEditProfile(QString name);
 
     Modes * getModes();
