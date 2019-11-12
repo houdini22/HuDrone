@@ -14,24 +14,6 @@ SteeringData * SteeringInterface::getData() {
     return this->data;
 }
 
-bool SteeringInterface::hasDataChanged(SteeringData * data) {
-    if (data->isConnected != this->data->isConnected) {
-        return true;
-    } else if (data->isEnabled != this->data->isEnabled) {
-        return true;
-    }
-
-    return false;
-}
-
-void SteeringInterface::setData(SteeringData * data) {
-    if (this->hasDataChanged(data)) {
-        this->data = data;
-        emit signalSteeringDataChanged(this->data);
-    }
-}
-
-//
 SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * registry) : SteeringInterface(drone, registry) {
     this->data = new SteeringData;
     this->data->name = "gamepad0";
@@ -45,6 +27,7 @@ SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * registry) :
 
 void SteeringGamepad0::slotConnectedGamepadsChanged() {
     this->data->isConnected = this->_gamepads->isGamepadConnected(0);
+
     if (this->_gamepads->isGamepadConnected(0)) {
         this->_gamepad = new QGamepad(0, this);
 
@@ -59,6 +42,7 @@ void SteeringGamepad0::slotConnectedGamepadsChanged() {
             this->_gamepad = nullptr;
         }
     }
+
     emit signalSteeringDataChanged(this->data);
 }
 

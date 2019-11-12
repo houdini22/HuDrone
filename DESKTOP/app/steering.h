@@ -27,12 +27,10 @@ public:
     virtual void start();
     virtual void stop();
     SteeringData * getData();
-    void setData(SteeringData * data);
 protected:
     SteeringRegistry * registry;
     Drone * drone;
     SteeringData * data;
-    bool hasDataChanged(SteeringData * data);
 signals:
     void signalSteeringDataChanged(SteeringData *);
 };

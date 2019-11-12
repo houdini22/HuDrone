@@ -12,6 +12,13 @@ SteeringRegistry::~SteeringRegistry() {
 
 void SteeringRegistry::add(SteeringInterface * handler) {
     this->registry.append(handler);
+
+    connect(handler,
+            SIGNAL(signalSteeringDataChanged(SteeringData *)),
+            this,
+            SLOT(slotSteeringDataChanged(SteeringData *)));
+
+    this->steeringsData->insert(handler->getData()->name, handler->getData());
 }
 
 void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
@@ -21,14 +28,7 @@ void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
 }
 
 void SteeringRegistry::start() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        SteeringInterface * _interface = this->registry.at(i);
-        SteeringData * data = _interface->getData();
-        this->steeringsData->insert(data->name, data);
-        emit signalSteeringDataChanged(data);
-    }
 
-    emit signalSteeringsDataChanged(this->steeringsData);
 }
 
 void SteeringRegistry::startThreads() {
@@ -42,6 +42,7 @@ void SteeringRegistry::stopThreads() {
         this->registry.at(i)->stop();
     }
 }
+
 QHash<QString, SteeringData *> * SteeringRegistry::getData() {
     return this->steeringsData;
 }

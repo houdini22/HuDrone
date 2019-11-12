@@ -146,10 +146,6 @@ void Drone::start() {
     this->gamepad0 = new SteeringGamepad0(this, this->steeringRegistry);
     this->steeringRegistry->add(this->gamepad0);
     connect(this->steeringRegistry,
-            SIGNAL(signalSteeringDataChanged(SteeringData*)),
-            this,
-            SLOT(slotSteeringDataChanged(SteeringData*)));
-    connect(this->steeringRegistry,
             SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
             this,
             SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));

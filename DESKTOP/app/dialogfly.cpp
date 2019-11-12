@@ -41,6 +41,8 @@ void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
     SteeringData * gamepad0 = data->take("gamepad0");
     SteeringData * gamepad1 = data->take("gamepad1");
 
+    qDebug() << gamepad0->isConnected;
+
     QLabel * label = this->ui->labelDeviceGamepad0;
     if (gamepad0->isConnected) {
         label->setDisabled(false);
@@ -67,6 +69,10 @@ void DialogFly::closeEvent(QCloseEvent *) {
                SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
                this,
                SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+    disconnect(this->_drone,
+            SIGNAL(signalSteeringsDataChanged(QHash<QString,SteeringData*>*)),
+            this,
+            SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
 
     this->_drone->stop();
 }
