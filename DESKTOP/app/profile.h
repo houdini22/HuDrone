@@ -13,7 +13,7 @@ public:
 private:
     T_JSON _configuration;
     T_JSON getFunction(QString name);
-    int getValueToSend(T_JSON channelConfig, double value, bool invert);
+    int getValueToSend(T_JSON channelConfig, double value, bool invert, bool fromMin = false);
 };
 
 #endif // PROFILE_H

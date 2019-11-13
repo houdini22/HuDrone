@@ -9,7 +9,7 @@ int Profile::getLeftX(double value) {
 }
 
 int Profile::getLeftY(double value) {
-    return this->getValueToSend(this->getFunction("throttle"), value, true);
+    return this->getValueToSend(this->getFunction("throttle"), value, true, true);
 }
 
 int Profile::getRightX(double value) {
@@ -28,14 +28,21 @@ T_JSON Profile::getFunction(QString name) {
     }
 }
 
-int Profile::getValueToSend(T_JSON data, double value, bool invert) {
+int Profile::getValueToSend(T_JSON data, double value, bool invert, bool fromMin) {
     int min = QString(data["min"].get<T_String>().c_str()).toInt();
     int max = QString(data["max"].get<T_String>().c_str()).toInt();
     int middle = QString(data["middle"].get<T_String>().c_str()).toInt();
     int area = 0;
+    int result = 0;
 
     if (invert) {
         value = value * -1.0;
+    }
+
+    if (fromMin) {
+        area = max - min;
+        result = (double) min + ((double) area * value);
+        return result;
     }
 
     if (value < 0) {
@@ -44,6 +51,6 @@ int Profile::getValueToSend(T_JSON data, double value, bool invert) {
         area = max - middle;
     }
 
-    int result = (double) middle + ((double) area * (double) value);
+    result = (double) middle + ((double) area * (double) value);
     return result;
 }
