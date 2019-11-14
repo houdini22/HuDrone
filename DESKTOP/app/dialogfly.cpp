@@ -3,16 +3,7 @@
 
 DialogFly::DialogFly(QWidget *parent, Drone * drone, QString profileName) : QDialog(parent), ui(new Ui::DialogFly) {
     this->_drone = drone;
-
-    T_JSON configProfiles = Config::getInstance().getData()["profiles"];
-
-    for (T_JSON::iterator it = configProfiles.begin(); it != configProfiles.end(); ++it) {
-        T_JSON val = it.value();
-        if (val["name"].get<T_String>().compare(profileName.toStdString()) == 0) {
-            this->_profile = new Profile(val);
-            break;
-        }
-    }
+    this->_profile = Profile::byName(profileName);
 
     ui->setupUi(this);
 }
@@ -26,8 +17,12 @@ void DialogFly::showEvent(QShowEvent *) {
             SIGNAL(signalSteeringsDataChanged(QHash<QString,SteeringData*>*)),
             this,
             SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
+    connect(this->_drone,
+            SIGNAL(signalModesChanged(Modes *)),
+            this,
+            SLOT(slotModesChanged(Modes *)));
 
-    this->_drone->start();
+    this->_drone->start(this->_profile);
 }
 
 void DialogFly::slotSendingsDataChanged(QHash<QString,SendingData*>* data) {
@@ -59,10 +54,28 @@ void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
         label->setText("connect...");
     }
 
-    this->ui->labelLeftX->setText(QString::number(this->_profile->getLeftX(gamepad0->buttonsPressed.leftX)));
-    this->ui->labelLeftY->setText(QString::number(this->_profile->getLeftY(gamepad0->buttonsPressed.leftY)));
-    this->ui->labelRightX->setText(QString::number(this->_profile->getRightX(gamepad0->buttonsPressed.rightX)));
-    this->ui->labelRightY->setText(QString::number(this->_profile->getRightY(gamepad0->buttonsPressed.rightY)));
+    this->ui->labelLeftX->setText(QString::number(this->_modes->leftX));
+    this->ui->labelLeftY->setText(QString::number(this->_modes->leftY));
+    this->ui->labelRightX->setText(QString::number(this->_modes->rightX));
+    this->ui->labelRightY->setText(QString::number(this->_modes->rightY));
+
+    if (this->_modes->radioSending) {
+        this->ui->labelRadioSending->setText("yes");
+    } else {
+        this->ui->labelRadioSending->setText("no");
+    }
+
+    if (this->_modes->motorsArmed) {
+        this->ui->labelMotorsArmed->setText("yes");
+    } else {
+        this->ui->labelMotorsArmed->setText("no");
+    }
+
+    if (this->_modes->throttleModeActive) {
+        this->ui->labelThrottleModeActive->setText("yes");
+    } else {
+        this->ui->labelThrottleModeActive->setText("no");
+    }
 
     /*
     SteeringData * gamepad1 = data->take("gamepad1");
@@ -86,8 +99,16 @@ void DialogFly::closeEvent(QCloseEvent *) {
             SIGNAL(signalSteeringsDataChanged(QHash<QString,SteeringData*>*)),
             this,
             SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
+    disconnect(this->_drone,
+            SIGNAL(modesChanged(Modes *)),
+            this,
+            SLOT(slotModesChanged(Modes *)));
 
     this->_drone->stop();
 
     delete this->_profile;
+}
+
+void DialogFly::slotModesChanged(Modes * modes) {
+    this->_modes = modes;
 }

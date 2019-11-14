@@ -1,19 +1,18 @@
 #include "include.h"
 
-SendingArduino::SendingArduino(Drone * drone, SendingRegistry * registry) : SendingInterface(drone, registry) {
+SendingArduino::SendingArduino(Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile) : SendingInterface(drone, sendingRegistry, steeringRegistry) {
     this->_data = new SendingData;
     this->_data->name = "arduino0";
+    this->_profile = profile;
 }
 
 void SendingArduino::start() {
     connect(this,
             SIGNAL(signalSendingDataChanged(SendingData*)),
-            this->registry,
+            this->_sending_registry,
             SLOT(slotSendingDataChanged(SendingData*)));
 
-    this->_thread_box_connect = new ThreadBoxConnect(this->registry);
-    //this->_thread_arduino_ping = new ThreadArduinoPing(this->registry);
-    //this->_thread_arduino_send = new ThreadArduinoSend(this->drone, this->registry);
+    this->_thread_box_connect = new ThreadBoxConnect(this->_drone, this->_sending_registry, this->_steering_registry, this->_profile);
 
     connect(this->_thread_box_connect,
             SIGNAL(signalSendingDataChanged(SendingData *)),
@@ -23,22 +22,16 @@ void SendingArduino::start() {
             SIGNAL(arduinoConnected(QSerialPort *)),
             this,
             SLOT(slotArduinoConnected(QSerialPort *)));
-    //connect(this->_thread_arduino_ping,
-    //        SIGNAL(signalSendingDataChanged(SendingData *)),
-    //        this,
-    //        SLOT(slotSendingDataChanged(SendingData *)));
 
     emit signalSendingDataChanged(this->_data);
 
     this->_thread_box_connect->start();
-    //this->_thread_arduino_ping->start();
-    //this->_thread_arduino_send->start();
 }
 
 void SendingArduino::stop() {
     disconnect(this,
             SIGNAL(signalSendingDataChanged(SendingData*)),
-            this->registry,
+            this->_sending_registry,
             SLOT(slotSendingDataChanged(SendingData*)));
     disconnect(this->_thread_box_connect,
             SIGNAL(signalSendingDataChanged(SendingData *)),
@@ -48,22 +41,16 @@ void SendingArduino::stop() {
             SIGNAL(arduinoConnected(QSerialPort *)),
             this,
             SLOT(slotArduinoConnected(QSerialPort *)));
-    //disconnect(this->_thread_arduino_ping,
-    //        SIGNAL(signalSendingDataChanged(SendingData *)),
-    //        this,
-    //        SLOT(slotSendingDataChanged(SendingData *)));
+    disconnect(this->_steering_registry,
+            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
+            this->_thread_box_connect,
+            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 
     this->_thread_box_connect->terminate();
-    //this->_thread_arduino_ping->terminate();
-    //this->_thread_arduino_send->terminate();
 
     this->_thread_box_connect->wait();
-    //this->_thread_arduino_ping->wait();
-    //this->_thread_arduino_send->wait();
 
     delete this->_thread_box_connect;
-    //delete this->_thread_arduino_ping;
-    //delete this->_thread_arduino_send;
 }
 
 void SendingArduino::slotSendingDataChanged(SendingData * data) {

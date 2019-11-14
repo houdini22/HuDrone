@@ -6,8 +6,11 @@
 class Profile {
 public:
     Profile(T_JSON);
+    static Profile * byName(QString name);
     int getLeftX(double);
     int getLeftY(double);
+    int getMinLeftY();
+    int getMaxLeftY();
     int getRightX(double);
     int getRightY(double);
 private:

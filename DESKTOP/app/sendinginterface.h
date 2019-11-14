@@ -5,6 +5,7 @@
 
 class Drone;
 class SendingRegistry;
+class SteeringRegistry;
 
 struct SendingData {
     QString name = "";
@@ -14,13 +15,14 @@ struct SendingData {
 
 class SendingInterface {
 public:
-    SendingInterface(Drone * drone, SendingRegistry * registry);
+    SendingInterface(Drone *, SendingRegistry *, SteeringRegistry *);
     virtual void start();
     virtual void stop();
     SendingData * getData();
 protected:
-    SendingRegistry * registry;
-    Drone * drone;
+    SendingRegistry * _sending_registry;
+    SteeringRegistry * _steering_registry;
+    Drone * _drone;
     SendingData * _data;
 };
 

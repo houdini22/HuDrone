@@ -10,13 +10,12 @@ class ThreadArduinoSend;
 class SendingArduino : public QObject, public SendingInterface {
     Q_OBJECT
 public:
-    SendingArduino(Drone * drone, SendingRegistry * registry);
+    SendingArduino(Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
     void start() override;
     void stop() override;
 private:
     ThreadBoxConnect * _thread_box_connect = nullptr;
-    //ThreadArduinoPing * _thread_arduino_ping = nullptr;
-    //ThreadArduinoSend * _thread_arduino_send = nullptr;
+    Profile * _profile;
 public slots:
     void slotSendingDataChanged(SendingData *);
     void slotArduinoConnected(QSerialPort *);

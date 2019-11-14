@@ -30,20 +30,20 @@ public:
     void openDialogEditProfile(QString name);
 
     Modes * getModes();
-    void setModes(Modes * modes);
+    void setModes(Modes *);
     SteeringGamepad0 * getGamepad0();
     SteeringGamepad1 * getGamepad1();
     bool hasArduino();
     void deleteArduino();
-    void start();
+    void start(Profile *);
     void stop();
     void setArduino(QSerialPort *);
 private:
-    Modes * modes;
-    SteeringRegistry * steeringRegistry;
-    SendingRegistry * sendingRegistry;
-    SteeringGamepad0 * gamepad0;
-    SteeringGamepad1 * gamepad1;
+    Modes * _modes;
+    SteeringRegistry * _steering_registry;
+    SendingRegistry * _sending_registry;
+    SteeringGamepad0 * _gamepad0;
+    SteeringGamepad1 * _gamepad1;
     bool _has_arduino = false;
     QSerialPort * _arduino = nullptr;
     SendingArduino * _sending_arduino;
@@ -59,7 +59,7 @@ private slots:
     void slotArduinoConnected(QSerialPort *);
 signals:
     void configurationChanged();
-    void signalModesChanged(Modes * modes);
+    void signalModesChanged(Modes * _modes);
     void signalSteeringDataChanged(SteeringData *);
     void signalSendingsDataChanged(QHash<QString,SendingData*>*);
     void signalSteeringsDataChanged(QHash<QString, SteeringData *> *);
