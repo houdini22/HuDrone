@@ -10,10 +10,10 @@ public:
     WizardAddProfilePage6(Config * configuration, Receivers * receivers);
     void showEvent(QShowEvent *);
 private:
-    QHBoxLayout * _layout;
-    Config * _configuration;
-    Receivers * _receivers;
-    WizardConfigChannelTabs * _tabs;
+    QHBoxLayout * _layout = nullptr;
+    Config * _configuration = nullptr;
+    Receivers * _receivers = nullptr;
+    WizardConfigChannelTabs * _tabs = nullptr;
 };
 
 #endif // WIZARDADDPROFILEPAGE6_H

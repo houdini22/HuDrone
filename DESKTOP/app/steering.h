@@ -7,7 +7,7 @@ class ThreadGamepad0;
 class ThreadGamepad0Update;
 class ThreadGamepad1;
 class ThreadGamepad1Update;
-struct ButtonsPressed;
+struct SteeringGamepadButtons;
 class Drone;
 class SteeringRegistry;
 
@@ -16,7 +16,7 @@ struct SteeringData {
     QString name = "";
     bool isConnected = false;
     bool isEnabled = false;
-    ButtonsPressed buttonsPressed;
+    SteeringGamepadButtons buttons;
 };
 
 //

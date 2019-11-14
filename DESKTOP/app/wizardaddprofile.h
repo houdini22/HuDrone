@@ -14,10 +14,10 @@ public:
     Config * getConfiguration();
     Receivers * getReceivers();
 protected:
-    Config * _configuration;
-    Receivers * _receivers;
+    Config * _configuration = nullptr;
+    Receivers * _receivers = nullptr;
+    Drone * _drone = nullptr;
     void saveConfiguration();
-    Drone * _drone;
 protected slots:
     void onFinish();
 };

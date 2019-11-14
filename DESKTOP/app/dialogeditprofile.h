@@ -12,9 +12,9 @@ class DialogEditProfile : public QDialog {
 public:
     DialogEditProfile(QWidget *parent, QString name);
 private:
-    QString _profile_name;
-    QHBoxLayout * _layout;
-    TabsEditProfile * _tabs;
+    QString _profile_name = nullptr;
+    QHBoxLayout * _layout = nullptr;
+    TabsEditProfile * _tabs = nullptr;
     std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
     std::map<int, MyComboBox *> _combos;
     T_JSON _profile_configuration;

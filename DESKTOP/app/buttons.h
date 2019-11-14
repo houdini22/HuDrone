@@ -3,7 +3,7 @@
 
 #include "include.h"
 
-struct ButtonsPressed {
+struct SteeringGamepadButtons {
     double leftX = 0.0;
     double leftY = 0.0;
     double rightX = 0.0;
@@ -28,6 +28,6 @@ struct ButtonsPressed {
     bool guide = false;
 };
 
-Q_DECLARE_METATYPE(ButtonsPressed)
+Q_DECLARE_METATYPE(SteeringGamepadButtons)
 
 #endif // BUTTONS_H

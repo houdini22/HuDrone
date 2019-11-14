@@ -66,7 +66,7 @@ void ThreadGamepadUpdate::run() {
 
             _leftY = std::max((double) data["radio"]["leftY"]["min"].get<int>(), data["radio"]["leftY"]["min"].get<int>() + (_leftY * (data["radio"]["leftY"]["max"].get<int>() - data["radio"]["leftY"]["min"].get<int>())));
 
-            ButtonsPressed buttons;
+            SteeringGamepadButtons buttons;
 
             buttons.leftX = ((int) _leftX);
             buttons.leftY = ((int) _leftY);

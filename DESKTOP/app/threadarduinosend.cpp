@@ -100,7 +100,7 @@ void ThreadArduinoSend::run() {
         QThread::msleep(timeSleep);
 
         Modes * modes = this->_drone->getModes();
-        ButtonsPressed buttons = this->_steering_data->buttonsPressed;
+        SteeringGamepadButtons buttons = this->_steering_data->SteeringGamepadButtons;
         nlohmann::json data;// = Storage::getInstance().getData();
 
         if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {

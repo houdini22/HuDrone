@@ -12,7 +12,7 @@ public:
     WizardUpload(QWidget *parent, Drone * drone);
     void accept() override;
 protected:
-    Drone * _drone;
+    Drone * _drone = nullptr;
 protected slots:
     void onFinish();
 };

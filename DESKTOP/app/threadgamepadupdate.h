@@ -20,7 +20,7 @@ private:
 public slots:
     void slotSteeringDataChanged(SteeringData *);
 signals:
-    void signalButtonsChanged(ButtonsPressed buttons);
+    void signalButtonsChanged(SteeringGamepadButtons buttons);
 };
 
 class ThreadGamepad0Update : public ThreadGamepadUpdate {

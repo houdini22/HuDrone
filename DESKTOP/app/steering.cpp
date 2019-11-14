@@ -32,91 +32,91 @@ void SteeringGamepad0::slotConnectedGamepadsChanged() {
         this->_gamepad = new QGamepad(0, this);
 
         connect(this->_gamepad, &QGamepad::axisLeftXChanged, this, [this](double value) {
-            this->data->buttonsPressed.leftX = value;
+            this->data->buttons.leftX = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::axisLeftYChanged, this, [this](double value) {
-            this->data->buttonsPressed.leftY = value;
+            this->data->buttons.leftY = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::axisRightXChanged, this, [this](double value) {
-            this->data->buttonsPressed.rightX = value;
+            this->data->buttons.rightX = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::axisRightYChanged, this, [this](double value) {
-            this->data->buttonsPressed.rightY = value;
+            this->data->buttons.rightY = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonAChanged, this, [this](bool value) {
-            this->data->buttonsPressed.a = value;
+            this->data->buttons.a = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonBChanged, this, [this](bool value) {
-            this->data->buttonsPressed.b = value;
+            this->data->buttons.b = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonXChanged, this, [this](bool value) {
-            this->data->buttonsPressed.x = value;
+            this->data->buttons.x = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonYChanged, this, [this](bool value) {
-            this->data->buttonsPressed.y = value;
+            this->data->buttons.y = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonL1Changed, this, [this](bool value) {
-            this->data->buttonsPressed.l1 = value;
+            this->data->buttons.l1 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonR1Changed, this, [this](bool value) {
-            this->data->buttonsPressed.r1 = value;
+            this->data->buttons.r1 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonL2Changed, this, [this](bool value) {
-            this->data->buttonsPressed.l2 = value;
+            this->data->buttons.l2 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonR2Changed, this, [this](bool value) {
-            this->data->buttonsPressed.r2 = value;
+            this->data->buttons.r2 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonL3Changed, this, [this](bool value) {
-            this->data->buttonsPressed.l3 = value;
+            this->data->buttons.l3 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonR3Changed, this, [this](bool value) {
-            this->data->buttonsPressed.r3 = value;
+            this->data->buttons.r3 = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonSelectChanged, this, [this](bool value) {
-            this->data->buttonsPressed.select = value;
+            this->data->buttons.select = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonStartChanged, this, [this](bool value) {
-            this->data->buttonsPressed.start = value;
+            this->data->buttons.start = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonUpChanged, this, [this](bool value) {
-            this->data->buttonsPressed.up = value;
+            this->data->buttons.up = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonDownChanged, this, [this](bool value) {
-            this->data->buttonsPressed.down = value;
+            this->data->buttons.down = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonLeftChanged, this, [this](bool value) {
-            this->data->buttonsPressed.left = value;
+            this->data->buttons.left = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonRightChanged, this, [this](bool value) {
-            this->data->buttonsPressed.right = value;
+            this->data->buttons.right = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonCenterChanged, this, [this](bool value) {
-            this->data->buttonsPressed.center = value;
+            this->data->buttons.center = value;
             emit signalSteeringDataChanged(this->data);
         });
         connect(this->_gamepad, &QGamepad::buttonGuideChanged, this, [this](bool value) {
-            this->data->buttonsPressed.guide = value;
+            this->data->buttons.guide = value;
             emit signalSteeringDataChanged(this->data);
         });
     } else {

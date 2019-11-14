@@ -14,10 +14,10 @@ public:
 private:
     int getValueFromChannel(int channelNumber, T_String value);
     void showEvent(QShowEvent *event);
-    QHBoxLayout * _layout;
-    Config * _configuration;
-    Receivers * _receivers;
-    WizardConfigChannelTabs * _tabs;
+    QHBoxLayout * _layout = nullptr;
+    Config * _configuration = nullptr;
+    Receivers * _receivers = nullptr;
+    WizardConfigChannelTabs * _tabs = nullptr;
     std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
     std::map<int, MyComboBox *> _combos;
     QString getStringValueFromChannel(int, T_String);

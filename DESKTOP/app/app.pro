@@ -35,8 +35,6 @@ SOURCES += \
     tabseditprofilegeneraltab.cpp \
     threadarduinosend.cpp \
     threadboxconnect.cpp \
-    threadgamepad.cpp \
-    threadgamepadupdate.cpp \
     wizardaddprofile.cpp \
     wizardaddprofilepage1.cpp \
     wizardaddprofilepage2.cpp \
@@ -80,8 +78,6 @@ HEADERS += \
     tabseditprofilegeneraltab.h \
     threadarduinosend.h \
     threadboxconnect.h \
-    threadgamepad.h \
-    threadgamepadupdate.h \
     ui_dialogthrottleradiosettings.h \
     wizardaddprofile.h \
     wizardaddprofilepage1.h \

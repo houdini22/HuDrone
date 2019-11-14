@@ -9,7 +9,7 @@ class WizardUploadPage4 : public QWizardPage
 public:
     WizardUploadPage4(QWidget * parent = 0);
 private:
-    QVBoxLayout * _layout;
+    QVBoxLayout * _layout = nullptr;
 };
 
 #endif // WIZARDUPLOAPAGE4_H

@@ -1,56 +1,53 @@
 #include "include.h"
 
 SendingRegistry::SendingRegistry(Drone *drone) {
-    this->drone = drone;
-    this->sendingsData = new QHash<QString, SendingData *>;
-    this->modes = new Modes;
+    this->_drone = drone;
+    this->_sendings_data = new QHash<QString, SendingData *>;
+    this->_modes = new Modes;
 }
 
 SendingRegistry::~SendingRegistry() {
-    delete this->modes;
-    this->sendingsData->clear();
-    delete this->sendingsData;
-    this->registry.clear();
+    delete this->_modes;
+    this->_sendings_data->clear();
+    delete this->_sendings_data;
+    this->_registry.clear();
 }
 
 void SendingRegistry::add(SendingInterface * handler) {
-    this->registry.append(handler);
+    this->_registry.append(handler);
+    connect(handler,
+            SIGNAL(signalSendingDataChanged(SendingData *)),
+            this,
+            SLOT(slotSendingDataChanged(SendingData *)));
+    this->_sendings_data->insert(handler->getData()->name, handler->getData());
+    emit signalSendingsDataChanged(this->_sendings_data);
 }
 
-void SendingRegistry::start() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        SendingInterface * _interface = this->registry.at(i);
-        SendingData * data = _interface->getData();
-        this->sendingsData->insert(data->name, data);
-        emit signalSendingDataChanged(data);
-    }
-
-    emit signalSendingsDataChanged(this->sendingsData);
-}
+void SendingRegistry::start() {}
 
 void SendingRegistry::startThreads() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        this->registry.at(i)->start();
+    for (int i = 0; i < this->_registry.size(); i += 1) {
+        this->_registry.at(i)->start();
     }
 }
 
 void SendingRegistry::stopThreads() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        this->registry.at(i)->stop();
+    for (int i = 0; i < this->_registry.size(); i += 1) {
+        this->_registry.at(i)->stop();
     }
 }
 
 void SendingRegistry::slotSendingDataChanged(SendingData * data) {
-    this->sendingsData->insert(data->name, data);
-    emit signalSendingsDataChanged(this->sendingsData);
+    this->_sendings_data->insert(data->name, data);
+    emit signalSendingsDataChanged(this->_sendings_data);
     emit signalSendingDataChanged(data);
 }
 
 Modes * SendingRegistry::getModes() {
-    return this->modes;
+    return this->_modes;
 }
 
 void SendingRegistry::setModes(Modes * modes) {
-    this->modes = modes;
-    emit signalModesChanged(this->modes);
+    this->_modes = modes;
+    emit signalModesChanged(this->_modes);
 }

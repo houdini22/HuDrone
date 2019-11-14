@@ -111,14 +111,6 @@ Modes * Drone::getModes() {
     return this->_modes;
 }
 
-SteeringGamepad0 * Drone::getGamepad0() {
-    return this->_gamepad0;
-}
-
-SteeringGamepad1 * Drone::getGamepad1() {
-    return this->_gamepad1;
-}
-
 void Drone::slotArduinoConnected(QSerialPort * arduino) {
     this->setArduino(arduino);
 }
@@ -143,17 +135,17 @@ void Drone::deleteArduino() {
 
 void Drone::start(Profile * profile) {
     this->_steering_registry = new SteeringRegistry(this);
-    this->_gamepad0 = new SteeringGamepad0(this, this->_steering_registry);
-    this->_steering_registry->add(this->_gamepad0);
+
     connect(this->_steering_registry,
             SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
             this,
             SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 
+    this->_steering_registry->add(new SteeringGamepad0(this, this->_steering_registry));
+
     this->_sending_registry = new SendingRegistry(this);
 
     this->_sending_arduino = new SendingArduino(this, this->_sending_registry, this->_steering_registry, profile);
-    this->_sending_registry->add(this->_sending_arduino);
     connect(this->_sending_arduino,
             SIGNAL(signalArduinoConnected(QSerialPort *)),
             this,
@@ -163,6 +155,10 @@ void Drone::start(Profile * profile) {
             SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
             this,
             SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
+
+    this->_sending_registry->add(this->_sending_arduino);
+
+    emit signalModesChanged(this->_modes);
 
     this->_steering_registry->start();
     this->_sending_registry->start();

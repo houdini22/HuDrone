@@ -31,8 +31,6 @@ public:
 
     Modes * getModes();
     void setModes(Modes *);
-    SteeringGamepad0 * getGamepad0();
-    SteeringGamepad1 * getGamepad1();
     bool hasArduino();
     void deleteArduino();
     void start(Profile *);
@@ -42,8 +40,6 @@ private:
     Modes * _modes;
     SteeringRegistry * _steering_registry;
     SendingRegistry * _sending_registry;
-    SteeringGamepad0 * _gamepad0;
-    SteeringGamepad1 * _gamepad1;
     bool _has_arduino = false;
     QSerialPort * _arduino = nullptr;
     SendingArduino * _sending_arduino;

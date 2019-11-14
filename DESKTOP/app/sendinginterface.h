@@ -13,7 +13,8 @@ struct SendingData {
     QSerialPort * service = NULL;
 };
 
-class SendingInterface {
+class SendingInterface : public QObject {
+    Q_OBJECT
 public:
     SendingInterface(Drone *, SendingRegistry *, SteeringRegistry *);
     virtual void start();

@@ -43,7 +43,7 @@ void ThreadBoxConnect::terminate() {
 void ThreadBoxConnect::send(QString buffer) {
     this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
     if (!this->_arduino->waitForBytesWritten(1000)) {
-        this->disconnect();
+        this->timeout();
     }
 }
 
@@ -214,15 +214,11 @@ void ThreadBoxConnect::run() {
                         while (this->_is_running) {
                             if (step % 5 == 0) {
                                 // ping
-                                this->_arduino->write("p", 1);
-                                if (!this->_arduino->waitForBytesWritten(1000)) {
-                                    this->timeout();
-                                    break;
-                                }
+                                this->send("p");
                             }
 
                             Modes * modes = this->_drone->getModes();
-                            ButtonsPressed buttons = this->_steering_data->buttonsPressed;
+                            SteeringGamepadButtons buttons = this->_steering_data->buttons;
 
                             if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
                                 if (throttleMode) {
@@ -399,6 +395,7 @@ void ThreadBoxConnect::slotSendingDataChanged(SendingData * sendingData) {
 }
 
 void ThreadBoxConnect::slotSteeringsDataChanged(QHash<QString, SteeringData *> * steeringsData) {
+    qDebug() << "slot";
     this->_steerings_data = steeringsData;
     this->_steering_data = steeringsData->take("gamepad0");
 }

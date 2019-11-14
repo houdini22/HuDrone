@@ -9,8 +9,8 @@ class WizardUploadPage1 : public QWizardPage
 public:
     WizardUploadPage1(QWidget *parent = 0);
 private:
-    QLabel * _label;
-    QVBoxLayout * _layout;
+    QLabel * _label = nullptr;
+    QVBoxLayout * _layout = nullptr;
 };
 
 #endif // WIZARDUPLOADPAGE1_H

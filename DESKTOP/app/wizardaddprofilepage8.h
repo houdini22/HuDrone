@@ -10,10 +10,10 @@ public:
     WizardAddProfilePage8(Config * configuration, Receivers * receivers);
     void showEvent(QShowEvent *);
 private:
-    QHBoxLayout * _layout;
-    Config * _configuration;
-    Receivers * _receivers;
-    QLineEdit * _name_input;
+    QHBoxLayout * _layout = nullptr;
+    Config * _configuration = nullptr;
+    Receivers * _receivers = nullptr;
+    QLineEdit * _name_input = nullptr;
 private slots:
     void nameInputTextEdited(const QString &);
 };

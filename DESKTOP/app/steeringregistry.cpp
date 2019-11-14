@@ -1,48 +1,45 @@
 #include "include.h"
 
 SteeringRegistry::SteeringRegistry(Drone *drone) {
-    this->drone = drone;
-    this->steeringsData = new QHash<QString, SteeringData *>;
+    this->_drone = drone;
+    this->_steerings_data = new QHash<QString, SteeringData *>;
 }
 
 SteeringRegistry::~SteeringRegistry() {
-    this->steeringsData->clear();
-    delete this->steeringsData;
+    this->_steerings_data->clear();
+    delete this->_steerings_data;
 }
 
 void SteeringRegistry::add(SteeringInterface * handler) {
-    this->registry.append(handler);
-
+    this->_registry.append(handler);
     connect(handler,
             SIGNAL(signalSteeringDataChanged(SteeringData *)),
             this,
             SLOT(slotSteeringDataChanged(SteeringData *)));
-
-    this->steeringsData->insert(handler->getData()->name, handler->getData());
+    this->_steerings_data->insert(handler->getData()->name, handler->getData());
+    emit signalSteeringsDataChanged(this->_steerings_data);
 }
 
 void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
-    this->steeringsData->insert(data->name, data);
-    emit signalSteeringsDataChanged(this->steeringsData);
+    this->_steerings_data->insert(data->name, data);
+    emit signalSteeringsDataChanged(this->_steerings_data);
     emit signalSteeringDataChanged(data);
 }
 
-void SteeringRegistry::start() {
-
-}
+void SteeringRegistry::start() {}
 
 void SteeringRegistry::startThreads() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        this->registry.at(i)->start();
+    for (int i = 0; i < this->_registry.size(); i += 1) {
+        this->_registry.at(i)->start();
     }
 }
 
 void SteeringRegistry::stopThreads() {
-    for (int i = 0; i < this->registry.size(); i += 1) {
-        this->registry.at(i)->stop();
+    for (int i = 0; i < this->_registry.size(); i += 1) {
+        this->_registry.at(i)->stop();
     }
 }
 
 QHash<QString, SteeringData *> * SteeringRegistry::getData() {
-    return this->steeringsData;
+    return this->_steerings_data;
 }

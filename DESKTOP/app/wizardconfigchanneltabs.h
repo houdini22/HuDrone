@@ -12,7 +12,7 @@ public:
     QTabWidget * getTabWidget();
     QWidget * getTab(int);
 private:
-    QTabWidget * _tab_widget;
+    QTabWidget * _tab_widget = nullptr;
 };
 
 #endif // WIZARDCONFIGCHANNELTABS_H

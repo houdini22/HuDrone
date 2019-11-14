@@ -9,11 +9,11 @@ class WizardAddProfilePage2 : public QWizardPage
 public:
     WizardAddProfilePage2(Config * configuration);
 private:
-    QPushButton * _button_glove;
-    QPushButton * _button_gamepad;
-    QGroupBox * _group_box;
-    QHBoxLayout * _layout;
-    Config * _configuration;
+    QPushButton * _button_glove = nullptr;
+    QPushButton * _button_gamepad = nullptr;
+    QGroupBox * _group_box = nullptr;
+    QHBoxLayout * _layout = nullptr;
+    Config * _configuration = nullptr;
 private slots:
     void handleButtonGlove();
     void handleButtonGamepad();

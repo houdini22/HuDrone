@@ -10,25 +10,25 @@ struct SendingData;
 class SendingRegistry : public QObject {
     Q_OBJECT
 public:
-    SendingRegistry(Drone * drone);
+    SendingRegistry(Drone * _drone);
     ~SendingRegistry();
     void add(SendingInterface * handler);
     void start();
     void startThreads();
     void stopThreads();
     Modes * getModes();
-    void setModes(Modes * modes);
+    void setModes(Modes * _modes);
 private:
-    QList<SendingInterface *> registry;
-    Drone * drone;
-    QHash<QString, SendingData *> * sendingsData;
-    Modes * modes;
+    QList<SendingInterface *> _registry;
+    Drone * _drone;
+    QHash<QString, SendingData *> * _sendings_data;
+    Modes * _modes;
 signals:
     void signalSendingDataChanged(SendingData *);
     void signalSendingsDataChanged(QHash<QString, SendingData *> *);
     void signalModesChanged(Modes *);
 public slots:
-    void slotSendingDataChanged(SendingData*);
+    void slotSendingDataChanged(SendingData *);
 };
 
 #endif // STEERINGREGISTRY_H
