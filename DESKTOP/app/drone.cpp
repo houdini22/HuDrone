@@ -144,29 +144,11 @@ void Drone::start(Profile * profile) {
 
     this->_steering_registry->start();
     this->_sending_registry->start();
-
-    this->_steering_registry->startThreads();
-    this->_sending_registry->startThreads();
 }
 
 void Drone::stop() {
-    disconnect(this->_sending_arduino,
-               SIGNAL(signalArduinoConnected(QSerialPort *)),
-               this,
-               SLOT(slotArduinoConnected(QSerialPort *)));
-
-    disconnect(this->_steering_registry,
-               SIGNAL(signalSteeringDataChanged(SteeringData*)),
-               this,
-               SLOT(slotSteeringDataChanged(SteeringData*)));
-
-    disconnect(this->_sending_registry,
-               SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
-               this,
-               SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-
-    this->_sending_registry->stopThreads();
-    this->_steering_registry->stopThreads();
+    this->_sending_registry->stop();
+    this->_steering_registry->stop();
 
     this->deleteArduino();
 

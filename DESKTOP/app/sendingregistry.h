@@ -15,8 +15,7 @@ public:
     ~SendingRegistry();
     void add(SendingInterface * handler);
     void start();
-    void startThreads();
-    void stopThreads();
+    void stop();
     Modes * getModes();
     void setModes(Modes * _modes);
     QHash<QString, SendingData *> * getData();
@@ -25,6 +24,8 @@ private:
     Drone * _drone;
     QHash<QString, SendingData *> * _sendings_data;
     Modes * _modes;
+    void startThreads();
+    void stopThreads();
 signals:
     void signalSendingDataChanged(SendingData *);
     void signalSendingsDataChanged(QHash<QString, SendingData *> *);

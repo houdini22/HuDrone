@@ -310,7 +310,7 @@
         <string>Throttle mode</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_10">
+      <widget class="QLabel" name="labelThrottleLevel_2">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -430,7 +430,7 @@
         </font>
        </property>
        <property name="text">
-        <string>no</string>
+        <string>0%</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

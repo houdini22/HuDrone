@@ -13,6 +13,7 @@ public:
     int getMaxLeftY();
     int getRightX(double);
     int getRightY(double);
+    int getThrottleSteps();
 private:
     T_JSON _configuration;
     T_JSON getFunction(QString name);

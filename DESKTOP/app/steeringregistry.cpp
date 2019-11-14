@@ -27,6 +27,11 @@ void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
 
 void SteeringRegistry::start() {
     emit signalSteeringsDataChanged(this->_steerings_data);
+    this->startThreads();
+}
+
+void SteeringRegistry::stop() {
+    this->stopThreads();
 }
 
 void SteeringRegistry::startThreads() {

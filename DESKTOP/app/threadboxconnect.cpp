@@ -212,16 +212,17 @@ void ThreadBoxConnect::run() {
                         int sendingThrustDown = 0;
 
                         while (this->_is_running) {
-                            QThread::msleep(40);
+                            QThread::msleep(1);
 
-                            if (step % 5 == 0) {
-                                // ping
+                            // ping 100 ms
+                            if (step % 100 == 0) {
                                 this->send("p");
                             }
 
                             Modes * modes = this->_drone->getModes();
                             SteeringGamepadButtons buttons = this->_steering_data->buttons;
 
+                            // send
                             if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
                                 if (throttleMode) {
                                     this->setRadioValues(
@@ -229,61 +230,45 @@ void ThreadBoxConnect::run() {
                                                 leftY,
                                                 this->_profile->getRightX(buttons.rightX),
                                                 this->_profile->getRightY(buttons.rightY));
-                                    this->send(this->createAxisBuffer(this->_leftX, this->_leftY, this->_rightX, this->_rightY));
+                                    this->send(this->createAxisBuffer(this->_leftX, leftY, this->_rightX, this->_rightY));
                                 } else {
                                     this->setRadioValues(
                                                 this->_profile->getLeftX(buttons.leftX),
-                                                leftY,
+                                                this->_profile->getLeftY(buttons.leftY),
                                                 this->_profile->getRightX(buttons.rightX),
                                                 this->_profile->getRightY(buttons.rightY));
                                     this->send(this->createAxisBuffer(this->_leftX, this->_leftY, this->_rightX, this->_rightY));
                                 }
                             }
 
-                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) { // listening buttons
+                            // listening buttons
+                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
                                 if (buttons.down) { // toggle Throttle mode
-                                    sendingThrottle = 4;
+                                    sendingThrottle = 50;
                                     continue;
                                 }
 
-                                if (buttons.left) {
-                                    sendingThrustDown = 4;
+                                if (buttons.l2) {
+                                    sendingThrustDown = 50;
                                     continue;
                                 }
 
-                                if (buttons.right) {
-                                    sendingThrustUp = 4;
+                                if (buttons.r2) {
+                                    sendingThrustUp = 50;
+                                    continue;
                                 }
 
-                                if (buttons.start && !armingMode) { // toggle sending
-                                    sendingStart = 4;
+                                // toggle sending
+                                if (buttons.start && !armingMode) {
+                                    sendingStart = 50;
                                     continue;
                                 }
 
                                 if (startMode) { // if toggled sendinf true
                                     if (buttons.l1 && buttons.r1) { // if arming
-                                        sendingArm = 40 * 5;
+                                        sendingArm = 50;
                                         continue;
                                     }
-                                }
-
-                                if (throttleMode) { // a on
-                                    if (buttons.l2) {
-                                        sendingLeftY = 2;
-
-                                        leftY -= 10;
-                                        if (leftY < this->_profile->getMinLeftY()) {
-                                            leftY = this->_profile->getMinLeftY();
-                                        }
-                                    } else if (buttons.r2) {
-                                        sendingLeftY = 2;
-
-                                        leftY += 10;
-                                        if (leftY > this->_profile->getMaxLeftY()) {
-                                            leftY = this->_profile->getMaxLeftY();
-                                        }
-                                    }
-                                    continue;
                                 }
                             }
 
@@ -344,9 +329,9 @@ void ThreadBoxConnect::run() {
                                 sendingThrustUp--;
 
                                 if (sendingThrustUp == 0) {
-                                    modes->thrust += 0.1;
+                                    modes->thrust += (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
                                     if (modes->thrust > 1.0) {
-                                        modes->thrust = 0.1;
+                                        modes->thrust = 1.0;
                                     }
                                     this->_drone->setModes(modes);
                                 }
@@ -356,9 +341,9 @@ void ThreadBoxConnect::run() {
                                 sendingThrustDown--;
 
                                 if (sendingThrustDown == 0) {
-                                    modes->thrust -= 0.1;
-                                    if (modes->thrust == 0.0) {
-                                        modes->thrust = 0.1;
+                                    modes->thrust -= (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+                                    if (modes->thrust < 0.0) {
+                                        modes->thrust = 0.0;
                                     }
                                     this->_drone->setModes(modes);
                                 }

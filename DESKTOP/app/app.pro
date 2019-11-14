@@ -19,8 +19,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 LIBS += -lstdc++fs
 
 SOURCES += \
-    dialogeditprofile.cpp \
-    dialogfly.cpp \
+    ui/dialogeditprofile.cpp \
+    ui/dialogfly.cpp \
     drone.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -35,28 +35,26 @@ SOURCES += \
     tabseditprofilegeneraltab.cpp \
     threadarduinosend.cpp \
     threadboxconnect.cpp \
-    wizardaddprofile.cpp \
-    wizardaddprofilepage1.cpp \
-    wizardaddprofilepage2.cpp \
-    wizardaddprofilepage3.cpp \
-    wizardaddprofilepage4.cpp \
-    wizardaddprofilepage5.cpp \
-    wizardaddprofilepage6.cpp \
-    wizardaddprofilepage7.cpp \
-    wizardaddprofilepage8.cpp \
-    wizardconfigchanneltabs.cpp \
-    wizardconfiggeneralchanneltab.cpp \
-    wizardupload.cpp \
-    wizarduploadpage1.cpp \
-    wizarduploadpage2.cpp \
-    wizarduploadpage3.cpp \
-    wizarduploadpage4.cpp
+    ui/wizardaddprofile.cpp \
+    ui/wizardaddprofilepage1.cpp \
+    ui/wizardaddprofilepage2.cpp \
+    ui/wizardaddprofilepage3.cpp \
+    ui/wizardaddprofilepage4.cpp \
+    ui/wizardaddprofilepage5.cpp \
+    ui/wizardaddprofilepage6.cpp \
+    ui/wizardaddprofilepage7.cpp \
+    ui/wizardaddprofilepage8.cpp \
+    ui/wizardconfigchanneltabs.cpp \
+    ui/wizardconfiggeneralchanneltab.cpp \
+    ui/wizardupload.cpp \
+    ui/wizarduploadpage1.cpp \
+    ui/wizarduploadpage2.cpp \
+    ui/wizarduploadpage3.cpp \
+    ui/wizarduploadpage4.cpp
 
 HEADERS += \
     buttons.h \
     config.h \
-    dialogeditprofile.h \
-    dialogfly.h \
     drone.h \
     dronemodes.h \
     filesystem.h \
@@ -78,23 +76,24 @@ HEADERS += \
     tabseditprofilegeneraltab.h \
     threadarduinosend.h \
     threadboxconnect.h \
-    ui_dialogthrottleradiosettings.h \
-    wizardaddprofile.h \
-    wizardaddprofilepage1.h \
-    wizardaddprofilepage2.h \
-    wizardaddprofilepage3.h \
-    wizardaddprofilepage4.h \
-    wizardaddprofilepage5.h \
-    wizardaddprofilepage6.h \
-    wizardaddprofilepage7.h \
-    wizardaddprofilepage8.h \
-    wizardconfigchanneltabs.h \
-    wizardconfiggeneralchanneltab.h \
-    wizardupload.h \
-    wizarduploadpage1.h \
-    wizarduploadpage2.h \
-    wizarduploadpage3.h \
-    wizarduploadpage4.h
+    ui/dialogeditprofile.h \
+    ui/dialogfly.h \
+    ui/wizardaddprofile.h \
+    ui/wizardaddprofilepage1.h \
+    ui/wizardaddprofilepage2.h \
+    ui/wizardaddprofilepage3.h \
+    ui/wizardaddprofilepage4.h \
+    ui/wizardaddprofilepage5.h \
+    ui/wizardaddprofilepage6.h \
+    ui/wizardaddprofilepage7.h \
+    ui/wizardaddprofilepage8.h \
+    ui/wizardconfigchanneltabs.h \
+    ui/wizardconfiggeneralchanneltab.h \
+    ui/wizardupload.h \
+    ui/wizarduploadpage1.h \
+    ui/wizarduploadpage2.h \
+    ui/wizarduploadpage3.h \
+    ui/wizarduploadpage4.h
 
 FORMS += \
     dialogfly.ui \

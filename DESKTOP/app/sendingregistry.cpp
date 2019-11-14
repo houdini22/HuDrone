@@ -20,6 +20,11 @@ void SendingRegistry::add(SendingInterface * handler) {
 
 void SendingRegistry::start() {
     emit signalSendingsDataChanged(this->_sendings_data);
+    this->startThreads();
+}
+
+void SendingRegistry::stop() {
+    this->stopThreads();
 }
 
 void SendingRegistry::startThreads() {

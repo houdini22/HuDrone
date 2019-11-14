@@ -21,7 +21,7 @@ struct Modes {
     bool radioSending = false;
     bool motorsArmed = false;
     bool throttleModeActive = false;
-    double thrust = 1.0;
+    double thrust = 0.0;
 };
 
 

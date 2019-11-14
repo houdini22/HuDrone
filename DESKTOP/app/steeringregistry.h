@@ -14,13 +14,14 @@ public:
     ~SteeringRegistry();
     void add(SteeringInterface * handler);
     void start();
-    void startThreads();
-    void stopThreads();
+    void stop();
     QHash<QString, SteeringData *> * getData();
 private:
     QList<SteeringInterface *> _registry;
     Drone * _drone;
     QHash<QString, SteeringData *> * _steerings_data;
+    void startThreads();
+    void stopThreads();
 public slots:
     void slotSteeringDataChanged(SteeringData *);
 signals:

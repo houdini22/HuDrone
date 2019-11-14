@@ -10,8 +10,7 @@ typedef std::vector<std::string> T_ConfigPaths;
 
 #define CONFIG_FILE_NAME "config.json"
 
-class Config
-{
+class Config {
     public:
         static Config& getInstance() {
             static Config instance;

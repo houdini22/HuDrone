@@ -92,6 +92,8 @@ void DialogFly::slotModesChanged(Modes * modes) {
     } else {
         this->ui->labelThrottleModeActive->setText("no");
     }
+
+    this->ui->labelThrottleLevel->setText(QString::number(this->_modes->thrust * 100.0) + "%");
 }
 
 void DialogFly::closeEvent(QCloseEvent *) {

@@ -59,8 +59,13 @@ int WizardAddProfilePage7::myTextEdited(QString text, QString) {
                 T_String min = data["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>();
                 T_String max = data["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>();
 
-                result = (QString(max.c_str()).toInt() - QString(min.c_str()).toInt()) / text.toInt();
-                _label_throttle_value->setText(QString::number(result));
+                if (text.toInt() != 0) {
+                    result = (QString(max.c_str()).toInt() - QString(min.c_str()).toInt()) / text.toInt();
+                    _label_throttle_value->setText(QString::number(result));
+
+                    data["radio"]["throttleSteps"] = text.toInt();
+                    this->_configuration->setData(data);
+                }
                 break;
             }
         } catch(std::domain_error) {

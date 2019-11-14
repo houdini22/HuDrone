@@ -41,6 +41,10 @@ int Profile::getRightY(double value) {
     return this->getValueToSend(this->getFunction("yaw"), value, true);
 }
 
+int Profile::getThrottleSteps() {
+    return this->_configuration["radio"]["throttleSteps"].get<int>();
+}
+
 T_JSON Profile::getFunction(QString name) {
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
         if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(name.toStdString()) == 0) {
