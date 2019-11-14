@@ -106,7 +106,7 @@ void DialogFly::closeEvent(QCloseEvent *) {
             this,
             SLOT(slotSteeringsDataChanged(QHash<QString,SteeringData*>*)));
     disconnect(this->_drone,
-            SIGNAL(modesChanged(Modes *)),
+            SIGNAL(signalModesChanged(Modes *)),
             this,
             SLOT(slotModesChanged(Modes *)));
 

@@ -248,12 +248,12 @@ void ThreadBoxConnect::run() {
                                     continue;
                                 }
 
-                                if (buttons.l2) {
+                                if (buttons.left) {
                                     sendingThrustDown = 50;
                                     continue;
                                 }
 
-                                if (buttons.r2) {
+                                if (buttons.right) {
                                     sendingThrustUp = 50;
                                     continue;
                                 }
@@ -265,7 +265,7 @@ void ThreadBoxConnect::run() {
                                 }
 
                                 if (startMode) { // if toggled sendinf true
-                                    if (buttons.l1 && buttons.r1) { // if arming
+                                    if (buttons.l2 && buttons.r2) { // if arming
                                         sendingArm = 50;
                                         continue;
                                     }
@@ -289,12 +289,6 @@ void ThreadBoxConnect::run() {
                             }
 
                             if (sendingArm > 0) {
-                                if (!armingMode) {
-
-                                } else {
-
-                                }
-
                                 sendingArm--;
                                 if (sendingArm == 0) {
                                     if (!armingMode) {
@@ -304,32 +298,27 @@ void ThreadBoxConnect::run() {
                                     }
                                     armingMode = !armingMode;
                                 }
-
                                 continue;
                             }
 
                             if (sendingThrottle > 0) {
                                 sendingThrottle--;
-
                                 if (sendingThrottle == 0) {
                                     throttleMode = !throttleMode;
                                     this->setThrottleMode(throttleMode);
                                 }
-
                                 continue;
                             }
 
                             if (sendingLeftY > 0) {
                                 sendingLeftY--;
-
                                 continue;
                             }
 
                             if (sendingThrustUp > 0) {
                                 sendingThrustUp--;
-
                                 if (sendingThrustUp == 0) {
-                                    modes->thrust += (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+                                    modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
                                     if (modes->thrust > 1.0) {
                                         modes->thrust = 1.0;
                                     }
@@ -339,9 +328,8 @@ void ThreadBoxConnect::run() {
 
                             if (sendingThrustDown > 0) {
                                 sendingThrustDown--;
-
                                 if (sendingThrustDown == 0) {
-                                    modes->thrust -= (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+                                    modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
                                     if (modes->thrust < 0.0) {
                                         modes->thrust = 0.0;
                                     }

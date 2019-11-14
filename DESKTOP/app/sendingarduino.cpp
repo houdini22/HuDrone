@@ -17,6 +17,10 @@ SendingArduino::SendingArduino(Drone * drone, SendingRegistry * sendingRegistry,
             SIGNAL(signalSendingDataChanged(SendingData*)),
             this->_sending_registry,
             SLOT(slotSendingDataChanged(SendingData*)));
+}
+
+void SendingArduino::start() {    
+    this->_thread_box_connect = new ThreadBoxConnect(this->_drone, this->_sending_registry, this->_steering_registry, this->_profile);
     connect(this->_thread_box_connect,
             SIGNAL(signalSendingDataChanged(SendingData *)),
             this,
@@ -25,10 +29,6 @@ SendingArduino::SendingArduino(Drone * drone, SendingRegistry * sendingRegistry,
             SIGNAL(arduinoConnected(QSerialPort *)),
             this,
             SLOT(slotArduinoConnected(QSerialPort *)));
-}
-
-void SendingArduino::start() {    
-    this->_thread_box_connect = new ThreadBoxConnect(this->_drone, this->_sending_registry, this->_steering_registry, this->_profile);
     emit signalSendingDataChanged(this->_data);
     this->_thread_box_connect->start();
 }

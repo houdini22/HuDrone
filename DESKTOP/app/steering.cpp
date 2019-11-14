@@ -1,6 +1,5 @@
 #include "include.h"
 
-//
 SteeringInterface::SteeringInterface(Drone * drone, SteeringRegistry * registry) {
     this->_drone = drone;
     this->_registry = registry;
@@ -10,10 +9,15 @@ SteeringData * SteeringInterface::getData() {
     return this->_data;
 }
 
-SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * registry) : SteeringInterface(drone, registry) {
+SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * steeringRegistry) : SteeringInterface(drone, steeringRegistry) {
     this->_data = new SteeringData;
     this->_data->name = "gamepad0";
     this->_data->isEnabled = true;
+
+    connect(steeringRegistry,
+            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
+            this->_drone,
+            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 
     this->_gamepads = QGamepadManager::instance();
     connect(this->_gamepads, SIGNAL(connectedGamepadsChanged()), this, SLOT(slotConnectedGamepadsChanged()));
