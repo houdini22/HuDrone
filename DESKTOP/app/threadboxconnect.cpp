@@ -7,11 +7,16 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
     this->_sending_registry = registry;
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
+    this->_steering_data = this->_steering_registry->getData()->take("gamepad0");
 
     connect(this->_sending_registry,
-            SIGNAL(signalSendingDataChanged(SendingData*)),
+            SIGNAL(signalSendingDataChanged(SendingData *)),
             this,
             SLOT(slotSendingDataChanged(SendingData *)));
+    connect(this->_steering_registry,
+            SIGNAL(signalSteeringDataChanged(SteeringData *)),
+            this,
+            SLOT(slotSteeringDataChanged(SteeringData *)));
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
@@ -19,6 +24,10 @@ ThreadBoxConnect::~ThreadBoxConnect() {
                SIGNAL(signalSendingDataChanged(SendingData*)),
                this,
                SLOT(slotSendingDataChanged(SendingData *)));
+    disconnect(this->_steering_registry,
+            SIGNAL(signalSteeringDataChanged(SteeringData *)),
+            this,
+            SLOT(slotSteeringDataChanged(SteeringData *)));
 }
 
 void ThreadBoxConnect::start() {
@@ -209,7 +218,7 @@ void ThreadBoxConnect::run() {
                             }
 
                             Modes * modes = this->_drone->getModes();
-                            SteeringGamepadButtons buttons = this->_steering_registry->getData()->take("gamepad0")->buttons;
+                            SteeringGamepadButtons buttons = this->_steering_data->buttons;
 
                             if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
                                 if (throttleMode) {
@@ -382,5 +391,11 @@ void ThreadBoxConnect::run() {
 void ThreadBoxConnect::slotSendingDataChanged(SendingData * sendingData) {
     if (sendingData->name.compare("arduino0") == 0) {
         this->_sending_data = sendingData;
+    }
+}
+
+void ThreadBoxConnect::slotSteeringDataChanged(SteeringData * steeringData) {
+    if (steeringData->name.compare("gamepad0") == 0) {
+        this->_steering_data = steeringData;
     }
 }

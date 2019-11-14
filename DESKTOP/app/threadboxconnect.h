@@ -32,12 +32,14 @@ protected:
     void setThrottleMode(bool value);
     void setRadioValues(int leftX, int leftY, int rightX, int rightY);
     SendingData * _sending_data;
+    SteeringData * _steering_data;
 signals:
     void arduinoConnected(QSerialPort *);
     void signalSendingDataChanged(SendingData *);
 public slots:
     void terminate();
     void slotSendingDataChanged(SendingData * sendingData);
+    void slotSteeringDataChanged(SteeringData * steeringData);
 };
 
 #endif // THREADBOXCONNECT_H
