@@ -5,6 +5,7 @@
 
 class Drone;
 class SendingInterface;
+class SendingArduino;
 struct SendingData;
 
 class SendingRegistry : public QObject {

@@ -15,10 +15,6 @@ SendingRegistry::~SendingRegistry() {
 
 void SendingRegistry::add(SendingInterface * handler) {
     this->_registry.append(handler);
-    connect(handler,
-            SIGNAL(signalSendingDataChanged(SendingData *)),
-            this,
-            SLOT(slotSendingDataChanged(SendingData *)));
     this->_sendings_data->insert(handler->getData()->name, handler->getData());
     emit signalSendingsDataChanged(this->_sendings_data);
 }

@@ -54,6 +54,22 @@ void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
         label->setText("connect...");
     }
 
+    /*
+    SteeringData * gamepad1 = data->take("gamepad1");
+    QLabel * label2 = this->ui->labelDeviceGamepad1;
+    if (gamepad1->isConnected) {
+        label2->setDisabled(false);
+        label2->setText("connected");
+    } else {
+        label2->setDisabled(true);
+        label2->setText("connect...");
+    }
+    */
+}
+
+void DialogFly::slotModesChanged(Modes * modes) {
+    this->_modes = modes;
+
     this->ui->labelLeftX->setText(QString::number(this->_modes->leftX));
     this->ui->labelLeftY->setText(QString::number(this->_modes->leftY));
     this->ui->labelRightX->setText(QString::number(this->_modes->rightX));
@@ -76,18 +92,6 @@ void DialogFly::slotSteeringsDataChanged(QHash<QString,SteeringData*>* data) {
     } else {
         this->ui->labelThrottleModeActive->setText("no");
     }
-
-    /*
-    SteeringData * gamepad1 = data->take("gamepad1");
-    QLabel * label2 = this->ui->labelDeviceGamepad1;
-    if (gamepad1->isConnected) {
-        label2->setDisabled(false);
-        label2->setText("connected");
-    } else {
-        label2->setDisabled(true);
-        label2->setText("connect...");
-    }
-    */
 }
 
 void DialogFly::closeEvent(QCloseEvent *) {
@@ -107,8 +111,4 @@ void DialogFly::closeEvent(QCloseEvent *) {
     this->_drone->stop();
 
     delete this->_profile;
-}
-
-void DialogFly::slotModesChanged(Modes * modes) {
-    this->_modes = modes;
 }

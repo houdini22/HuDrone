@@ -23,14 +23,14 @@ struct SteeringData {
 class SteeringInterface : public QObject {
     Q_OBJECT
 public:
-    SteeringInterface(Drone * drone, SteeringRegistry * registry);
+    SteeringInterface(Drone * _drone, SteeringRegistry * _registry);
     virtual void start();
     virtual void stop();
     SteeringData * getData();
 protected:
-    SteeringRegistry * registry;
-    Drone * drone;
-    SteeringData * data;
+    SteeringRegistry * _registry;
+    Drone * _drone;
+    SteeringData * _data;
 signals:
     void signalSteeringDataChanged(SteeringData *);
 };
@@ -39,7 +39,7 @@ signals:
 class SteeringGamepad0 : public SteeringInterface {
     Q_OBJECT
 public:
-    SteeringGamepad0(Drone * drone, SteeringRegistry * registry);
+    SteeringGamepad0(Drone * _drone, SteeringRegistry * _registry);
     void start() override;
 private:
     QGamepadManager * _gamepads = nullptr;

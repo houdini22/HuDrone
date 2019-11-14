@@ -4,8 +4,9 @@
 #include "include.h"
 
 class ThreadBoxConnect;
+class SendingInterface;
 
-class SendingArduino : public SendingInterface {
+class SendingArduino : public QObject, public SendingInterface {
     Q_OBJECT
 public:
     SendingArduino(Drone *, SendingRegistry *, SteeringRegistry *, Profile *);

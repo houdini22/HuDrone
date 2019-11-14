@@ -135,12 +135,6 @@ void Drone::deleteArduino() {
 
 void Drone::start(Profile * profile) {
     this->_steering_registry = new SteeringRegistry(this);
-
-    connect(this->_steering_registry,
-            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
-            this,
-            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
-
     this->_steering_registry->add(new SteeringGamepad0(this, this->_steering_registry));
 
     this->_sending_registry = new SendingRegistry(this);

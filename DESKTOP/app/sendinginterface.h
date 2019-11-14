@@ -10,11 +10,10 @@ class SteeringRegistry;
 struct SendingData {
     QString name = "";
     int mode = MODE_ARDUINO_DISCONNECTED;
-    QSerialPort * service = NULL;
+    QSerialPort * service = nullptr;
 };
 
-class SendingInterface : public QObject {
-    Q_OBJECT
+class SendingInterface {
 public:
     SendingInterface(Drone *, SendingRegistry *, SteeringRegistry *);
     virtual void start();
