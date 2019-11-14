@@ -12,22 +12,13 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
             SIGNAL(signalSendingDataChanged(SendingData*)),
             this,
             SLOT(slotSendingDataChanged(SendingData *)));
-
-    connect(this->_steering_registry,
-            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
-            this,
-            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
     disconnect(this->_sending_registry,
-            SIGNAL(signalSendingDataChanged(SendingData*)),
-            this,
-            SLOT(slotSendingDataChanged(SendingData *)));
-    disconnect(this->_steering_registry,
-            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> * steeringsData)),
-            this,
-            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> * steeringsData)));
+               SIGNAL(signalSendingDataChanged(SendingData*)),
+               this,
+               SLOT(slotSendingDataChanged(SendingData *)));
 }
 
 void ThreadBoxConnect::start() {
@@ -218,7 +209,7 @@ void ThreadBoxConnect::run() {
                             }
 
                             Modes * modes = this->_drone->getModes();
-                            SteeringGamepadButtons buttons = this->_steering_data->buttons;
+                            SteeringGamepadButtons buttons = this->_steering_registry->getData()->take("gamepad0")->buttons;
 
                             if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
                                 if (throttleMode) {
@@ -392,10 +383,4 @@ void ThreadBoxConnect::slotSendingDataChanged(SendingData * sendingData) {
     if (sendingData->name.compare("arduino0") == 0) {
         this->_sending_data = sendingData;
     }
-}
-
-void ThreadBoxConnect::slotSteeringsDataChanged(QHash<QString, SteeringData *> * steeringsData) {
-    qDebug() << "slot";
-    this->_steerings_data = steeringsData;
-    this->_steering_data = steeringsData->take("gamepad0");
 }

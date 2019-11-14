@@ -6,28 +6,21 @@ SteeringInterface::SteeringInterface(Drone * drone, SteeringRegistry * registry)
     this->_registry = registry;
 }
 
-void SteeringInterface::start() {}
-
-void SteeringInterface::stop() {}
-
 SteeringData * SteeringInterface::getData() {
     return this->_data;
 }
 
 SteeringGamepad0::SteeringGamepad0(Drone * drone, SteeringRegistry * registry) : SteeringInterface(drone, registry) {
     this->_data = new SteeringData;
-    this->_data->name = "gamepad0";
+    this->_data->name = this->getName();
     this->_data->isEnabled = true;
-
-    connect(this,
-            SIGNAL(signalSteeringDataChanged(SteeringData *)),
-            this->_registry,
-            SLOT(slotSteeringDataChanged(SteeringData *)));
 
     this->_gamepads = QGamepadManager::instance();
     connect(this->_gamepads, SIGNAL(connectedGamepadsChanged()), this, SLOT(slotConnectedGamepadsChanged()));
+}
 
-    this->slotConnectedGamepadsChanged();
+QString SteeringGamepad0::getName() {
+    return "gamepad0";
 }
 
 void SteeringGamepad0::slotConnectedGamepadsChanged() {
@@ -136,5 +129,5 @@ void SteeringGamepad0::slotConnectedGamepadsChanged() {
 }
 
 void SteeringGamepad0::start() {
-
+   this->slotConnectedGamepadsChanged();
 }

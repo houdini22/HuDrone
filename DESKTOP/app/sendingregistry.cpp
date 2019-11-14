@@ -16,10 +16,11 @@ SendingRegistry::~SendingRegistry() {
 void SendingRegistry::add(SendingInterface * handler) {
     this->_registry.append(handler);
     this->_sendings_data->insert(handler->getData()->name, handler->getData());
-    emit signalSendingsDataChanged(this->_sendings_data);
 }
 
-void SendingRegistry::start() {}
+void SendingRegistry::start() {
+    emit signalSendingsDataChanged(this->_sendings_data);
+}
 
 void SendingRegistry::startThreads() {
     for (int i = 0; i < this->_registry.size(); i += 1) {
@@ -41,6 +42,10 @@ void SendingRegistry::slotSendingDataChanged(SendingData * data) {
 
 Modes * SendingRegistry::getModes() {
     return this->_modes;
+}
+
+QHash<QString, SendingData *> * SendingRegistry::getData() {
+    return this->_sendings_data;
 }
 
 void SendingRegistry::setModes(Modes * modes) {

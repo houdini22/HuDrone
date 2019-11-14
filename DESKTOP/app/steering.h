@@ -24,8 +24,9 @@ class SteeringInterface : public QObject {
     Q_OBJECT
 public:
     SteeringInterface(Drone * _drone, SteeringRegistry * _registry);
-    virtual void start();
-    virtual void stop();
+    virtual void start() {}
+    virtual void stop() {}
+    virtual QString getName() {}
     SteeringData * getData();
 protected:
     SteeringRegistry * _registry;
@@ -41,6 +42,7 @@ class SteeringGamepad0 : public SteeringInterface {
 public:
     SteeringGamepad0(Drone * _drone, SteeringRegistry * _registry);
     void start() override;
+    QString getName() override;
 private:
     QGamepadManager * _gamepads = nullptr;
     QGamepad * _gamepad = nullptr;

@@ -19,6 +19,7 @@ public:
     void stopThreads();
     Modes * getModes();
     void setModes(Modes * _modes);
+    QHash<QString, SendingData *> * getData();
 private:
     QList<SendingInterface *> _registry;
     Drone * _drone;

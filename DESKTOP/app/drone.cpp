@@ -138,19 +138,7 @@ void Drone::start(Profile * profile) {
     this->_steering_registry->add(new SteeringGamepad0(this, this->_steering_registry));
 
     this->_sending_registry = new SendingRegistry(this);
-
-    this->_sending_arduino = new SendingArduino(this, this->_sending_registry, this->_steering_registry, profile);
-    connect(this->_sending_arduino,
-            SIGNAL(signalArduinoConnected(QSerialPort *)),
-            this,
-            SLOT(slotArduinoConnected(QSerialPort *)));
-
-    connect(this->_sending_registry,
-            SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
-            this,
-            SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-
-    this->_sending_registry->add(this->_sending_arduino);
+    this->_sending_registry->add(new SendingArduino(this, this->_sending_registry, this->_steering_registry, profile));
 
     emit signalModesChanged(this->_modes);
 

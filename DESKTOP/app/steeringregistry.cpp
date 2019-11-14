@@ -17,7 +17,6 @@ void SteeringRegistry::add(SteeringInterface * handler) {
             this,
             SLOT(slotSteeringDataChanged(SteeringData *)));
     this->_steerings_data->insert(handler->getData()->name, handler->getData());
-    emit signalSteeringsDataChanged(this->_steerings_data);
 }
 
 void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
@@ -26,7 +25,9 @@ void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
     emit signalSteeringDataChanged(data);
 }
 
-void SteeringRegistry::start() {}
+void SteeringRegistry::start() {
+    emit signalSteeringsDataChanged(this->_steerings_data);
+}
 
 void SteeringRegistry::startThreads() {
     for (int i = 0; i < this->_registry.size(); i += 1) {
