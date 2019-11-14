@@ -212,6 +212,8 @@ void ThreadBoxConnect::run() {
                         int sendingThrustDown = 0;
 
                         while (this->_is_running) {
+                            QThread::msleep(40);
+
                             if (step % 5 == 0) {
                                 // ping
                                 this->send("p");
@@ -259,7 +261,7 @@ void ThreadBoxConnect::run() {
                                 }
 
                                 if (startMode) { // if toggled sendinf true
-                                    if (buttons.l1 && buttons.l2) { // if arming
+                                    if (buttons.l1 && buttons.r1) { // if arming
                                         sendingArm = 40 * 5;
                                         continue;
                                     }
@@ -363,7 +365,6 @@ void ThreadBoxConnect::run() {
                             }
 
                             step++;
-                            QThread::msleep(40);
                         }
                     }
                 } else {
