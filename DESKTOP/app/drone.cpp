@@ -94,7 +94,7 @@ void Drone::slotSteeringDataChanged(SteeringData * data) {
     emit signalSteeringDataChanged(data);
 }
 
-void Drone::slotSendingsDataChanged(QHash<QString,SendingData*> * data) {
+void Drone::slotSendingsDataChanged(QHash<QString, SendingData * > * data) {
     emit signalSendingsDataChanged(data);
 }
 

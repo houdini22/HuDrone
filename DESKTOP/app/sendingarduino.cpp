@@ -10,20 +10,20 @@ SendingArduino::SendingArduino(Drone * drone, SendingRegistry * sendingRegistry,
             this->_drone,
             SLOT(slotArduinoConnected(QSerialPort *)));
     connect(this->_sending_registry,
-            SIGNAL(signalSendingsDataChanged(QHash<QString,SendingData*>*)),
+            SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData *> *)),
             this->_drone,
-            SLOT(slotSendingsDataChanged(QHash<QString,SendingData*>*)));
-    connect(this,
-            SIGNAL(signalSendingDataChanged(SendingData*)),
-            this->_sending_registry,
-            SLOT(slotSendingDataChanged(SendingData*)));
+            SLOT(slotSendingsDataChanged(QHash<QString, SendingData *> *)));
+    connect(this->_steering_registry,
+            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
+            this->_drone,
+            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 }
 
 void SendingArduino::start() {    
     this->_thread_box_connect = new ThreadBoxConnect(this->_drone, this->_sending_registry, this->_steering_registry, this->_profile);
-    connect(this->_thread_box_connect,
+    connect(this,
             SIGNAL(signalSendingDataChanged(SendingData *)),
-            this,
+            this->_thread_box_connect,
             SLOT(slotSendingDataChanged(SendingData *)));
     connect(this->_thread_box_connect,
             SIGNAL(arduinoConnected(QSerialPort *)),

@@ -1,5 +1,7 @@
 #include "include.h"
 
+#define BUTTON_TIMEOUT 50
+
 ThreadBoxConnect::ThreadBoxConnect(): QThread() {}
 
 ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, SteeringRegistry * steeringRegistry, Profile * profile): QThread() {
@@ -8,15 +10,16 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
     this->_steering_data = this->_steering_registry->getData()->take("gamepad0");
+    this->_sending_data = this->_sending_registry->getData()->take("arduino0");
 
     connect(this->_sending_registry,
             SIGNAL(signalSendingDataChanged(SendingData *)),
             this,
             SLOT(slotSendingDataChanged(SendingData *)));
     connect(this->_steering_registry,
-            SIGNAL(signalSteeringDataChanged(SteeringData *)),
+            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
             this,
-            SLOT(slotSteeringDataChanged(SteeringData *)));
+            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
@@ -25,9 +28,9 @@ ThreadBoxConnect::~ThreadBoxConnect() {
                this,
                SLOT(slotSendingDataChanged(SendingData *)));
     disconnect(this->_steering_registry,
-            SIGNAL(signalSteeringDataChanged(SteeringData *)),
-            this,
-            SLOT(slotSteeringDataChanged(SteeringData *)));
+               SIGNAL(signalSteeringDataChanged(SteeringData *)),
+               this,
+               SLOT(slotSteeringDataChanged(SteeringData *)));
 }
 
 void ThreadBoxConnect::start() {
@@ -223,7 +226,7 @@ void ThreadBoxConnect::run() {
                             SteeringGamepadButtons buttons = this->_steering_data->buttons;
 
                             // send
-                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
+                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingThrustUp == 0) {
                                 if (throttleMode) {
                                     this->setRadioValues(
                                                 this->_profile->getLeftX(buttons.leftX),
@@ -242,99 +245,96 @@ void ThreadBoxConnect::run() {
                             }
 
                             // listening buttons
-                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingLeftY == 0 && sendingThrustUp == 0) {
+                            if (sendingArm == 0 && sendingThrottle == 0 && sendingStart == 0 && sendingThrustUp == 0) {
                                 if (buttons.down) { // toggle Throttle mode
-                                    sendingThrottle = 50;
+                                    sendingThrottle = BUTTON_TIMEOUT;
                                     continue;
                                 }
 
                                 if (buttons.left) {
-                                    sendingThrustDown = 50;
+                                    sendingThrustDown = BUTTON_TIMEOUT;
                                     continue;
                                 }
 
                                 if (buttons.right) {
-                                    sendingThrustUp = 50;
+                                    sendingThrustUp = BUTTON_TIMEOUT;
                                     continue;
                                 }
 
                                 // toggle sending
                                 if (buttons.start && !armingMode) {
-                                    sendingStart = 50;
+                                    sendingStart = BUTTON_TIMEOUT;
                                     continue;
                                 }
 
                                 if (startMode) { // if toggled sendinf true
                                     if (buttons.l2 && buttons.r2) { // if arming
-                                        sendingArm = 50;
+                                        sendingArm = BUTTON_TIMEOUT;
                                         continue;
                                     }
                                 }
                             }
 
-                            if (sendingStart > 0) {
+                            if (sendingStart == BUTTON_TIMEOUT) {
+                                startMode = !startMode;
+                                if (startMode) {
+                                    this->send("n"); // on
+                                    this->setRadioSending(true);
+                                } else {
+                                    this->send("f"); // off
+                                    this->setRadioSending(false);
+                                }
                                 sendingStart--;
-                                if (sendingStart == 0) {
-                                    startMode = !startMode;
-                                    if (startMode) {
-                                        this->send("n"); // on
-                                        this->setRadioSending(true);
-                                    } else {
-                                        this->send("f"); // off
-                                        this->setRadioSending(false);
-                                    }
-                                }
-
+                                continue;
+                            } else if (sendingStart > 0) {
+                                sendingStart--;
                                 continue;
                             }
 
-                            if (sendingArm > 0) {
+                            if (sendingArm == BUTTON_TIMEOUT) {
+                                armingMode = !armingMode;
+                                this->setMotorsArmed(armingMode);
                                 sendingArm--;
-                                if (sendingArm == 0) {
-                                    if (!armingMode) {
-                                        this->setMotorsArmed(true);
-                                    } else {
-                                        this->setMotorsArmed(false);
-                                    }
-                                    armingMode = !armingMode;
-                                }
+                                continue;
+                            } else if (sendingArm > 0) {
+                                sendingArm--;
                                 continue;
                             }
 
-                            if (sendingThrottle > 0) {
+                            if (sendingThrottle == BUTTON_TIMEOUT) {
+                                throttleMode = !throttleMode;
+                                this->setThrottleMode(throttleMode);
                                 sendingThrottle--;
-                                if (sendingThrottle == 0) {
-                                    throttleMode = !throttleMode;
-                                    this->setThrottleMode(throttleMode);
+                                continue;
+                            } else if (sendingThrottle) {
+                                sendingThrottle--;
+                                continue;
+                            }
+
+                            if (sendingThrustUp == BUTTON_TIMEOUT) {
+                                modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+                                if (modes->thrust > 1.0) {
+                                    modes->thrust = 1.0;
                                 }
-                                continue;
-                            }
-
-                            if (sendingLeftY > 0) {
-                                sendingLeftY--;
-                                continue;
-                            }
-
-                            if (sendingThrustUp > 0) {
+                                this->_drone->setModes(modes);
                                 sendingThrustUp--;
-                                if (sendingThrustUp == 0) {
-                                    modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-                                    if (modes->thrust > 1.0) {
-                                        modes->thrust = 1.0;
-                                    }
-                                    this->_drone->setModes(modes);
-                                }
+                                continue;
+                            } else if (sendingThrustUp > 0) {
+                                sendingThrustUp--;
+                                continue;
                             }
 
-                            if (sendingThrustDown > 0) {
-                                sendingThrustDown--;
-                                if (sendingThrustDown == 0) {
-                                    modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-                                    if (modes->thrust < 0.0) {
-                                        modes->thrust = 0.0;
-                                    }
-                                    this->_drone->setModes(modes);
+                            if (sendingThrustDown == BUTTON_TIMEOUT) {
+                                modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+                                if (modes->thrust < 0.0) {
+                                    modes->thrust = 0.0;
                                 }
+                                this->_drone->setModes(modes);
+                                sendingThrustDown--;
+                                continue;
+                            } else if (sendingThrustUp > 0) {
+                                sendingThrustDown--;
+                                continue;
                             }
 
                             step++;
@@ -368,8 +368,6 @@ void ThreadBoxConnect::slotSendingDataChanged(SendingData * sendingData) {
     }
 }
 
-void ThreadBoxConnect::slotSteeringDataChanged(SteeringData * steeringData) {
-    if (steeringData->name.compare("gamepad0") == 0) {
-        this->_steering_data = steeringData;
-    }
+void ThreadBoxConnect::slotSteeringsDataChanged(QHash<QString, SteeringData *> * data) {
+    this->_steering_data = data->take("gamepad0");
 }
