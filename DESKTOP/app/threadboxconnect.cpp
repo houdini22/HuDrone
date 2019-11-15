@@ -217,6 +217,10 @@ void ThreadBoxConnect::run() {
                                 this->send("p");
                             }
 
+                            if (!this->_arduino->isOpen()) {
+                                break;
+                            }
+
                             Modes * modes = this->_drone->getModes();
                             if (this->_steering_data == nullptr) {
                                 continue;
@@ -337,30 +341,20 @@ void ThreadBoxConnect::run() {
                         }
                     }
                 } else {
-                    qDebug() << "Connect failed.";
-                    if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
-                        this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
-                        this->_arduino->close();
-                        emit signalSendingDataChanged(this->_sending_data);
-                    }
+                    this->timeout();
                 }
             } else {
-                qDebug() << "Connect failed.";
-                if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
-                    this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
-                    this->_arduino->close();
-                    emit signalSendingDataChanged(this->_sending_data);
-                }
+                this->timeout();
             }
         }
 
         QThread::msleep(2000);
     }
+
+    qDebug() << "STOPPED.";
 }
 
 void ThreadBoxConnect::slotSendingDataChanged(SendingData * data) {
-    qDebug() << "slot arduino";
-    qDebug() << data->name;
     if (data->name.compare("arduino0") == 0) {
         this->_sending_data = data;
     }
