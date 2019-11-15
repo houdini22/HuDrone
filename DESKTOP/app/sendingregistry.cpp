@@ -4,6 +4,11 @@ SendingRegistry::SendingRegistry(Drone *drone) {
     this->_drone = drone;
     this->_sendings_data = new QHash<QString, SendingData *>;
     this->_modes = new Modes;
+
+    connect(this,
+            SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData *> *)),
+            this->_drone,
+            SLOT(slotSendingsDataChanged(QHash<QString, SendingData *> *)));
 }
 
 SendingRegistry::~SendingRegistry() {
@@ -40,6 +45,9 @@ void SendingRegistry::stopThreads() {
 }
 
 void SendingRegistry::slotSendingDataChanged(SendingData * data) {
+    qDebug() << "SendingRegistry::slotSendingDataChanged";
+    qDebug() << "SendingRegistry::signalSendingsDataChanged";
+    qDebug() << "SendingRegistry::signalSendingDataChanged";
     this->_sendings_data->insert(data->name, data);
     emit signalSendingsDataChanged(this->_sendings_data);
     emit signalSendingDataChanged(data);

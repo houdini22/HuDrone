@@ -9,28 +9,21 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
     this->_sending_registry = registry;
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
-    this->_steering_data = this->_steering_registry->getData()->take("gamepad0");
-    this->_sending_data = this->_sending_registry->getData()->take("arduino0");
+    if (this->_steering_registry->getData()->contains("gamepad0")) {
+        this->_steering_data = this->_steering_registry->getData()->take("gamepad0");
+    }
 
-    connect(this->_sending_registry,
+    connect(this,
             SIGNAL(signalSendingDataChanged(SendingData *)),
-            this,
+            this->_sending_registry,
             SLOT(slotSendingDataChanged(SendingData *)));
-    connect(this->_steering_registry,
-            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)),
-            this,
-            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData *> *)));
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
-    disconnect(this->_sending_registry,
-               SIGNAL(signalSendingDataChanged(SendingData*)),
-               this,
+    disconnect(this,
+               SIGNAL(signalSendingDataChanged(SendingData *)),
+               this->_sending_registry,
                SLOT(slotSendingDataChanged(SendingData *)));
-    disconnect(this->_steering_registry,
-               SIGNAL(signalSteeringDataChanged(SteeringData *)),
-               this,
-               SLOT(slotSteeringDataChanged(SteeringData *)));
 }
 
 void ThreadBoxConnect::start() {
@@ -44,9 +37,11 @@ void ThreadBoxConnect::terminate() {
 }
 
 void ThreadBoxConnect::send(QString buffer) {
-    this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
-    if (!this->_arduino->waitForBytesWritten(1000)) {
-        this->timeout();
+    if (this->_arduino->isOpen()) {
+        this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
+        if (!this->_arduino->waitForBytesWritten(1000)) {
+            this->timeout();
+        }
     }
 }
 
@@ -98,7 +93,7 @@ QString ThreadBoxConnect::createAxisBuffer(int leftX, int leftY, int rightX, int
 
 void ThreadBoxConnect::timeout() {
     qDebug() << "Timeout.";
-    if (this->_sending_registry != nullptr) {
+    if (this->_sending_registry != nullptr && this->_sending_registry != nullptr) {
         this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
         this->_arduino->close();
         emit signalSendingDataChanged(this->_sending_data);
@@ -140,7 +135,7 @@ void ThreadBoxConnect::setRadioValues(int leftX, int leftY, int rightX, int righ
 
 void ThreadBoxConnect::run() {
     while (this->_is_running) {
-        if (this->_sending_registry != nullptr) {
+        if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
             if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
                 QThread::msleep(4000);
                 continue;
@@ -150,8 +145,6 @@ void ThreadBoxConnect::run() {
         QList<QSerialPortInfo> ports = SerialPortUtilities::getAvailablePorts();
 
         for (int i = 0; i < ports.size(); i += 1) {
-            qDebug() << ports.at(i).portName();
-
             if (this->_arduino != nullptr) {
                 this->_arduino->close();
                 delete this->_arduino;
@@ -174,10 +167,11 @@ void ThreadBoxConnect::run() {
                 QThread::msleep(50);
             }
 
-            if (this->_sending_registry != nullptr) {
+            if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
                 this->_sending_data->service = this->_arduino;
                 this->_sending_data->mode = MODE_ARDUINO_DETECTED;
                 emit signalSendingDataChanged(this->_sending_data);
+                qDebug() << "Emited.";
             }
 
             qDebug() << "Opened.";
@@ -194,10 +188,11 @@ void ThreadBoxConnect::run() {
                     this->_arduino->read(&d, 1);
                     if (d == 'h') {
                         qDebug() << "Connected.";
-                        if (this->_sending_registry != nullptr) {
+                        if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
                             this->_sending_data->service = this->_arduino;
                             this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
                             emit signalSendingDataChanged(this->_sending_data);
+                            qDebug() << "emited";
                         }
                         emit arduinoConnected(this->_arduino);
 
@@ -210,12 +205,12 @@ void ThreadBoxConnect::run() {
                         bool throttleMode = false;
                         int sendingThrottle = 0;
                         int leftY = this->_profile->getMinLeftY();
-                        int sendingLeftY = 0;
                         int sendingThrustUp = 0;
                         int sendingThrustDown = 0;
 
                         while (this->_is_running) {
                             QThread::msleep(1);
+                            step++;
 
                             // ping 100 ms
                             if (step % 100 == 0) {
@@ -223,6 +218,9 @@ void ThreadBoxConnect::run() {
                             }
 
                             Modes * modes = this->_drone->getModes();
+                            if (this->_steering_data == nullptr) {
+                                continue;
+                            }
                             SteeringGamepadButtons buttons = this->_steering_data->buttons;
 
                             // send
@@ -336,13 +334,11 @@ void ThreadBoxConnect::run() {
                                 sendingThrustDown--;
                                 continue;
                             }
-
-                            step++;
                         }
                     }
                 } else {
                     qDebug() << "Connect failed.";
-                    if (this->_sending_registry != nullptr) {
+                    if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
                         this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
                         this->_arduino->close();
                         emit signalSendingDataChanged(this->_sending_data);
@@ -350,7 +346,7 @@ void ThreadBoxConnect::run() {
                 }
             } else {
                 qDebug() << "Connect failed.";
-                if (this->_sending_registry != nullptr) {
+                if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
                     this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
                     this->_arduino->close();
                     emit signalSendingDataChanged(this->_sending_data);
@@ -362,9 +358,11 @@ void ThreadBoxConnect::run() {
     }
 }
 
-void ThreadBoxConnect::slotSendingDataChanged(SendingData * sendingData) {
-    if (sendingData->name.compare("arduino0") == 0) {
-        this->_sending_data = sendingData;
+void ThreadBoxConnect::slotSendingDataChanged(SendingData * data) {
+    qDebug() << "slot arduino";
+    qDebug() << data->name;
+    if (data->name.compare("arduino0") == 0) {
+        this->_sending_data = data;
     }
 }
 

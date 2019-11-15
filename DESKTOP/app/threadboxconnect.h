@@ -38,7 +38,7 @@ signals:
     void signalSendingDataChanged(SendingData *);
 public slots:
     void terminate();
-    void slotSendingDataChanged(SendingData * sendingData);
+    void slotSendingDataChanged(SendingData *);
     void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
 };
 
