@@ -22,10 +22,10 @@ protected:
     QString createAxisBuffer(double, double, double, double);
     QString createAxisBuffer(int, int, int, int);
     void send(QString);
-    int _leftX;
-    int _leftY;
-    int _rightX;
-    int _rightY;
+    int _leftX = 0;
+    int _leftY = 0;
+    int _rightX = 0;
+    int _rightY = 0;
     void timeout();
     void setRadioSending(bool value);
     void setMotorsArmed(bool value);

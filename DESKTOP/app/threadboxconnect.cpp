@@ -1,6 +1,6 @@
 #include "include.h"
 
-#define BUTTON_TIMEOUT 50
+#define BUTTON_TIMEOUT 150
 
 ThreadBoxConnect::ThreadBoxConnect(): QThread() {}
 
@@ -38,10 +38,11 @@ void ThreadBoxConnect::terminate() {
 
 void ThreadBoxConnect::send(QString buffer) {
     if (this->_arduino->isOpen() && buffer.length() > 0) {
+        qDebug() << "buffer: " + buffer;
         this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
-        if (!this->_arduino->waitForBytesWritten(1000)) {
-            this->timeout();
-        }
+        //if (!this->_arduino->waitForBytesWritten(1000)) {
+        //    this->timeout();
+        //}
     }
 }
 
@@ -350,8 +351,6 @@ void ThreadBoxConnect::run() {
 
         QThread::msleep(2000);
     }
-
-    qDebug() << "STOPPED.";
 }
 
 void ThreadBoxConnect::slotSendingDataChanged(SendingData * data) {
