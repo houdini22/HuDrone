@@ -11,7 +11,7 @@ class WizardUpload : public QWizard
 public:
     WizardUpload(QWidget *parent, Drone * drone);
     void accept() override;
-protected:
+private:
     Drone * _drone = nullptr;
 protected slots:
     void onFinish();

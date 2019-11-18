@@ -7,7 +7,7 @@ class WizardUploadPage3 : public QWizardPage
 {
     Q_OBJECT
 public:
-    WizardUploadPage3(QWidget * parent = 0);
+    WizardUploadPage3(QWidget * parent = nullptr);
 private:
     QLabel * _label = nullptr;
     QVBoxLayout * _layout = nullptr;

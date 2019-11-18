@@ -1,7 +1,7 @@
 #include "include.h"
 
 WizardConfigGeneralChannelTab::WizardConfigGeneralChannelTab(QWidget *parent) : QWidget(parent) {
-    QGridLayout * _main_layout = new QGridLayout();
+    auto _main_layout = new QGridLayout();
 
     setLayout(_main_layout);
 }

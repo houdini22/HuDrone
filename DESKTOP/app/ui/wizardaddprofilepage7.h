@@ -7,7 +7,7 @@ class WizardAddProfilePage7 : public QWizardPage {
     Q_OBJECT
 public:
     WizardAddProfilePage7(Config * configuration, Receivers * receivers);
-    void showEvent(QShowEvent *);
+    void showEvent(QShowEvent *) override;
 private:
     QVBoxLayout * _layout = nullptr;
     Config * _configuration = nullptr;

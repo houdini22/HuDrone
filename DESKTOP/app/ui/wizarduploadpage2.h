@@ -17,7 +17,7 @@ private:
     ThreadBoxConnect * _thread_box_connect = nullptr;
     Drone * _drone = nullptr;
 private slots:
-    void showEvent(QShowEvent *);
+    void showEvent(QShowEvent *) override;
     void onWizardClose();
     void handleArduinoConnected(QSerialPort *);
 };
