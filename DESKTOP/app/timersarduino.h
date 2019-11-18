@@ -7,10 +7,12 @@ class SteeringRegistry;
 class Profile;
 class TimerArduinoPing;
 class TimerArduinoSend;
+class TimerArduinoAbstract;
+class TimerThread;
 
 class TimersArduino {
 public:
-    explicit TimersArduino(Drone * drone, SendingRegistry *, SteeringRegistry *, Profile *);
+    explicit TimersArduino(Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
     ~TimersArduino();
     void start();
     void stop();
@@ -18,4 +20,5 @@ public:
 private:
     TimerArduinoPing * _timer_arduino_ping = nullptr;
     TimerArduinoSend * _timer_arduino_send = nullptr;
+    Drone * _drone = nullptr;
 };

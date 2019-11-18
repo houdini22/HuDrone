@@ -12,10 +12,12 @@ class TimerArduinoAbstract : public QObject {
 public:
     explicit TimerArduinoAbstract(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
     ~TimerArduinoAbstract();
-    void start(int);
+    void start();
     void stop();
+    virtual int getMiliseconds() = 0;
 protected:
     QTimer * _timer = nullptr;
+    QThread * _thread = nullptr;
     TimersArduino * _timers = nullptr;
     Drone * _drone = nullptr;
     SendingRegistry * _sending_registry = nullptr;
@@ -32,6 +34,7 @@ class TimerArduinoPing : public TimerArduinoAbstract {
     Q_OBJECT
 public:
     explicit TimerArduinoPing(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+    int getMiliseconds() override;
 public slots:
     void execute() override;
 };
@@ -40,6 +43,7 @@ class TimerArduinoSend : public TimerArduinoAbstract {
     Q_OBJECT
 public:
     explicit TimerArduinoSend(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+    int getMiliseconds() override;
 public slots:
     void execute() override;
 };

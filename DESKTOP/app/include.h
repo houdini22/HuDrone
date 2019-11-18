@@ -38,6 +38,7 @@
 #include <QGamepadManager>
 #include <QGamepad>
 #include <QTimer>
+#include <QtConcurrent/QtConcurrent>
 
 #include <vector>
 #include <list>
@@ -80,8 +81,6 @@ typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
 #include "timerarduinoabstract.h"
-#include "timerarduinosend.h"
-#include "timerarduinoping.h"
 #include "timersarduino.h"
 #include "profile.h"
 #include "threadgamepad.h"

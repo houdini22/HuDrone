@@ -79,9 +79,8 @@ HEADERS += \
     tabseditprofilegeneraltab.h \
     threadboxconnect.h \
     timerarduinoabstract.h \
-    timerarduinoping.h \
-    timerarduinosend.h \
     timersarduino.h \
+    timerthread.h \
     ui/dialogeditprofile.h \
     ui/dialogfly.h \
     ui/wizardaddprofile.h \

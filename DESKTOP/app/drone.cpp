@@ -158,9 +158,11 @@ void Drone::stop() {
 }
 
 void Drone::stopSendingTimers() {
-    this->_timers->stop();
-    delete this->_timers;
-    this->_timers = nullptr;
+    if (this->_timers != nullptr) {
+        this->_timers->stop();
+        delete this->_timers;
+        this->_timers = nullptr;
+    }
 }
 
 void Drone::startSendingTimers(Profile * profile) {
