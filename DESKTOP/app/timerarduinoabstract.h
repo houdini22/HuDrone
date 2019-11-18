@@ -26,7 +26,7 @@ protected:
 private:
     void timeout();
 public slots:
-    virtual void execute() = 0;
+    void execute() {}
 };
 
 #endif // TIMERARDUINOABSTRACT_H

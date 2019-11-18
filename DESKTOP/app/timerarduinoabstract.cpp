@@ -3,7 +3,6 @@
 TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile)
     : QObject() {
     this->_timer = new QTimer(this);
-
     this->_timers = timers;
     this->_drone = drone;
     this->_sending_registry = sendingRegistry;

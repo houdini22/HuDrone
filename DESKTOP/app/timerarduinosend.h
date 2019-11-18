@@ -14,7 +14,7 @@ class TimerArduinoSend : public TimerArduinoAbstract {
 public:
     explicit TimerArduinoSend(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
 public slots:
-    void execute() override;
+    void execute();
 };
 
 #endif // TIMERARDUINOSEND_H

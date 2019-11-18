@@ -14,7 +14,7 @@ class TimerArduinoPing : public TimerArduinoAbstract {
 public:
     explicit TimerArduinoPing(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
 public slots:
-    void execute() override;
+    void execute();
 };
 
 #endif // TIMERARDUINOPING_H

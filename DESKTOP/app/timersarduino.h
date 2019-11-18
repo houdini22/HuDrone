@@ -12,7 +12,7 @@ class TimerArduinoSend;
 
 class TimersArduino {
 public:
-    TimersArduino(Drone * drone, SendingRegistry *, SteeringRegistry *, Profile *);
+    explicit TimersArduino(Drone * drone, SendingRegistry *, SteeringRegistry *, Profile *);
     ~TimersArduino();
     void start();
     void stop();
