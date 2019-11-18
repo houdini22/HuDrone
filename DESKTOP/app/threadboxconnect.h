@@ -8,10 +8,10 @@ class ThreadBoxConnect : public QThread {
 public:
     explicit ThreadBoxConnect();
     explicit ThreadBoxConnect(Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
-    ~ThreadBoxConnect();
-    void run();
+    ~ThreadBoxConnect() override;
+    void run() override;
     void start();
-protected:
+private:
     Drone * _drone = nullptr;
     QSerialPort * _arduino = nullptr;
     SendingRegistry * _sending_registry = nullptr;
@@ -21,7 +21,7 @@ protected:
     int axisValueFromDouble(double);
     QString createAxisBuffer(double, double, double, double);
     QString createAxisBuffer(int, int, int, int);
-    void send(QString);
+    void send(const QString &);
     int _leftX = 0;
     int _leftY = 0;
     int _rightX = 0;

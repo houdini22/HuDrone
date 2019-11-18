@@ -11,7 +11,7 @@ class SteeringRegistry : public QObject {
     Q_OBJECT
 public:
     SteeringRegistry(Drone * _drone);
-    ~SteeringRegistry();
+    ~SteeringRegistry() override;
     void add(SteeringInterface * handler);
     void start();
     void stop();

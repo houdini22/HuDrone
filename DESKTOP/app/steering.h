@@ -23,7 +23,7 @@ struct SteeringData {
 class SteeringInterface : public QObject {
     Q_OBJECT
 public:
-    SteeringInterface(Drone * _drone, SteeringRegistry * _registry);
+    SteeringInterface(Drone *, SteeringRegistry *);
     virtual void start() {}
     virtual void stop() {}
     SteeringData * getData();

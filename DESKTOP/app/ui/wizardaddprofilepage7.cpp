@@ -44,7 +44,7 @@ void WizardAddProfilePage7::showEvent(QShowEvent *) {
     _label_throttle_value->setText(QString::number(this->myTextEdited("10", "")));
 }
 
-int WizardAddProfilePage7::myTextEdited(QString text, QString) {
+int WizardAddProfilePage7::myTextEdited(const QString & text, QString) {
     T_JSON data = this->_configuration->getData();
     int result = 0;
 

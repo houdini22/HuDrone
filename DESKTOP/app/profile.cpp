@@ -42,31 +42,53 @@ int Profile::getRightY(double value) {
 }
 
 int Profile::getThrottleSteps() {
-    return this->_configuration["radio"]["throttleSteps"].get<int>();
+    if (this->_throttleSteps == 0) {
+        this->_throttleSteps = this->_configuration["radio"]["throttleSteps"].get<int>();
+    }
+
+    return this->_throttleSteps;
 }
 
 QString Profile::getChannelNumberOf(QString function) {
-    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(function.toStdString()) == 0) {
-            return QString::number(channelNumber);
+    if (!this->_channelNumbers.contains(function)) {
+        for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+            if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(function.toStdString()) == 0) {
+                this->_channelNumbers[function] = QString::number(channelNumber);
+            }
         }
     }
 
-    return "";
+    if (!this->_channelNumbers.contains(function)) {
+        return "";
+    }
+
+    return this->_channelNumbers[function];
 }
 
-T_JSON Profile::getFunction(QString name) {
-    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
-        if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(name.toStdString()) == 0) {
-            return this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()];
+QMap<QString, QString> Profile::getFunction(QString name) {
+    if (!this->_channelFunctions.contains(name)) {
+        for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+            if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(name.toStdString()) == 0) {
+                this->_channelFunctions[name] = QMap<QString, QString>();
+                this->_channelFunctions[name]["min"] = QString(this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>().c_str());
+                this->_channelFunctions[name]["middle"] = QString(this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["middle"].get<T_String>().c_str());
+                this->_channelFunctions[name]["max"] = QString(this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>().c_str());
+                break;
+            }
         }
     }
+
+    if (!this->_channelFunctions.contains(name)) {
+        return QMap<QString, QString>();
+    }
+
+    return this->_channelFunctions[name];
 }
 
-int Profile::getValueToSend(T_JSON data, double value, bool invert, bool fromMin) {
-    int min = QString(data["min"].get<T_String>().c_str()).toInt();
-    int max = QString(data["max"].get<T_String>().c_str()).toInt();
-    int middle = QString(data["middle"].get<T_String>().c_str()).toInt();
+int Profile::getValueToSend(QMap<QString, QString> data, double value, bool invert, bool fromMin) {
+    int min = data["min"].toInt();
+    int max = data["max"].toInt();
+    int middle = data["middle"].toInt();
     int area = 0;
 
     if (invert) {

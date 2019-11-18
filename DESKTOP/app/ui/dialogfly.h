@@ -17,8 +17,8 @@ private:
     Drone * _drone;
     QGridLayout * _layout;
     Ui::DialogFly * ui;
-    void closeEvent(QCloseEvent *);
-    void showEvent(QShowEvent *);
+    void closeEvent(QCloseEvent *) override;
+    void showEvent(QShowEvent *) override;
     Profile * _profile;
     Modes * _modes;
 private slots:

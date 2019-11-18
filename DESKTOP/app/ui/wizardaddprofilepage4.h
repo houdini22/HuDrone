@@ -13,7 +13,7 @@ public:
     WizardAddProfilePage4(Config * configuration, Receivers * receivers);
 private:
     int getValueFromChannel(int channelNumber, T_String value);
-    void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *) override;
     QHBoxLayout * _layout = nullptr;
     Config * _configuration = nullptr;
     Receivers * _receivers = nullptr;

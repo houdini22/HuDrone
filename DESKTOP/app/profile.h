@@ -6,7 +6,7 @@
 class Profile {
 public:
     Profile(T_JSON);
-    static Profile * byName(QString name);
+    static Profile * byName(QString);
     int getLeftX(double);
     int getLeftY(double);
     int getMinLeftY();
@@ -17,8 +17,11 @@ public:
     QString getChannelNumberOf(QString);
 private:
     T_JSON _configuration;
-    T_JSON getFunction(QString name);
-    int getValueToSend(T_JSON channelConfig, double value, bool invert, bool fromMin = false);
+    QMap<QString, QString> getFunction(QString);
+    int getValueToSend(QMap<QString, QString>, double, bool, bool fromMin = false);
+    QMap<QString, QString> _channelNumbers;
+    QMap<QString, QMap<QString, QString>> _channelFunctions;
+    int _throttleSteps = 0;
 };
 
 #endif // PROFILE_H

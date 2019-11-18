@@ -8,7 +8,7 @@ class TabsEditProfileGeneralTab;
 class TabsEditProfile : public QWidget {
     Q_OBJECT
 public:
-    explicit TabsEditProfile(QWidget * parent = 0);
+    explicit TabsEditProfile(QWidget * parent = nullptr);
     QTabWidget * getTabWidget();
     TabsEditProfileGeneralTab * getTab(int);
 private:

@@ -1,6 +1,6 @@
 #include "include.h"
 
-WizardAddProfilePage5::WizardAddProfilePage5(Config * configuration, Receivers * receivers) : QWizardPage(0) {
+WizardAddProfilePage5::WizardAddProfilePage5(Config * configuration, Receivers * receivers) : QWizardPage(nullptr) {
     this->_configuration = configuration;
     this->_receivers = receivers;
 

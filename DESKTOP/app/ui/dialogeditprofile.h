@@ -18,11 +18,11 @@ private:
     std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
     std::map<int, MyComboBox *> _combos;
     T_JSON _profile_configuration;
-    int getValueFromChannel(int channelNumber, T_String value);
+    int getValueFromChannel(int, T_String);
     QString getStringValueFromChannel(int, T_String);
-    void setValueForChannel(QString channelNumber, QString valueName, QString value);
+    void setValueForChannel(QString, QString, QString);
     void setFunctionValueForChannel(int, QString);
-    void showEvent(QShowEvent *event);
+    void showEvent(QShowEvent *) override;
 public slots:
     void textEdited(QString, QString);
     void myComboBoxTextChanged(QString, int);

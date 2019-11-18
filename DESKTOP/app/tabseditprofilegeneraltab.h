@@ -8,7 +8,7 @@ class WizardConfigGeneralChannelTab;
 class TabsEditProfileGeneralTab : public QWidget {
     Q_OBJECT
 public:
-    explicit TabsEditProfileGeneralTab(QWidget *parent = 0);
+    explicit TabsEditProfileGeneralTab(QWidget *parent = nullptr);
     QGridLayout * getLayout();
     QTabWidget * getTabWidget();
     WizardConfigGeneralChannelTab * getTab(int);

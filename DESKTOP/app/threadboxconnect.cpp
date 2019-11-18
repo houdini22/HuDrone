@@ -36,7 +36,7 @@ void ThreadBoxConnect::terminate() {
     QThread::terminate();
 }
 
-void ThreadBoxConnect::send(QString buffer) {
+void ThreadBoxConnect::send(const QString & buffer) {
     if (this->_arduino->isOpen() && buffer.length() > 0) {
         qDebug() << "buffer: " + buffer;
         this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
