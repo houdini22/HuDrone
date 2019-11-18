@@ -45,6 +45,16 @@ int Profile::getThrottleSteps() {
     return this->_configuration["radio"]["throttleSteps"].get<int>();
 }
 
+QString Profile::getChannelNumberOf(QString function) {
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(function.toStdString()) == 0) {
+            return QString::number(channelNumber);
+        }
+    }
+
+    return "";
+}
+
 T_JSON Profile::getFunction(QString name) {
     for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
         if (this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>().compare(name.toStdString()) == 0) {

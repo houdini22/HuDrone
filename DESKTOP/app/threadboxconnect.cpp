@@ -40,9 +40,9 @@ void ThreadBoxConnect::send(QString buffer) {
     if (this->_arduino->isOpen() && buffer.length() > 0) {
         qDebug() << "buffer: " + buffer;
         this->_arduino->write(buffer.toStdString().c_str(), buffer.length());
-        //if (!this->_arduino->waitForBytesWritten(1000)) {
-        //    this->timeout();
-        //}
+        if (!this->_arduino->waitForBytesWritten(1000)) {
+            this->timeout();
+        }
     }
 }
 
@@ -59,28 +59,28 @@ QString ThreadBoxConnect::createAxisBuffer(int leftX, int leftY, int rightX, int
 
     if (leftX != this->_leftX) {
         this->_leftX = leftX;
-        buffer.append("^3#");
+        buffer.append("^" + this->_profile->getChannelNumberOf("yaw") + "#");
         buffer.append(QString::number(leftX));
         buffer.append("$");
     }
 
     if (leftY != this->_leftY) {
         this->_leftY = leftY;
-        buffer.append("^2#");
+        buffer.append("^" + this->_profile->getChannelNumberOf("throttle") + "#");
         buffer.append(QString::number(leftY));
         buffer.append("$");
     }
 
     if (rightX != this->_rightX) {
         this->_rightX = rightX;
-        buffer.append("^0#");
+        buffer.append("^" + this->_profile->getChannelNumberOf("roll") + "#");
         buffer.append(QString::number(rightX));
         buffer.append("$");
     }
 
     if (rightY != this->_rightY) {
         this->_rightY = rightY;
-        buffer.append("^1#");
+        buffer.append("^" + this->_profile->getChannelNumberOf("pitch") + "#");
         buffer.append(QString::number(rightY));
         buffer.append("$");
     }
@@ -206,12 +206,13 @@ void ThreadBoxConnect::run() {
                         int sendingThrustDown = 0;
 
                         while (this->_is_running) {
-                            QThread::msleep(1);
+                            QThread::usleep(1);
                             step++;
 
                             // ping 100 ms
                             if (step % 100 == 0) {
                                 this->send("p");
+                                qDebug() << step;
                             }
 
                             if (!this->_arduino->isOpen()) {
@@ -233,14 +234,22 @@ void ThreadBoxConnect::run() {
                                                     leftY,
                                                     this->_profile->getRightX(buttons.rightX),
                                                     this->_profile->getRightY(buttons.rightY));
-                                        this->send(this->createAxisBuffer(this->_leftX, leftY, this->_rightX, this->_rightY));
+
+                                        this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                                                          leftY,
+                                                                          this->_profile->getRightX(buttons.rightX),
+                                                                          this->_profile->getRightY(buttons.rightY)));
                                     } else {
                                         this->setRadioValues(
                                                     this->_profile->getLeftX(buttons.leftX),
                                                     this->_profile->getLeftY(buttons.leftY),
                                                     this->_profile->getRightX(buttons.rightX),
                                                     this->_profile->getRightY(buttons.rightY));
-                                        this->send(this->createAxisBuffer(this->_leftX, this->_leftY, this->_rightX, this->_rightY));
+
+                                        this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                                                          this->_profile->getLeftY(buttons.leftY),
+                                                                          this->_profile->getRightX(buttons.rightX),
+                                                                          this->_profile->getRightY(buttons.rightY)));
                                     }
                                 }
                             }

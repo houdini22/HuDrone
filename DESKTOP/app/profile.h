@@ -14,6 +14,7 @@ public:
     int getRightX(double);
     int getRightY(double);
     int getThrottleSteps();
+    QString getChannelNumberOf(QString);
 private:
     T_JSON _configuration;
     T_JSON getFunction(QString name);
