@@ -1,6 +1,4 @@
-#ifndef TABSEDITPROFILEGENERALTAB_H
-#define TABSEDITPROFILEGENERALTAB_H
-
+#pragma once
 #include "include.h"
 
 class WizardConfigGeneralChannelTab;
@@ -16,5 +14,3 @@ private:
     QTabWidget * _tab_widget;
     QGridLayout * _main_layout;
 };
-
-#endif // TABSEDITPROFILEGENERALTAB_H

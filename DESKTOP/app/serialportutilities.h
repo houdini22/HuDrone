@@ -1,6 +1,4 @@
-#ifndef SERIALPORTUTILITIES_H
-#define SERIALPORTUTILITIES_H
-
+#pragma once
 #include "include.h"
 
 class SerialPortUtilities {
@@ -9,5 +7,3 @@ public:
         return QSerialPortInfo::availablePorts();
     }
 };
-
-#endif // SERIALPORTUTILITIES_H

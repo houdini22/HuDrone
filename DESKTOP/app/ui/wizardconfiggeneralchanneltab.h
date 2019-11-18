@@ -1,6 +1,4 @@
-#ifndef WIZARDCONFIGGENERALCHANNELTAB_H
-#define WIZARDCONFIGGENERALCHANNELTAB_H
-
+#pragma once
 #include "include.h"
 
 class WizardConfigGeneralChannelTab : public QWidget {
@@ -11,5 +9,3 @@ public:
 private:
     QGridLayout * _main_layout = nullptr;
 };
-
-#endif // WIZARDCONFIGGENERALCHANNELTAB_H

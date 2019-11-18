@@ -1,6 +1,4 @@
-#ifndef DIALOGEDITPROFILE_H
-#define DIALOGEDITPROFILE_H
-
+#pragma once
 #include "include.h"
 
 class TabsEditProfile;
@@ -27,5 +25,3 @@ public slots:
     void textEdited(QString, QString);
     void myComboBoxTextChanged(QString, int);
 };
-
-#endif // DIALOGEDITPROFILE_H

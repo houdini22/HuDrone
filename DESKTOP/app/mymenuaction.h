@@ -1,6 +1,4 @@
-#ifndef MYMENUACTION_H
-#define MYMENUACTION_H
-
+#pragma once
 #include "include.h"
 
 class MyMenuAction : public QAction {
@@ -34,5 +32,3 @@ public:
         connect(this, SIGNAL(triggered(bool)), this, SLOT(emitMyTriggered(bool)));
     }
 };
-
-#endif // MYMENUACTION_H

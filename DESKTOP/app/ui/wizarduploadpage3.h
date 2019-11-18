@@ -1,6 +1,4 @@
-#ifndef WIZARDUPLOAPAGE3_H
-#define WIZARDUPLOAPAGE3_H
-
+#pragma once
 #include "include.h"
 
 class WizardUploadPage3 : public QWizardPage
@@ -12,5 +10,3 @@ private:
     QLabel * _label = nullptr;
     QVBoxLayout * _layout = nullptr;
 };
-
-#endif // WIZARDUPLOAPAGE3_H

@@ -1,6 +1,4 @@
-#ifndef PROFILE_H
-#define PROFILE_H
-
+#pragma once
 #include "include.h"
 
 class Profile {
@@ -23,5 +21,3 @@ private:
     QMap<QString, QMap<QString, QString>> _channelFunctions;
     int _throttleSteps = 0;
 };
-
-#endif // PROFILE_H

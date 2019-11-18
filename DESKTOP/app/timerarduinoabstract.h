@@ -1,6 +1,4 @@
-#ifndef TIMERARDUINOABSTRACT_H
-#define TIMERARDUINOABSTRACT_H
-
+#pragma once
 #include "include.h"
 
 class TimersArduino;
@@ -12,7 +10,8 @@ class Profile;
 class TimerArduinoAbstract : public QObject {
     Q_OBJECT
 public:
-    TimerArduinoAbstract(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+    explicit TimerArduinoAbstract(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+    ~TimerArduinoAbstract();
     void start(int);
     void stop();
 protected:
@@ -26,7 +25,21 @@ protected:
 private:
     void timeout();
 public slots:
-    void execute() {}
+    virtual void execute() = 0;
 };
 
-#endif // TIMERARDUINOABSTRACT_H
+class TimerArduinoPing : public TimerArduinoAbstract {
+    Q_OBJECT
+public:
+    explicit TimerArduinoPing(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+public slots:
+    void execute() override;
+};
+
+class TimerArduinoSend : public TimerArduinoAbstract {
+    Q_OBJECT
+public:
+    explicit TimerArduinoSend(TimersArduino *, Drone *, SendingRegistry *, SteeringRegistry *, Profile *);
+public slots:
+    void execute() override;
+};

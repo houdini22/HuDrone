@@ -1,6 +1,4 @@
-#ifndef WIZARDUPLOAD_H
-#define WIZARDUPLOAD_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -16,5 +14,3 @@ private:
 protected slots:
     void onFinish();
 };
-
-#endif // WIZARDCONFIG_H

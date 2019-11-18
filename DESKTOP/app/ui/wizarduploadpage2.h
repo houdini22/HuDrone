@@ -1,6 +1,4 @@
-#ifndef WIZARDUPLOADPAGE2_H
-#define WIZARDUPLOADPAGE2_H
-
+#pragma once
 #include "include.h"
 
 class ThreadBoxConnect;
@@ -21,5 +19,3 @@ private slots:
     void onWizardClose();
     void handleArduinoConnected(QSerialPort *);
 };
-
-#endif // WIZARDUPLOADPAGE2_H

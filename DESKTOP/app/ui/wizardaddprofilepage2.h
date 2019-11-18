@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILEPAGE2_H
-#define WIZARDADDPROFILEPAGE2_H
-
+#pragma once
 #include "include.h"
 
 class WizardAddProfilePage2 : public QWizardPage
@@ -19,5 +17,3 @@ private slots:
     void handleButtonGamepad();
     void showEvent(QShowEvent *);
 };
-
-#endif // WIZARDCONFIGINTROPAGE2_H

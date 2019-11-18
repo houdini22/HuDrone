@@ -1,7 +1,6 @@
 #include "include.h"
 
-TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile)
-    : QObject() {
+TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile) {
     this->_timer = new QTimer(this);
     this->_timers = timers;
     this->_drone = drone;
@@ -12,12 +11,16 @@ TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone
     connect(_timer, SIGNAL(timeout()), this, SLOT(execute()));
 }
 
+TimerArduinoAbstract::~TimerArduinoAbstract() {
+    delete this->_timer;
+}
+
 void TimerArduinoAbstract::start(int miliseconds) {
-    _timer->start(miliseconds);
+    this->_timer->start(miliseconds);
 }
 
 void TimerArduinoAbstract::stop() {
-    _timer->stop();
+    this->_timer->stop();
 }
 
 void TimerArduinoAbstract::timeout() {

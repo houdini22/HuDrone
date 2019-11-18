@@ -1,6 +1,4 @@
-#ifndef RECEIVERS_H
-#define RECEIVERS_H
-
+#pragma once
 #include "include.h"
 
 typedef std::vector<QString> T_ReceiversNamesList;
@@ -51,5 +49,3 @@ public:
 private:
     Config * _config;
 };
-
-#endif // RECEIVERS_H

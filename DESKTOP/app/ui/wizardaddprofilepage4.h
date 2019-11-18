@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILEPAGE4_H
-#define WIZARDADDPROFILEPAGE4_H
-
+#pragma once
 #include "include.h"
 
 class WizardConfigChannelTabs;
@@ -26,5 +24,3 @@ public slots:
     void textEdited(QString, QString);
     void myComboBoxTextChanged(QString, int);
 };
-
-#endif // WIZARDADDPROFILEPAGE4_H

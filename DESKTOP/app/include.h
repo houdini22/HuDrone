@@ -1,5 +1,4 @@
-#ifndef INCLUDE_H
-#define INCLUDE_H
+#pragma once
 
 #include <QThread>
 #include <QString>
@@ -121,5 +120,3 @@ typedef nlohmann::json T_JSON;
 #include "ui/wizarduploadpage3.h"
 #include "ui/wizarduploadpage4.h"
 #include "ui/wizardupload.h"
-
-#endif // INCLUDE_H

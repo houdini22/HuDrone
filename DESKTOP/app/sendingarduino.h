@@ -1,6 +1,4 @@
-#ifndef SENDINGARDUINO_H
-#define SENDINGARDUINO_H
-
+#pragma once
 #include "include.h"
 
 class ThreadBoxConnect;
@@ -22,5 +20,3 @@ signals:
     void signalSendingDataChanged(SendingData *);
     void signalArduinoConnected(QSerialPort *);
 };
-
-#endif // SENDINGARDUINO_H

@@ -1,6 +1,4 @@
-#ifndef STEERINGREGISTRY_H
-#define STEERINGREGISTRY_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -28,5 +26,3 @@ signals:
     void signalSteeringsDataChanged(QHash<QString, SteeringData *> *);
     void signalSteeringDataChanged(SteeringData *);
 };
-
-#endif // STEERINGREGISTRY_H

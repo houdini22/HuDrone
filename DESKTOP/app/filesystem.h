@@ -1,6 +1,4 @@
-#ifndef FILESYSTEM_H
-#define FILESYSTEM_H
-
+#pragma once
 #include "include.h"
 
 class FileSystem {
@@ -73,5 +71,3 @@ public:
     }
 #endif
 };
-
-#endif // FILESYSTEM_H

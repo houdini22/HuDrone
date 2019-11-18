@@ -1,6 +1,4 @@
-#ifndef MYCOMBOBOX_H
-#define MYCOMBOBOX_H
-
+#pragma once
 #include "include.h"
 
 class MyComboBox : public QComboBox
@@ -24,5 +22,3 @@ signals:
 private slots:
     void emitMyTextChanged(QString text) { emit myTextChanged(text, _channel_number); }
 };
-
-#endif // MYLINEEDIT_H

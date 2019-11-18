@@ -1,6 +1,4 @@
-#ifndef TABSEDITPROFILE_H
-#define TABSEDITPROFILE_H
-
+#pragma once
 #include "include.h"
 
 class TabsEditProfileGeneralTab;
@@ -14,5 +12,3 @@ public:
 private:
     QTabWidget * _tab_widget;
 };
-
-#endif // TABSEDITPROFILE_H

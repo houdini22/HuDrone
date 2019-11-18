@@ -1,6 +1,4 @@
-#ifndef BUTTONS_H
-#define BUTTONS_H
-
+#pragma once
 #include "include.h"
 
 struct SteeringGamepadButtons {
@@ -26,8 +24,7 @@ struct SteeringGamepadButtons {
     bool right = false;
     bool center = false;
     bool guide = false;
+    bool _lock = false;
 };
 
 Q_DECLARE_METATYPE(SteeringGamepadButtons)
-
-#endif // BUTTONS_H

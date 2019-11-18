@@ -1,6 +1,4 @@
-#ifndef SENDINGREGISTRY_H
-#define SENDINGREGISTRY_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -33,5 +31,3 @@ signals:
 public slots:
     void slotSendingDataChanged(SendingData *);
 };
-
-#endif // STEERINGREGISTRY_H

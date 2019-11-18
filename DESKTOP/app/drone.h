@@ -1,6 +1,4 @@
-#ifndef DRONE_H
-#define DRONE_H
-
+#pragma once
 #include "include.h"
 #include "mainwindow.h"
 
@@ -63,5 +61,3 @@ signals:
     void signalSendingsDataChanged(QHash<QString,SendingData*>*);
     void signalSteeringsDataChanged(QHash<QString, SteeringData *> *);
 };
-
-#endif // DRONE_H

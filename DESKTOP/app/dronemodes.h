@@ -1,6 +1,4 @@
-#ifndef DRONEMODES_H
-#define DRONEMODES_H
-
+#pragma once
 #include "include.h"
 
 const int MODE_ARDUINO_DISCONNECTED = 0;
@@ -23,6 +21,3 @@ struct Modes {
     bool throttleModeActive = false;
     double thrust = 0.0;
 };
-
-
-#endif // DRONEMODES_H

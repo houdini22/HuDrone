@@ -1,6 +1,4 @@
-#ifndef STEERINGGAMEPAD_H
-#define STEERINGGAMEPAD_H
-
+#pragma once
 #include "include.h"
 
 class ThreadGamepad0;
@@ -47,5 +45,3 @@ private:
 public slots:
     void slotConnectedGamepadsChanged();
 };
-
-#endif // STEERINGGAMEPAD_H

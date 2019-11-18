@@ -1,6 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
-
+#pragma once
 #include <QMainWindow>
 #include "include.h"
 
@@ -27,4 +25,3 @@ private slots:
     void profileItemTriggered(MyMenuAction *, bool);
     void slotAddProfileTriggered(bool);
 };
-#endif // MAINWINDOW_H

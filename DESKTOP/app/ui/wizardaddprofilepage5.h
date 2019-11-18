@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILEPAGE5_H
-#define WIZARDADDPROFILEPAGE5_H
-
+#pragma once
 #include "include.h"
 
 class WizardAddProfilePage5: public QWizardPage
@@ -15,5 +13,3 @@ private:
     Receivers * _receivers = nullptr;
     WizardConfigChannelTabs * _tabs = nullptr;
 };
-
-#endif // WIZARDADDPROFILEPAGE5_H

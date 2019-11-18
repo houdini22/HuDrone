@@ -1,6 +1,4 @@
-#ifndef TIMERSARDUINO_H
-#define TIMERSARDUINO_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -18,8 +16,6 @@ public:
     void stop();
     void timeout();
 private:
-    TimerArduinoPing * _timer_arduino_ping;
-    TimerArduinoSend * _timer_arduino_send;
+    TimerArduinoPing * _timer_arduino_ping = nullptr;
+    TimerArduinoSend * _timer_arduino_send = nullptr;
 };
-
-#endif // TIMERSARDUINO_H

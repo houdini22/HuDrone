@@ -1,6 +1,4 @@
-#ifndef CONFIG_H
-#define CONFIG_H
-
+#pragma once
 #include "include.h"
 
 typedef QString T_Path;
@@ -160,5 +158,3 @@ class Config {
             }
         }
 };
-
-#endif // CONFIG_H

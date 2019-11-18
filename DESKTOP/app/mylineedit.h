@@ -1,6 +1,4 @@
-#ifndef MYLINEEDIT_H
-#define MYLINEEDIT_H
-
+#pragma once
 #include "include.h"
 
 class MyLineEdit : public QLineEdit
@@ -20,5 +18,3 @@ public:
         connect(this, SIGNAL(textEdited(QString)), this, SLOT(emitMyTextEdited(QString)));
     }
 };
-
-#endif // MYLINEEDIT_H

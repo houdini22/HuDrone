@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILEPAGE3_H
-#define WIZARDADDPROFILEPAGE3_H
-
+#pragma once
 #include "include.h"
 
 class WizardAddProfilePage3 : public QWizardPage
@@ -17,5 +15,3 @@ public slots:
     void onListItemClicked(QListWidgetItem *);
     void showEvent(QShowEvent *);
 };
-
-#endif // WIZARDADDPROFILEPAGE3_H

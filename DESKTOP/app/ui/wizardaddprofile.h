@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILE_H
-#define WIZARDADDPROFILE_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -21,5 +19,3 @@ protected:
 protected slots:
     void onFinish();
 };
-
-#endif // WIZARDADDPROFILE_H

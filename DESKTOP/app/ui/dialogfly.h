@@ -1,6 +1,4 @@
-#ifndef DIALOGFLY_H
-#define DIALOGFLY_H
-
+#pragma once
 #include "include.h"
 
 QT_BEGIN_NAMESPACE
@@ -28,5 +26,3 @@ private slots:
 signals:
     void signalModesChanged(Modes *);
 };
-
-#endif // DIALOGFLY_H

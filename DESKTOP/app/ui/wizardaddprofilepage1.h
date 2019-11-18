@@ -1,6 +1,4 @@
-#ifndef WIZARDADDPROFILEPAGE1_H
-#define WIZARDADDPROFILEPAGE1_H
-
+#pragma once
 #include "include.h"
 
 class WizardAddProfilePage1 : public QWizardPage
@@ -12,5 +10,3 @@ private:
     QLabel * _label = nullptr;
     QVBoxLayout * _layout = nullptr;
 };
-
-#endif // WIZARDADDPROFILEPAGE1_H

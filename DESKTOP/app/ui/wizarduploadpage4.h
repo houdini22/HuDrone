@@ -1,6 +1,4 @@
-#ifndef WIZARDUPLOAPAGE4_H
-#define WIZARDUPLOAPAGE4_H
-
+#pragma once
 #include "include.h"
 
 class WizardUploadPage4 : public QWizardPage
@@ -11,5 +9,3 @@ public:
 private:
     QVBoxLayout * _layout = nullptr;
 };
-
-#endif // WIZARDUPLOAPAGE4_H

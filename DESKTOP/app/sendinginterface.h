@@ -1,6 +1,4 @@
-#ifndef SENDINGINTERFACE_H
-#define SENDINGINTERFACE_H
-
+#pragma once
 #include "include.h"
 
 class Drone;
@@ -25,5 +23,3 @@ protected:
     Drone * _drone;
     SendingData * _data;
 };
-
-#endif // SENDINGINTERFACE_H

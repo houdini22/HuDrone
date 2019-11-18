@@ -1,6 +1,4 @@
-#ifndef WizardAddProfilePage8_H
-#define WizardAddProfilePage8_H
-
+#pragma once
 #include "include.h"
 
 class WizardAddProfilePage8 : public QWizardPage
@@ -17,5 +15,3 @@ private:
 private slots:
     void nameInputTextEdited(const QString &);
 };
-
-#endif // WizardAddProfilePage8_H

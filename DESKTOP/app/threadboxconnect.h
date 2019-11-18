@@ -1,6 +1,4 @@
-#ifndef THREADBOXCONNECT_H
-#define THREADBOXCONNECT_H
-
+#pragma once
 #include "include.h"
 
 class ThreadBoxConnect : public QThread {
@@ -41,5 +39,3 @@ public slots:
     void slotSendingDataChanged(SendingData *);
     void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
 };
-
-#endif // THREADBOXCONNECT_H
