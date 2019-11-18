@@ -185,13 +185,17 @@ void ThreadBoxConnect::run() {
                     this->_arduino->read(&d, 1);
                     if (d == 'h') {
                         qDebug() << "Connected.";
+
                         if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
                             this->_sending_data->service = this->_arduino;
                             this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
                             emit signalSendingDataChanged(this->_sending_data);
                             qDebug() << "emited";
+
+                            this->_drone->startSendingTimers(this->_profile);
+                            this->terminate();
+                            break;
                         }
-                        emit arduinoConnected(this->_arduino);
 
                         // send thread begin
                         unsigned long long step = 0;

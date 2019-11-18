@@ -11,13 +11,13 @@ struct SendingData;
 class SendingRegistry : public QObject {
     Q_OBJECT
 public:
-    SendingRegistry(Drone * _drone);
+    SendingRegistry(Drone *);
     ~SendingRegistry();
-    void add(SendingInterface * handler);
+    void add(SendingInterface *);
     void start();
     void stop();
     Modes * getModes();
-    void setModes(Modes * _modes);
+    void setModes(Modes *);
     QHash<QString, SendingData *> * getData();
 private:
     QList<SendingInterface *> _registry;

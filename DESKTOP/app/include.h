@@ -38,6 +38,7 @@
 #include <QComboBox>
 #include <QGamepadManager>
 #include <QGamepad>
+#include <QTimer>
 
 #include <vector>
 #include <list>
@@ -65,7 +66,6 @@
 #endif
 
 #ifndef WIN32
-#include "gamepad.h"
 #include <sys/stat.h>
 #include "experimental/filesystem"
 #endif
@@ -80,6 +80,10 @@ typedef bool T_Bool;
 typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
+#include "timerarduinoabstract.h"
+#include "timerarduinosend.h"
+#include "timerarduinoping.h"
+#include "timersarduino.h"
 #include "profile.h"
 #include "threadgamepad.h"
 #include "buttons.h"
@@ -89,7 +93,6 @@ typedef nlohmann::json T_JSON;
 #include "sendinginterface.h"
 #include "sendingregistry.h"
 #include "sendingarduino.h"
-#include "threadarduinosend.h"
 #include "threadgamepadupdate.h"
 #include "steering.h"
 #include "ui/dialogeditprofile.h"

@@ -38,8 +38,6 @@ void SendingArduino::stop() {
 void SendingArduino::slotSendingDataChanged(SendingData * data) {
     this->_data = data;
     emit signalSendingDataChanged(this->_data);
-    qDebug() << "SendingArduino::signalSendingDataChanged";
-    qDebug() << "SendingArduino::slotSendingDataChanged";
 }
 
 void SendingArduino::slotArduinoConnected(QSerialPort * arduino) {

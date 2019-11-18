@@ -150,8 +150,20 @@ void Drone::stop() {
     this->_sending_registry->stop();
     this->_steering_registry->stop();
 
+    this->stopSendingTimers();
     this->deleteArduino();
 
     delete this->_steering_registry;
     delete this->_sending_registry;
+}
+
+void Drone::stopSendingTimers() {
+    this->_timers->stop();
+    delete this->_timers;
+    this->_timers = nullptr;
+}
+
+void Drone::startSendingTimers(Profile * profile) {
+    this->_timers = new TimersArduino(this, this->_sending_registry, this->_steering_registry, profile);
+    this->_timers->start();
 }

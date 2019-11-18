@@ -68,9 +68,7 @@ int WizardAddProfilePage7::myTextEdited(const QString & text, QString) {
                 }
                 break;
             }
-        } catch(std::domain_error) {
-            qDebug() << "Key not exists.";
-        }
+        } catch(std::domain_error) {}
     }
 
     return result;

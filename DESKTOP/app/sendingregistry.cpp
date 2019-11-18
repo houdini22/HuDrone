@@ -45,9 +45,6 @@ void SendingRegistry::stopThreads() {
 }
 
 void SendingRegistry::slotSendingDataChanged(SendingData * data) {
-    qDebug() << "SendingRegistry::slotSendingDataChanged";
-    qDebug() << "SendingRegistry::signalSendingsDataChanged";
-    qDebug() << "SendingRegistry::signalSendingDataChanged";
     this->_sendings_data->insert(data->name, data);
     emit signalSendingsDataChanged(this->_sendings_data);
     emit signalSendingDataChanged(data);

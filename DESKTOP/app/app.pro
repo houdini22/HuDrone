@@ -19,6 +19,10 @@ DEFINES += QT_DEPRECATED_WARNINGS
 LIBS += -lstdc++fs
 
 SOURCES += \
+    timerarduinoabstract.cpp \
+    timerarduinoping.cpp \
+    timerarduinosend.cpp \
+    timersarduino.cpp \
     ui/dialogeditprofile.cpp \
     ui/dialogfly.cpp \
     drone.cpp \
@@ -33,7 +37,6 @@ SOURCES += \
     steeringregistry.cpp \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
-    threadarduinosend.cpp \
     threadboxconnect.cpp \
     ui/wizardaddprofile.cpp \
     ui/wizardaddprofilepage1.cpp \
@@ -74,8 +77,11 @@ HEADERS += \
     steeringregistry.h \
     tabseditprofile.h \
     tabseditprofilegeneraltab.h \
-    threadarduinosend.h \
     threadboxconnect.h \
+    timerarduinoabstract.h \
+    timerarduinoping.h \
+    timerarduinosend.h \
+    timersarduino.h \
     ui/dialogeditprofile.h \
     ui/dialogfly.h \
     ui/wizardaddprofile.h \
