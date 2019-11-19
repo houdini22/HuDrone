@@ -142,10 +142,10 @@ void Drone::start(Profile * profile) {
 
     emit signalModesChanged(this->_modes);
 
+    this->startSendingTimers(profile);
+
     this->_steering_registry->start();
     this->_sending_registry->start();
-
-    this->startSendingTimers(profile);
 }
 
 void Drone::stop() {

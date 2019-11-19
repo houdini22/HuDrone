@@ -16,8 +16,8 @@ public:
     QHash<QString, SteeringData *> * getData();
 private:
     QList<SteeringInterface *> _registry;
-    Drone * _drone;
-    QHash<QString, SteeringData *> * _steerings_data;
+    Drone * _drone = nullptr;
+    QHash<QString, SteeringData *> * _steerings_data = nullptr;
     void startThreads();
     void stopThreads();
 public slots:

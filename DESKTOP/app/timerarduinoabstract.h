@@ -8,6 +8,7 @@ class SteeringRegistry;
 class Profile;
 class TimerThread;
 struct SendingData;
+struct SteeringData;
 
 class TimerArduinoAbstract : public QObject {
     Q_OBJECT
@@ -27,12 +28,14 @@ protected:
     SteeringRegistry * _steering_registry = nullptr;
     Profile * _profile = nullptr;
     QHash<QString, SendingData *> * _sending_data = nullptr;
+    QHash<QString, SteeringData *> * _steerings_data = nullptr;
     void send(const QString &, bool);
 private:
     void timeout();
 public slots:
     virtual void execute() = 0;
     void slotSendingsDataChanged(QHash<QString, SendingData *> *);
+    void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
 };
 
 class TimerArduinoPing : public TimerArduinoAbstract {
@@ -51,4 +54,17 @@ public:
     int getMiliseconds() override;
 public slots:
     void execute() override;
+private:
+    QString createAxisBuffer(double, double, double, double);
+    QString createAxisBuffer(int, int, int, int);
+    void setRadioSending(bool);
+    void setMotorsArmed(bool);
+    void setThrottleMode(bool);
+    void setRadioValues(int, int, int, int);
+    int _leftX = 0;
+    int _leftY = 0;
+    int _rightX = 0;
+    int _rightY = 0;
+    int _lock = 0;
+    int _leftYthrottle = 0;
 };
