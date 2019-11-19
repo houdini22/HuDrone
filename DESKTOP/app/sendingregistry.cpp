@@ -1,26 +1,21 @@
 #include "include.h"
 
-SendingRegistry::SendingRegistry(Drone *drone) {
+SendingRegistry::SendingRegistry(Drone * drone) {
     this->_drone = drone;
-    this->_sendings_data = new QHash<QString, SendingData *>;
     this->_modes = new Modes;
 
-    connect(this,
-            SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData *> *)),
-            this->_drone,
-            SLOT(slotSendingsDataChanged(QHash<QString, SendingData *> *)));
+    connect(this, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this->_drone, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
 }
 
 SendingRegistry::~SendingRegistry() {
     delete this->_modes;
-    this->_sendings_data->clear();
-    delete this->_sendings_data;
+    this->_sendings_data.clear();
     this->_registry.clear();
 }
 
 void SendingRegistry::add(SendingInterface * handler) {
     this->_registry.append(handler);
-    this->_sendings_data->insert(handler->getData()->name, handler->getData());
+    this->_sendings_data.insert(handler->getData().name, handler->getData());
 }
 
 void SendingRegistry::start() {
@@ -44,8 +39,9 @@ void SendingRegistry::stopThreads() {
     }
 }
 
-void SendingRegistry::slotSendingDataChanged(SendingData * data) {
-    this->_sendings_data->insert(data->name, data);
+void SendingRegistry::slotSendingDataChanged(SendingData data) {
+    this->_sendings_data.remove(data.name);
+    this->_sendings_data.insert(data.name, data);
     emit signalSendingsDataChanged(this->_sendings_data);
     emit signalSendingDataChanged(data);
 }
@@ -54,7 +50,7 @@ Modes * SendingRegistry::getModes() {
     return this->_modes;
 }
 
-QHash<QString, SendingData *> * SendingRegistry::getData() {
+QHash<QString, SendingData> SendingRegistry::getData() {
     return this->_sendings_data;
 }
 

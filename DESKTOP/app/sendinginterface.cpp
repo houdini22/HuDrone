@@ -10,6 +10,6 @@ void SendingInterface::start() {}
 
 void SendingInterface::stop() {}
 
-SendingData * SendingInterface::getData() {
+SendingData SendingInterface::getData() {
     return this->_data;
 }

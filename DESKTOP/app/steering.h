@@ -24,13 +24,13 @@ public:
     SteeringInterface(Drone *, SteeringRegistry *);
     virtual void start() {}
     virtual void stop() {}
-    SteeringData * getData();
+    SteeringData getData();
 protected:
     SteeringRegistry * _registry;
     Drone * _drone;
-    SteeringData * _data;
+    SteeringData _data;
 signals:
-    void signalSteeringDataChanged(SteeringData *);
+    void signalSteeringDataChanged(SteeringData);
 };
 
 //

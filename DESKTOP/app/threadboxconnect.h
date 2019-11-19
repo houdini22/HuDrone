@@ -1,6 +1,8 @@
 #pragma once
 #include "include.h"
 
+struct SteeringData;
+
 class ThreadBoxConnect : public QThread {
     Q_OBJECT
 public:
@@ -17,12 +19,11 @@ private:
     bool _is_running = false;
     Profile * _profile = nullptr;
     void timeout();
-    SendingData * _sending_data = nullptr;
-    SteeringData * _steering_data = nullptr;
+    SendingData _sending_data;
 signals:
     void arduinoConnected(QSerialPort *);
-    void signalSendingDataChanged(SendingData *);
+    void signalSendingDataChanged(SendingData);
 public slots:
     void terminate();
-    void slotSendingDataChanged(SendingData *);
+    void slotSendingDataChanged(SendingData);
 };

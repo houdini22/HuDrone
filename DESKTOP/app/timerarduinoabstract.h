@@ -27,15 +27,15 @@ protected:
     SendingRegistry * _sending_registry = nullptr;
     SteeringRegistry * _steering_registry = nullptr;
     Profile * _profile = nullptr;
-    QHash<QString, SendingData *> * _sending_data = nullptr;
-    QHash<QString, SteeringData *> * _steerings_data = nullptr;
+    QHash<QString, SendingData> _sending_data;
+    QHash<QString, SteeringData> _steerings_data;
     void send(const QString &, bool);
 private:
     void timeout();
 public slots:
     virtual void execute() = 0;
-    void slotSendingsDataChanged(QHash<QString, SendingData *> *);
-    void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
+    void slotSendingsDataChanged(QHash<QString, SendingData>);
+    void slotSteeringsDataChanged(QHash<QString, SteeringData>);
 };
 
 class TimerArduinoPing : public TimerArduinoAbstract {

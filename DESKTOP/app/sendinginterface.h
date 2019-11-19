@@ -16,10 +16,10 @@ public:
     SendingInterface(Drone *, SendingRegistry *, SteeringRegistry *);
     virtual void start();
     virtual void stop();
-    SendingData * getData();
+    SendingData getData();
 protected:
     SendingRegistry * _sending_registry;
     SteeringRegistry * _steering_registry;
     Drone * _drone;
-    SendingData * _data;
+    SendingData _data;
 };

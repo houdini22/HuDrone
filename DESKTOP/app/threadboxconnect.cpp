@@ -9,21 +9,18 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
     this->_sending_registry = registry;
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
-    if (this->_steering_registry->getData()->contains("gamepad0")) {
-        this->_steering_data = this->_steering_registry->getData()->take("gamepad0");
-    }
 
     connect(this,
-            SIGNAL(signalSendingDataChanged(SendingData *)),
+            SIGNAL(signalSendingDataChanged(SendingData)),
             this->_sending_registry,
-            SLOT(slotSendingDataChanged(SendingData *)));
+            SLOT(slotSendingDataChanged(SendingData)));
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
     disconnect(this,
-               SIGNAL(signalSendingDataChanged(SendingData *)),
+               SIGNAL(signalSendingDataChanged(SendingData)),
                this->_sending_registry,
-               SLOT(slotSendingDataChanged(SendingData *)));
+               SLOT(slotSendingDataChanged(SendingData)));
 }
 
 void ThreadBoxConnect::start() {
@@ -38,11 +35,9 @@ void ThreadBoxConnect::terminate() {
 
 void ThreadBoxConnect::run() {
     while (this->_is_running) {
-        if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
-            if (this->_sending_data->mode == MODE_ARDUINO_CONNECTED) {
-                QThread::msleep(4000);
-                continue;
-            }
+        if (this->_sending_data.mode == MODE_ARDUINO_CONNECTED) {
+            QThread::msleep(4000);
+            continue;
         }
 
         QList<QSerialPortInfo> ports = SerialPortUtilities::getAvailablePorts();
@@ -70,13 +65,10 @@ void ThreadBoxConnect::run() {
                 QThread::msleep(50);
             }
 
-            if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
-                this->_sending_data->service = this->_arduino;
-                this->_sending_data->mode = MODE_ARDUINO_DETECTED;
-                emit signalSendingDataChanged(this->_sending_data);
-                qDebug() << "Emited.";
-            }
-
+            this->_sending_data.service = this->_arduino;
+            this->_sending_data.mode = MODE_ARDUINO_DETECTED;
+            emit signalSendingDataChanged(this->_sending_data);
+            qDebug() << "Emited.";
             qDebug() << "Opened.";
             qDebug() << "Writing hello message...";
 
@@ -92,13 +84,11 @@ void ThreadBoxConnect::run() {
                     if (d == 'h') {
                         qDebug() << "Connected.";
 
-                        if (this->_sending_registry != nullptr && this->_sending_data != nullptr) {
-                            this->_sending_data->service = this->_arduino;
-                            this->_sending_data->mode = MODE_ARDUINO_CONNECTED;
-                            emit signalSendingDataChanged(this->_sending_data);
-                            qDebug() << "emited";
-                            continue;
-                        }
+                        this->_sending_data.service = this->_arduino;
+                        this->_sending_data.mode = MODE_ARDUINO_CONNECTED;
+                        emit signalSendingDataChanged(this->_sending_data);
+                        qDebug() << "emited";
+                        continue;
                     }
                 } else {
                     this->timeout();
@@ -112,16 +102,16 @@ void ThreadBoxConnect::run() {
     }
 }
 
-void ThreadBoxConnect::slotSendingDataChanged(SendingData * data) {
-    if (data->name.compare("arduino0") == 0) {
+void ThreadBoxConnect::slotSendingDataChanged(SendingData data) {
+    if (data.name.compare("arduino0") == 0) {
         this->_sending_data = data;
     }
 }
 
 void ThreadBoxConnect::timeout() {
-    if (this->_sending_data != nullptr) {
-        this->_sending_data->mode = MODE_ARDUINO_DISCONNECTED;
-        this->_sending_data->service->close();
+    if (this->_sending_data.name.compare("arduino0") == 0) {
+        this->_sending_data.mode = MODE_ARDUINO_DISCONNECTED;
+        this->_sending_data.service->close();
         emit signalSendingDataChanged(this->_sending_data);
     }
 }

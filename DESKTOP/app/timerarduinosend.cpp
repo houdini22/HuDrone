@@ -12,98 +12,96 @@ int TimerArduinoSend::getMiliseconds() {
 }
 
 void TimerArduinoSend::execute() {
-    if (this->_steerings_data != nullptr && this->_sending_data != nullptr) {
-        if (this->_steerings_data->contains("gamepad0")) {
-            if (this->_lock > 0) {
-                this->_lock--;
-            }
+    if (this->_steerings_data.contains("gamepad0")) {
+        if (this->_lock > 0) {
+            this->_lock--;
+        }
 
-            Modes * modes = this->_drone->getModes();
-            SteeringGamepadButtons buttons = this->_steerings_data->take("gamepad0")->buttons;
+        Modes * modes = this->_drone->getModes();
+        SteeringGamepadButtons buttons = this->_steerings_data.take("gamepad0").buttons;
 
-            if (modes->throttleModeActive) {
-                this->setRadioValues(
-                            this->_profile->getLeftX(buttons.leftX),
-                            this->_leftYthrottle,
-                            this->_profile->getRightX(buttons.rightX),
-                            this->_profile->getRightY(buttons.rightY));
+        if (modes->throttleModeActive) {
+            this->setRadioValues(
+                        this->_profile->getLeftX(buttons.leftX),
+                        this->_leftYthrottle,
+                        this->_profile->getRightX(buttons.rightX),
+                        this->_profile->getRightY(buttons.rightY));
 
-                this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                                  this->_leftYthrottle,
-                                                  this->_profile->getRightX(buttons.rightX),
-                                                  this->_profile->getRightY(buttons.rightY)), false);
+            this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                              this->_leftYthrottle,
+                                              this->_profile->getRightX(buttons.rightX),
+                                              this->_profile->getRightY(buttons.rightY)), false);
+        } else {
+            this->setRadioValues(
+                        this->_profile->getLeftX(buttons.leftX),
+                        this->_profile->getLeftY(buttons.leftY),
+                        this->_profile->getRightX(buttons.rightX),
+                        this->_profile->getRightY(buttons.rightY));
+
+            this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                              this->_profile->getLeftY(buttons.leftY),
+                                              this->_profile->getRightX(buttons.rightX),
+                                              this->_profile->getRightY(buttons.rightY)), false);
+        }
+
+        if (this->_lock > 0) {
+            return;
+        }
+
+        if (buttons.down) {
+            if (!modes->throttleModeActive) {
+                this->setThrottleMode(true);
             } else {
-                this->setRadioValues(
-                            this->_profile->getLeftX(buttons.leftX),
-                            this->_profile->getLeftY(buttons.leftY),
-                            this->_profile->getRightX(buttons.rightX),
-                            this->_profile->getRightY(buttons.rightY));
-
-                this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                                  this->_profile->getLeftY(buttons.leftY),
-                                                  this->_profile->getRightX(buttons.rightX),
-                                                  this->_profile->getRightY(buttons.rightY)), false);
+                this->setThrottleMode(false);
             }
+            this->_lock = BUTTON_TIMEOUT;
+            return;
+        }
 
-            if (this->_lock > 0) {
-                return;
+        if (buttons.left) {
+            modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+            if (modes->thrust > 1.0) {
+                modes->thrust = 1.0;
             }
+            this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
+            this->_drone->setModes(modes);
+            this->_lock = BUTTON_TIMEOUT;
+            return;
+        }
 
-            if (buttons.down) {
-                if (!modes->throttleModeActive) {
-                    this->setThrottleMode(true);
+        if (buttons.right) {
+            modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+            if (modes->thrust < 0.0) {
+                modes->thrust = 0.0;
+            }
+            this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
+            this->_drone->setModes(modes);
+            this->_lock = BUTTON_TIMEOUT;
+            return;
+        }
+
+        if (buttons.start) {
+            if (!modes->radioSending) {
+                this->send("n", false);
+                this->setRadioSending(true);
+            } else {
+                this->send("f", false);
+                this->setRadioSending(false);
+            }
+            this->_lock = BUTTON_TIMEOUT;
+            return;
+        }
+
+        if (modes->radioSending) {
+            if (buttons.l2 && buttons.r2) {
+                if (!modes->motorsArmed) {
+                    // send
+                    this->setMotorsArmed(true);
                 } else {
-                    this->setThrottleMode(false);
+                    this->setMotorsArmed(false);
                 }
                 this->_lock = BUTTON_TIMEOUT;
                 return;
-            }
-
-            if (buttons.left) {
-                modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-                if (modes->thrust > 1.0) {
-                    modes->thrust = 1.0;
-                }
-                this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
-                this->_drone->setModes(modes);
-                this->_lock = BUTTON_TIMEOUT;
-                return;
-            }
-
-            if (buttons.right) {
-                modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-                if (modes->thrust < 0.0) {
-                    modes->thrust = 0.0;
-                }
-                this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
-                this->_drone->setModes(modes);
-                this->_lock = BUTTON_TIMEOUT;
-                return;
-            }
-
-            if (buttons.start) {
-                if (!modes->radioSending) {
-                    this->send("n", false);
-                    this->setRadioSending(true);
-                } else {
-                    this->send("f", false);
-                    this->setRadioSending(false);
-                }
-                this->_lock = BUTTON_TIMEOUT;
-                return;
-            }
-
-            if (modes->radioSending) {
-                if (buttons.l2 && buttons.r2) {
-                    if (!modes->motorsArmed) {
-                        // send
-                        this->setMotorsArmed(true);
-                    } else {
-                        this->setMotorsArmed(false);
-                    }
-                    this->_lock = BUTTON_TIMEOUT;
-                    return;
-                }
             }
         }
     }

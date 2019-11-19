@@ -24,8 +24,8 @@ public:
     void notifyConfigurationChanged();
     void openWizardAddProfile();
     void openWizardUpload();
-    void openDialogFly(QString name);
-    void openDialogEditProfile(QString name);
+    void openDialogFly(QString);
+    void openDialogEditProfile(QString);
 
     Modes * getModes();
     void setModes(Modes *);
@@ -50,14 +50,14 @@ private slots:
     void handleWizardAddProfileClosed();
     void handleWizardUploadClosed();
     void handleDialogEditProfileClosed();
-    void slotSteeringDataChanged(SteeringData *);
-    void slotSteeringsDataChanged(QHash<QString, SteeringData *> *);
-    void slotSendingsDataChanged(QHash<QString,SendingData*> *);
+    void slotSteeringDataChanged(SteeringData);
+    void slotSteeringsDataChanged(QHash<QString, SteeringData>);
+    void slotSendingsDataChanged(QHash<QString, SendingData>);
     void slotArduinoConnected(QSerialPort *);
 signals:
     void configurationChanged();
-    void signalModesChanged(Modes * _modes);
-    void signalSteeringDataChanged(SteeringData *);
-    void signalSendingsDataChanged(QHash<QString,SendingData*>*);
-    void signalSteeringsDataChanged(QHash<QString, SteeringData *> *);
+    void signalModesChanged(Modes *);
+    void signalSteeringDataChanged(SteeringData);
+    void signalSendingsDataChanged(QHash<QString, SendingData>);
+    void signalSteeringsDataChanged(QHash<QString, SteeringData>);
 };

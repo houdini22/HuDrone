@@ -10,15 +10,16 @@ TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
 
-    connect(sendingRegistry, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData *> *)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData *> *)));
-    connect(steeringRegistry, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData *> *)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringsData *> *)));
+    connect(this->_drone, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
+    connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
 }
 
-void TimerArduinoAbstract::slotSendingsDataChanged(QHash<QString, SendingData *> * data) {
+void TimerArduinoAbstract::slotSendingsDataChanged(QHash<QString, SendingData> data) {
+    qDebug() << "TimerArduinoAbstract" << data.size();
     this->_sending_data = data;
 }
 
-void TimerArduinoAbstract::slotSteeringsDataChanged(QHash<QString, SteeringData *> * data) {
+void TimerArduinoAbstract::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
     this->_steerings_data = data;
 }
 
@@ -42,18 +43,22 @@ QTimer * TimerArduinoAbstract::getTimer() {
 }
 
 void TimerArduinoAbstract::timeout() {
-    if (this->_sending_data->contains("arduino0")) {
-        this->_sending_data->take("arduino0")->mode = MODE_ARDUINO_DISCONNECTED;
+    /*
+    if (this->_sending_data.contains("arduino0")) {
+        this->_sending_data.take("arduino0")->mode = MODE_ARDUINO_DISCONNECTED;
         this->_sending_data->take("arduino0")->service->close();
     }
+    */
     this->_timers->timeout();
 }
 
 void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
-    if (this->_sending_data != nullptr) {
-        if (this->_sending_data->contains("arduino0")) {
-            QSerialPort * arduino = this->_sending_data->take("arduino0")->service;
+    if (this->_sending_data.contains("arduino0")) {
+        qDebug() << 2;
+        if (this->_sending_data.take("arduino0").mode == MODE_ARDUINO_CONNECTED) {
+            QSerialPort * arduino = this->_sending_data.take("arduino0").service;
             if (arduino->isOpen()) {
+                qDebug() << 3;
                 if (buffer.length() > 0) {
                     qDebug() << "BUFF: " << buffer;
                     arduino->write(buffer.toStdString().c_str(), buffer.length());
@@ -63,9 +68,9 @@ void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
                         }
                     }
                 }
-            } else {
-                this->timeout();
             }
+        } else {
+            this->timeout();
         }
     }
 }

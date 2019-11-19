@@ -14,9 +14,9 @@ private:
     ThreadBoxConnect * _thread_box_connect = nullptr;
     Profile * _profile = nullptr;
 public slots:
-    void slotSendingDataChanged(SendingData *);
+    void slotSendingDataChanged(SendingData);
     void slotArduinoConnected(QSerialPort *);
 signals:
-    void signalSendingDataChanged(SendingData *);
+    void signalSendingDataChanged(SendingData);
     void signalArduinoConnected(QSerialPort *);
 };

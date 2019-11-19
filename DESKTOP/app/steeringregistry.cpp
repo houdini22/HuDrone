@@ -1,26 +1,27 @@
 #include "include.h"
 
-SteeringRegistry::SteeringRegistry(Drone *drone) {
+SteeringRegistry::SteeringRegistry(Drone * drone) {
     this->_drone = drone;
-    this->_steerings_data = new QHash<QString, SteeringData *>;
+
+    connect(this, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this->_drone, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
 }
 
 SteeringRegistry::~SteeringRegistry() {
-    this->_steerings_data->clear();
-    delete this->_steerings_data;
+    this->_steerings_data.clear();
 }
 
 void SteeringRegistry::add(SteeringInterface * handler) {
     this->_registry.append(handler);
     connect(handler,
-            SIGNAL(signalSteeringDataChanged(SteeringData *)),
+            SIGNAL(signalSteeringDataChanged(SteeringData)),
             this,
-            SLOT(slotSteeringDataChanged(SteeringData *)));
-    this->_steerings_data->insert(handler->getData()->name, handler->getData());
+            SLOT(slotSteeringDataChanged(SteeringData)));
+    this->_steerings_data.insert(handler->getData().name, handler->getData());
 }
 
-void SteeringRegistry::slotSteeringDataChanged(SteeringData * data) {
-    this->_steerings_data->insert(data->name, data);
+void SteeringRegistry::slotSteeringDataChanged(SteeringData data) {
+    this->_steerings_data.remove(data.name);
+    this->_steerings_data.insert(data.name, data);
     emit signalSteeringsDataChanged(this->_steerings_data);
     emit signalSteeringDataChanged(data);
 }
@@ -46,6 +47,6 @@ void SteeringRegistry::stopThreads() {
     }
 }
 
-QHash<QString, SteeringData *> * SteeringRegistry::getData() {
+QHash<QString, SteeringData> SteeringRegistry::getData() {
     return this->_steerings_data;
 }
