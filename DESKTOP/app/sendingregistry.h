@@ -25,7 +25,6 @@ private:
     void startThreads();
     void stopThreads();
 signals:
-    void signalSendingDataChanged(SendingData);
     void signalSendingsDataChanged(QHash<QString, SendingData>);
     void signalModesChanged(Modes *);
 public slots:

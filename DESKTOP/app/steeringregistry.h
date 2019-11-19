@@ -24,5 +24,4 @@ public slots:
     void slotSteeringDataChanged(SteeringData);
 signals:
     void signalSteeringsDataChanged(QHash<QString, SteeringData>);
-    void signalSteeringDataChanged(SteeringData);
 };

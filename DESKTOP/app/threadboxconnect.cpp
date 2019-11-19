@@ -1,7 +1,5 @@
 #include "include.h"
 
-#define BUTTON_TIMEOUT 150
-
 ThreadBoxConnect::ThreadBoxConnect(): QThread() {}
 
 ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, SteeringRegistry * steeringRegistry, Profile * profile): QThread() {
@@ -10,6 +8,10 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
 
+    connect(this->_sending_registry,
+            SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)),
+            this,
+            SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     connect(this,
             SIGNAL(signalSendingDataChanged(SendingData)),
             this->_sending_registry,
@@ -17,10 +19,14 @@ ThreadBoxConnect::ThreadBoxConnect(Drone * drone, SendingRegistry * registry, St
 }
 
 ThreadBoxConnect::~ThreadBoxConnect() {
+    disconnect(this->_sending_registry,
+            SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)),
+            this,
+            SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     disconnect(this,
-               SIGNAL(signalSendingDataChanged(SendingData)),
-               this->_sending_registry,
-               SLOT(slotSendingDataChanged(SendingData)));
+            SIGNAL(signalSendingDataChanged(SendingData)),
+            this->_sending_registry,
+            SLOT(slotSendingDataChanged(SendingData)));
 }
 
 void ThreadBoxConnect::start() {
@@ -102,9 +108,10 @@ void ThreadBoxConnect::run() {
     }
 }
 
-void ThreadBoxConnect::slotSendingDataChanged(SendingData data) {
-    if (data.name.compare("arduino0") == 0) {
-        this->_sending_data = data;
+void ThreadBoxConnect::slotSendingsDataChanged(QHash<QString, SendingData> data) {
+    if (data.contains("arduino0")) {
+        qDebug() << "ThreadBoxConnect received.";
+        this->_sending_data = data.take("arduino0");
     }
 }
 

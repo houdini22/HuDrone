@@ -11,10 +11,6 @@ void SendingArduino::start() {
             SIGNAL(signalSendingDataChanged(SendingData)),
             this->_sending_registry,
             SLOT(slotSendingDataChanged(SendingData)));
-    connect(this,
-            SIGNAL(signalSendingDataChanged(SendingData)),
-            this->_thread_box_connect,
-            SLOT(slotSendingDataChanged(SendingData)));
 
     emit signalSendingDataChanged(this->_data);
     this->_thread_box_connect->start();
@@ -28,15 +24,13 @@ void SendingArduino::stop() {
                SIGNAL(signalSendingDataChanged(SendingData)),
                this->_sending_registry,
                SLOT(slotSendingDataChanged(SendingData)));
-    disconnect(this,
-               SIGNAL(signalSendingDataChanged(SendingData)),
-               this->_thread_box_connect,
-               SLOT(slotSendingDataChanged(SendingData)));
+
 }
 
 void SendingArduino::slotSendingDataChanged(SendingData data) {
-    this->_data = data;
-    emit signalSendingDataChanged(this->_data);
+    if (this->_data.name.compare(data.name) == 0) {
+        this->_data = data;
+    }
 }
 
 void SendingArduino::slotArduinoConnected(QSerialPort * arduino) {

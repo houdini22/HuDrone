@@ -43,7 +43,6 @@ void SendingRegistry::slotSendingDataChanged(SendingData data) {
     this->_sendings_data.remove(data.name);
     this->_sendings_data.insert(data.name, data);
     emit signalSendingsDataChanged(this->_sendings_data);
-    emit signalSendingDataChanged(data);
 }
 
 Modes * SendingRegistry::getModes() {

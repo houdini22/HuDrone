@@ -15,11 +15,12 @@ TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone
 }
 
 void TimerArduinoAbstract::slotSendingsDataChanged(QHash<QString, SendingData> data) {
-    qDebug() << "TimerArduinoAbstract" << data.size();
+    qDebug() << "sending" << data.size();
     this->_sending_data = data;
 }
 
 void TimerArduinoAbstract::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
+    qDebug() << "steerings" << data.size();
     this->_steerings_data = data;
 }
 
@@ -56,9 +57,10 @@ void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
     if (this->_sending_data.contains("arduino0")) {
         qDebug() << 2;
         if (this->_sending_data.take("arduino0").mode == MODE_ARDUINO_CONNECTED) {
+            qDebug() << 3;
             QSerialPort * arduino = this->_sending_data.take("arduino0").service;
             if (arduino->isOpen()) {
-                qDebug() << 3;
+                qDebug() << 4;
                 if (buffer.length() > 0) {
                     qDebug() << "BUFF: " << buffer;
                     arduino->write(buffer.toStdString().c_str(), buffer.length());

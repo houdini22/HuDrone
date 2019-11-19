@@ -25,5 +25,5 @@ signals:
     void signalSendingDataChanged(SendingData);
 public slots:
     void terminate();
-    void slotSendingDataChanged(SendingData);
+    void slotSendingsDataChanged(QHash<QString, SendingData>);
 };

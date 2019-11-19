@@ -23,7 +23,6 @@ void SteeringRegistry::slotSteeringDataChanged(SteeringData data) {
     this->_steerings_data.remove(data.name);
     this->_steerings_data.insert(data.name, data);
     emit signalSteeringsDataChanged(this->_steerings_data);
-    emit signalSteeringDataChanged(data);
 }
 
 void SteeringRegistry::start() {
