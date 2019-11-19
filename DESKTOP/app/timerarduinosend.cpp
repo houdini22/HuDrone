@@ -10,5 +10,5 @@ int TimerArduinoSend::getMiliseconds() {
 }
 
 void TimerArduinoSend::execute() {
-    qDebug() << "Timer send...";
+
 }

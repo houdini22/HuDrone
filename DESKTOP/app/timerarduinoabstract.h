@@ -6,6 +6,8 @@ class Drone;
 class SendingRegistry;
 class SteeringRegistry;
 class Profile;
+class TimerThread;
+struct SendingData;
 
 class TimerArduinoAbstract : public QObject {
     Q_OBJECT
@@ -15,19 +17,22 @@ public:
     void start();
     void stop();
     virtual int getMiliseconds() = 0;
+    QTimer * getTimer();
 protected:
     QTimer * _timer = nullptr;
-    QThread * _thread = nullptr;
+    TimerThread * _thread = nullptr;
     TimersArduino * _timers = nullptr;
     Drone * _drone = nullptr;
     SendingRegistry * _sending_registry = nullptr;
     SteeringRegistry * _steering_registry = nullptr;
     Profile * _profile = nullptr;
+    QHash<QString, SendingData *> * _sending_data = nullptr;
     void send(const QString &, bool);
 private:
     void timeout();
 public slots:
     virtual void execute() = 0;
+    void slotSendingsDataChanged(QHash<QString, SendingData *> *);
 };
 
 class TimerArduinoPing : public TimerArduinoAbstract {

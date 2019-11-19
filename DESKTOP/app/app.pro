@@ -23,6 +23,7 @@ SOURCES += \
     timerarduinoping.cpp \
     timerarduinosend.cpp \
     timersarduino.cpp \
+    timerthread.cpp \
     ui/dialogeditprofile.cpp \
     ui/dialogfly.cpp \
     drone.cpp \

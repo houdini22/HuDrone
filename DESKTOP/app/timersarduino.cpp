@@ -5,8 +5,6 @@ TimersArduino::TimersArduino(Drone * drone, SendingRegistry * sendingRegistry, S
 
     this->_timer_arduino_ping = new TimerArduinoPing(this, drone, sendingRegistry, steeringRegistry, profile);
     this->_timer_arduino_send = new TimerArduinoSend(this, drone, sendingRegistry, steeringRegistry, profile);
-
-    qDebug() << "Timers created.";
 }
 
 TimersArduino::~TimersArduino() {
@@ -15,18 +13,15 @@ TimersArduino::~TimersArduino() {
 }
 
 void TimersArduino::start() {
-    qDebug() << "Timers start.";
     this->_timer_arduino_ping->start();
     this->_timer_arduino_send->start();
 }
 
 void TimersArduino::stop() {
-    qDebug() << "Timers stop.";
     this->_timer_arduino_ping->stop();
     this->_timer_arduino_send->stop();
 }
 
 void TimersArduino::timeout() {
-    qDebug() << "Timeout.";
     this->_drone->stopSendingTimers();
 }

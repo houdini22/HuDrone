@@ -81,6 +81,7 @@ typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
 #include "timerarduinoabstract.h"
+#include "timerthread.h"
 #include "timersarduino.h"
 #include "profile.h"
 #include "threadgamepad.h"

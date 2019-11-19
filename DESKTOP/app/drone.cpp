@@ -144,6 +144,8 @@ void Drone::start(Profile * profile) {
 
     this->_steering_registry->start();
     this->_sending_registry->start();
+
+    this->startSendingTimers(profile);
 }
 
 void Drone::stop() {

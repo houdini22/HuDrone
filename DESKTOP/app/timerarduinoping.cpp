@@ -10,5 +10,5 @@ int TimerArduinoPing::getMiliseconds() {
 }
 
 void TimerArduinoPing::execute() {
-    qDebug() << "Timer...";
+    this->send("p", true);
 }
