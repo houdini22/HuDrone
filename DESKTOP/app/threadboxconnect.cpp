@@ -111,11 +111,12 @@ void ThreadBoxConnect::run() {
 void ThreadBoxConnect::slotSendingsDataChanged(QHash<QString, SendingData> data) {
     if (data.contains("arduino0")) {
         qDebug() << "ThreadBoxConnect::slotSendingsDataChanged";
-        this->_sending_data = data.take("arduino0");
+        this->_sending_data = data["arduino0"];
     }
 }
 
 void ThreadBoxConnect::timeout() {
+    qDebug() << "ThreadBoxConnect::timeout";
     if (this->_sending_data.name.compare("arduino0") == 0) {
         this->_sending_data.mode = MODE_ARDUINO_DISCONNECTED;
         this->_sending_data.service->close();

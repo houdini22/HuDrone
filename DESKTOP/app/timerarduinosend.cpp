@@ -7,10 +7,12 @@ TimerArduinoSend::TimerArduinoSend(TimersArduino * timers, Drone * drone, Sendin
     connect(this->_timer, SIGNAL(timeout()), this, SLOT(execute()), Qt::DirectConnection);
     connect(this->_drone, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
+
+    this->_leftYthrottle = this->_profile->getMinLeftY();
 }
 
 int TimerArduinoSend::getMiliseconds() {
-    return 20;
+    return 40;
 }
 
 void TimerArduinoSend::execute() {
@@ -20,7 +22,7 @@ void TimerArduinoSend::execute() {
         }
 
         Modes * modes = this->_drone->getModes();
-        SteeringGamepadButtons buttons = this->_steerings_data.take("gamepad0").buttons;
+        SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
 
         if (modes->throttleModeActive) {
             this->setRadioValues(
@@ -61,9 +63,9 @@ void TimerArduinoSend::execute() {
         }
 
         if (buttons.left) {
-            modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-            if (modes->thrust > 1.0) {
-                modes->thrust = 1.0;
+            modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+            if (modes->thrust < 0.0) {
+                modes->thrust = 0.0;
             }
             this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
             this->_drone->setModes(modes);
@@ -72,9 +74,9 @@ void TimerArduinoSend::execute() {
         }
 
         if (buttons.right) {
-            modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-            if (modes->thrust < 0.0) {
-                modes->thrust = 0.0;
+            modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
+            if (modes->thrust > 1.0) {
+                modes->thrust = 1.0;
             }
             this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
             this->_drone->setModes(modes);

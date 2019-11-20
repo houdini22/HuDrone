@@ -27,7 +27,7 @@ void DialogFly::showEvent(QShowEvent *) {
 
 void DialogFly::slotSendingsDataChanged(QHash<QString, SendingData> data) {
     if (data.contains("arduino0")) {
-        SendingData data2 = data.take("arduino0");
+        SendingData data2 = data["arduino0"];
 
         QLabel * label = this->ui->labelDeviceHudroneBox;
 
@@ -46,7 +46,7 @@ void DialogFly::slotSendingsDataChanged(QHash<QString, SendingData> data) {
 
 void DialogFly::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
     if (data.contains("gamepad0")) {
-        SteeringData gamepad0 = data.take("gamepad0");
+        SteeringData gamepad0 = data["gamepad0"];
 
         QLabel * label = this->ui->labelDeviceGamepad0;
         if (gamepad0.isConnected) {
