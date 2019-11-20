@@ -110,7 +110,7 @@ void ThreadBoxConnect::run() {
 
 void ThreadBoxConnect::slotSendingsDataChanged(QHash<QString, SendingData> data) {
     if (data.contains("arduino0")) {
-        qDebug() << "ThreadBoxConnect received.";
+        qDebug() << "ThreadBoxConnect::slotSendingsDataChanged";
         this->_sending_data = data.take("arduino0");
     }
 }

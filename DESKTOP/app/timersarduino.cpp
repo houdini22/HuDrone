@@ -23,5 +23,5 @@ void TimersArduino::stop() {
 }
 
 void TimersArduino::timeout() {
-    this->_drone->stopSendingTimers();
+
 }

@@ -95,6 +95,7 @@ void Drone::slotSteeringDataChanged(SteeringData data) {
 }
 
 void Drone::slotSendingsDataChanged(QHash<QString, SendingData > data) {
+    qDebug() << "Drone::slotSendingsDataChanged" << data.size();
     emit signalSendingsDataChanged(data);
 }
 
@@ -135,14 +136,14 @@ void Drone::deleteArduino() {
 
 void Drone::start(Profile * profile) {
     this->_steering_registry = new SteeringRegistry(this);
-    this->_steering_registry->add(new SteeringGamepad0(this, this->_steering_registry));
-
     this->_sending_registry = new SendingRegistry(this);
+
+    this->startSendingTimers(profile);
+
+    this->_steering_registry->add(new SteeringGamepad0(this, this->_steering_registry));
     this->_sending_registry->add(new SendingArduino(this, this->_sending_registry, this->_steering_registry, profile));
 
     emit signalModesChanged(this->_modes);
-
-    this->startSendingTimers(profile);
 
     this->_steering_registry->start();
     this->_sending_registry->start();

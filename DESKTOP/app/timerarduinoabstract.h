@@ -27,7 +27,7 @@ protected:
     SendingRegistry * _sending_registry = nullptr;
     SteeringRegistry * _steering_registry = nullptr;
     Profile * _profile = nullptr;
-    QHash<QString, SendingData> _sending_data;
+    QHash<QString, SendingData> _sendings_data;
     QHash<QString, SteeringData> _steerings_data;
     void send(const QString &, bool);
 private:

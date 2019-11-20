@@ -9,18 +9,15 @@ TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone
     this->_sending_registry = sendingRegistry;
     this->_steering_registry = steeringRegistry;
     this->_profile = profile;
-
-    connect(this->_drone, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
-    connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
 }
 
 void TimerArduinoAbstract::slotSendingsDataChanged(QHash<QString, SendingData> data) {
-    qDebug() << "sending" << data.size();
-    this->_sending_data = data;
+    qDebug() << "TimerArduinoAbstract::slotSendingsDataChanged" << data.size();
+    this->_sendings_data = data;
 }
 
 void TimerArduinoAbstract::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
-    qDebug() << "steerings" << data.size();
+    qDebug() << "TimerArduinoAbstract::slotSteeringsDataChanged" << data.size();
     this->_steerings_data = data;
 }
 
@@ -54,11 +51,12 @@ void TimerArduinoAbstract::timeout() {
 }
 
 void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
-    if (this->_sending_data.contains("arduino0")) {
+    if (this->_sendings_data.contains("arduino0")) {
         qDebug() << 2;
-        if (this->_sending_data.take("arduino0").mode == MODE_ARDUINO_CONNECTED) {
+        SendingData data = this->_sendings_data.take("arduino0");
+        if (data.mode == MODE_ARDUINO_CONNECTED && data.service != nullptr) {
             qDebug() << 3;
-            QSerialPort * arduino = this->_sending_data.take("arduino0").service;
+            QSerialPort * arduino = data.service;
             if (arduino->isOpen()) {
                 qDebug() << 4;
                 if (buffer.length() > 0) {
@@ -71,8 +69,6 @@ void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
                     }
                 }
             }
-        } else {
-            this->timeout();
         }
     }
 }
