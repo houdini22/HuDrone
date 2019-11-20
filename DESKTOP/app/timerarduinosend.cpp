@@ -38,12 +38,12 @@ void TimerArduinoSend::execute() {
         } else {
             this->setRadioValues(
                         this->_profile->getLeftX(buttons.leftX),
-                        this->_profile->getLeftY(buttons.leftY),
+                        std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
                         this->_profile->getRightX(buttons.rightX),
                         this->_profile->getRightY(buttons.rightY));
 
             this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                              this->_profile->getLeftY(buttons.leftY),
+                                              std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
                                               this->_profile->getRightX(buttons.rightX),
                                               this->_profile->getRightY(buttons.rightY)), false);
         }

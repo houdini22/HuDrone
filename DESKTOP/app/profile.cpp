@@ -22,7 +22,7 @@ int Profile::getMinLeftY() {
 }
 
 int Profile::getMaxLeftY() {
-    return this->getLeftY(1.0);
+    return this->getLeftY(-1.0);
 }
 
 int Profile::getLeftX(double value) {
