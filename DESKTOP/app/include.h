@@ -80,6 +80,7 @@ typedef bool T_Bool;
 typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
+#include "myserialport.h"
 #include "timerarduinoabstract.h"
 #include "timerthread.h"
 #include "timersarduino.h"

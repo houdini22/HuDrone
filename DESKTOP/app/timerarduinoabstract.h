@@ -29,7 +29,7 @@ protected:
     Profile * _profile = nullptr;
     QHash<QString, SendingData> _sendings_data;
     QHash<QString, SteeringData> _steerings_data;
-    void send(const QString &, bool);
+    void send(const QString &, bool, bool);
 private:
     void timeout();
 public slots:

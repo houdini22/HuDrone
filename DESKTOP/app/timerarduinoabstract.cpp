@@ -42,26 +42,14 @@ void TimerArduinoAbstract::timeout() {
     this->_timers->timeout();
 }
 
-void TimerArduinoAbstract::send(const QString & buffer, bool check = false) {
+void TimerArduinoAbstract::send(const QString & buffer, bool check, bool read) {
     if (this->_sendings_data.contains("arduino0")) {
         SendingData data = this->_sendings_data["arduino0"];
         if (data.mode == MODE_ARDUINO_CONNECTED && data.service != nullptr) {
-            QSerialPort * arduino = data.service;
-            if (arduino->isOpen()) {
+            MySerialPort * arduino = data.service;
+            if (arduino->isConnected()) {
                 if (buffer.length() > 0) {
-                    qDebug() << "BUFF: " << buffer;
-                    qint64 written = arduino->write(buffer.toStdString().c_str(), buffer.length());
-                    if (written != buffer.length()) {
-                        qDebug() << "Written:" << written << ", buffer:" << buffer.length();
-                    } else {
-                        qDebug() << "Written: " << written;
-                    }
-                    if (check) {
-                        if (!arduino->waitForBytesWritten(300)) {
-                            qDebug() << arduino->errorString();
-                            this->timeout();
-                        }
-                    }
+                    arduino->write(buffer);
                 }
             }
         }

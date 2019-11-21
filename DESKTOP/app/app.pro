@@ -19,6 +19,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 LIBS += -lstdc++fs
 
 SOURCES += \
+    myserialport.cpp \
     timerarduinoabstract.cpp \
     timerarduinoping.cpp \
     timerarduinosend.cpp \
@@ -68,6 +69,7 @@ HEADERS += \
     mycombobox.h \
     mylineedit.h \
     mymenuaction.h \
+    myserialport.h \
     profile.h \
     receivers.h \
     sendingarduino.h \

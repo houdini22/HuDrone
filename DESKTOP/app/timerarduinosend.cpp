@@ -34,7 +34,7 @@ void TimerArduinoSend::execute() {
             this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
                                               this->_leftYthrottle,
                                               this->_profile->getRightX(buttons.rightX),
-                                              this->_profile->getRightY(buttons.rightY)), false);
+                                              this->_profile->getRightY(buttons.rightY)), false, false);
         } else {
             this->setRadioValues(
                         this->_profile->getLeftX(buttons.leftX),
@@ -45,7 +45,7 @@ void TimerArduinoSend::execute() {
             this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
                                               std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
                                               this->_profile->getRightX(buttons.rightX),
-                                              this->_profile->getRightY(buttons.rightY)), false);
+                                              this->_profile->getRightY(buttons.rightY)), false, false);
         }
 
         if (this->_lock > 0) {
@@ -86,10 +86,10 @@ void TimerArduinoSend::execute() {
 
         if (buttons.start) {
             if (!modes->radioSending) {
-                this->send("n", false);
+                this->send("n", false, false);
                 this->setRadioSending(true);
             } else {
-                this->send("f", false);
+                this->send("f", false, false);
                 this->setRadioSending(false);
             }
             this->_lock = BUTTON_TIMEOUT;

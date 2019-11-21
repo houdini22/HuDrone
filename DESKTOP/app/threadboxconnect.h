@@ -13,7 +13,7 @@ public:
     void start();
 private:
     Drone * _drone = nullptr;
-    QSerialPort * _arduino = nullptr;
+    MySerialPort * _arduino = nullptr;
     SendingRegistry * _sending_registry = nullptr;
     SteeringRegistry * _steering_registry = nullptr;
     bool _is_running = false;

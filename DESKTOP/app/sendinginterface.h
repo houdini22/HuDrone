@@ -4,11 +4,12 @@
 class Drone;
 class SendingRegistry;
 class SteeringRegistry;
+class MySerialPort;
 
 struct SendingData {
     QString name = "";
     int mode = MODE_ARDUINO_DISCONNECTED;
-    QSerialPort * service = nullptr;
+    MySerialPort * service = nullptr;
 };
 
 class SendingInterface {
