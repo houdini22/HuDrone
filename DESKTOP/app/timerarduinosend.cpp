@@ -1,6 +1,7 @@
 #include "include.h"
 
-#define BUTTON_TIMEOUT 8
+#define EXECUTE_TIMEOUT 1
+#define BUTTON_TIMEOUT 200
 
 TimerArduinoSend::TimerArduinoSend(TimersArduino * timers, Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile)
     : TimerArduinoAbstract(timers, drone, sendingRegistry, steeringRegistry, profile) {
@@ -12,7 +13,7 @@ TimerArduinoSend::TimerArduinoSend(TimersArduino * timers, Drone * drone, Sendin
 }
 
 int TimerArduinoSend::getMiliseconds() {
-    return 40;
+    return EXECUTE_TIMEOUT;
 }
 
 void TimerArduinoSend::execute() {
@@ -20,32 +21,35 @@ void TimerArduinoSend::execute() {
         if (this->_lock > 0) {
             this->_lock--;
         }
+        this->_miliseconds++;
 
         Modes * modes = this->_drone->getModes();
         SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
 
-        if (modes->throttleModeActive) {
-            this->setRadioValues(
-                        this->_profile->getLeftX(buttons.leftX),
-                        this->_leftYthrottle,
-                        this->_profile->getRightX(buttons.rightX),
-                        this->_profile->getRightY(buttons.rightY));
+        if (this->_miliseconds % 40 == 0) {
+            if (modes->throttleModeActive) {
+                this->setRadioValues(
+                            this->_profile->getLeftX(buttons.leftX),
+                            this->_leftYthrottle,
+                            this->_profile->getRightX(buttons.rightX),
+                            this->_profile->getRightY(buttons.rightY));
 
-            this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                              this->_leftYthrottle,
-                                              this->_profile->getRightX(buttons.rightX),
-                                              this->_profile->getRightY(buttons.rightY)), false, false);
-        } else {
-            this->setRadioValues(
-                        this->_profile->getLeftX(buttons.leftX),
-                        std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
-                        this->_profile->getRightX(buttons.rightX),
-                        this->_profile->getRightY(buttons.rightY));
+                this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                                  this->_leftYthrottle,
+                                                  this->_profile->getRightX(buttons.rightX),
+                                                  this->_profile->getRightY(buttons.rightY)), false, false);
+            } else {
+                this->setRadioValues(
+                            this->_profile->getLeftX(buttons.leftX),
+                            std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
+                            this->_profile->getRightX(buttons.rightX),
+                            this->_profile->getRightY(buttons.rightY));
 
-            this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                              std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
-                                              this->_profile->getRightX(buttons.rightX),
-                                              this->_profile->getRightY(buttons.rightY)), false, false);
+                this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
+                                                  std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
+                                                  this->_profile->getRightX(buttons.rightX),
+                                                  this->_profile->getRightY(buttons.rightY)), false, false);
+            }
         }
 
         if (this->_lock > 0) {

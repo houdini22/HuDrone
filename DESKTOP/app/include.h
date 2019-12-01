@@ -75,6 +75,7 @@
 #include "mymenuaction.h"
 #include "mylineedit.h"
 #include "mycombobox.h"
+#include "mypushbutton.h"
 
 typedef bool T_Bool;
 typedef std::string T_String;

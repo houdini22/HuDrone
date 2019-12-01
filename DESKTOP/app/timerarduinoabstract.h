@@ -67,4 +67,5 @@ private:
     int _rightY = 0;
     int _lock = 0;
     int _leftYthrottle = 0;
+    unsigned long long _miliseconds = 0;
 };

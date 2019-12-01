@@ -82,6 +82,75 @@ DialogEditProfile::DialogEditProfile(QWidget *parent, QString profileName) : QDi
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
     }
 
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+         MyPushButton * addButton = MyPushButton::factory(this)
+                 ->setText("Add send action")
+                 ->setParameter("tab", QString::number(i))
+                 ->setParameter("action", "arming");
+
+         connect(addButton, SIGNAL(myReleased(MyPushButton *)), this, SLOT(slotMyPushButton(MyPushButton *)));
+
+         WizardConfigGeneralChannelTab * tab = _tabs
+                 ->getTab(1)
+                 ->getTab(i);
+
+         tab->getLayout()->addWidget(addButton, 0, 0);
+
+         this->_add_buttons[1][i] = 0;
+    }
+
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        MyPushButton * addButton = MyPushButton::factory(this)
+                ->setText("Add send action")
+                ->setParameter("tab", QString::number(i))
+                ->setParameter("action", "disarming");
+
+        connect(addButton, SIGNAL(myReleased(MyPushButton *)), this, SLOT(slotMyPushButton(MyPushButton *)));
+
+        WizardConfigGeneralChannelTab * tab = _tabs
+                ->getTab(2)
+                ->getTab(i);
+
+        tab->getLayout()->addWidget(addButton, 0, 0);
+
+        this->_add_buttons[2][i] = 0;
+    }
+
+    setLayout(_layout);
+}
+
+void DialogEditProfile::slotMyPushButton(MyPushButton * button) {
+    this->_add_buttons[button->getParameter("action").compare("arming") == 0 ? 1 : 2][button->getParameter("tab").toInt()]++;
+    int row = this->_add_buttons[button->getParameter("action").compare("arming") == 0 ? 1 : 2][button->getParameter("tab").toInt()];
+
+    auto inputLength = new MyLineEdit(this);
+    inputLength->setValidator(new QIntValidator(1, 10000, this));
+
+    auto inputValue = new MyLineEdit(this);
+    inputValue->setValidator(new QIntValidator(0, 2000, this));
+
+    auto deleteButton = MyPushButton::factory(this)
+            ->setParameter("tab", button->getParameter("tab"))
+            ->setParameter("action", button->getParameter("button"))
+            ->setParameter("row", QString::number(this->_add_buttons[button->getParameter("action").compare("arming") == 0 ? 1 : 2][button->getParameter("tab").toInt()]))
+            ->setText("Delete");
+
+    WizardConfigGeneralChannelTab * tab = _tabs
+            ->getTab(button->getParameter("action").compare("arming") == 0 ? 1 : 2)
+            ->getTab(button->getParameter("tab").toInt());
+
+    auto labelLength = new QLabel(this);
+    labelLength->setText("Time: (0 - 10000)");
+
+    auto labelValue = new QLabel(this);
+    labelValue->setText("Value: (0 - 2000)");
+
+    tab->getLayout()->addWidget(labelLength, row, 0);
+    tab->getLayout()->addWidget(inputLength, row, 1);
+    tab->getLayout()->addWidget(labelValue, row, 2);
+    tab->getLayout()->addWidget(inputValue, row, 3);
+    tab->getLayout()->addWidget(deleteButton, row, 4);
+
     setLayout(_layout);
 }
 

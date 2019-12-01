@@ -69,6 +69,7 @@ HEADERS += \
     mycombobox.h \
     mylineedit.h \
     mymenuaction.h \
+    mypushbutton.h \
     myserialport.h \
     profile.h \
     receivers.h \
