@@ -8,6 +8,7 @@ private:
     int _channel_number = 0;
 public:
     void setChannelNumber(int nb) { _channel_number = nb; }
+    void setValue(QString value) { QComboBox::setCurrentText(value); }
     static MyComboBox * factory(QStringList items, int channelNumber) {
         MyComboBox * instance = new MyComboBox;
         instance->addItems(items);

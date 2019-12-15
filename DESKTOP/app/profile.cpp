@@ -1,7 +1,8 @@
 #include "include.h"
 
-Profile::Profile(T_JSON configuration) {
+Profile::Profile(T_JSON configuration, QString name) {
     this->_configuration = configuration;
+    this->_name = name;
 }
 
 Profile * Profile::byName(QString name) {
@@ -10,7 +11,7 @@ Profile * Profile::byName(QString name) {
     for (T_JSON::iterator it = configProfiles.begin(); it != configProfiles.end(); ++it) {
         T_JSON val = it.value();
         if (val["name"].get<T_String>().compare(name.toStdString()) == 0) {
-            return new Profile(val);
+            return new Profile(val, name);
         }
     }
 
@@ -107,4 +108,56 @@ int Profile::getValueToSend(QMap<QString, QString> data, double value, bool inve
     }
 
     return (int) ((double) middle + ((double) area * (double) value));
+}
+
+T_JSON Profile::getArmingValuesForChannel(int channelNumber) {
+    return this->_configuration["radio"][QString("channel").append(QString::number(channelNumber)).toStdString()]["arming"];
+}
+
+T_JSON Profile::getDisarmingValuesForChannel(int channelNumber) {
+    return this->_configuration["radio"][QString("channel").append(QString::number(channelNumber)).toStdString()]["disarming"];
+}
+
+void Profile::saveArmingDisarmingValueForChannel(int channel, QString action, T_JSON obj) {
+    this->_configuration["radio"][QString("channel").append(QString::number(channel)).toStdString()][action.toStdString()].push_back(obj);
+    this->save();
+}
+
+void Profile::addArmingDisarmingValueForChannel(QString channel, QString action, QString at, QString valueType, QString value) {
+    this->_configuration["radio"][channel.toStdString()][action.toStdString()].at((unsigned long long) at.toInt())[valueType.toStdString()] = value.toInt();
+    this->save();
+}
+
+void Profile::saveValueForChannel(QString channelNumber, QString valueName, QString value) {
+    this->_configuration["radio"][channelNumber.toStdString()][valueName.toStdString()] = value.toStdString();
+    this->save();
+}
+
+void Profile::removeArmingDisarmingPosition(QString channel, QString action, QString at) {
+    this->_configuration["radio"][channel.toStdString()][action.toStdString()].erase((unsigned long long) at.toInt());
+    this->save();
+}
+
+void Profile::save() {
+    T_JSON data = Config::getInstance().getData();
+    unsigned long long i = 0;
+    for (T_JSON::iterator it = data["profiles"].begin(); it != data["profiles"].end(); ++it) {
+        T_JSON profile = it.value();
+        T_String _profileName = profile["name"].get<T_String>();
+        if (_profileName.compare(this->_name.toStdString()) == 0) {
+            data["profiles"].at(i) = this->_configuration;
+            break;
+        }
+        i += 1;
+    }
+
+    Config::getInstance().setData(data)->save();
+}
+
+int Profile::getValueFromChannel(int channelNumber, T_String value) {
+    return QString(this->_configuration["radio"][QString("channel").append(QString::number(channelNumber)).toStdString()][value].get<T_String>().c_str()).toInt();
+}
+
+QString Profile::getStringValueFromChannel(int channelNumber, T_String value) {
+    return QString(this->_configuration["radio"][QString("channel").append(QString::number(channelNumber)).toStdString()][value].get<T_String>().c_str());
 }
