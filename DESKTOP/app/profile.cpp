@@ -140,6 +140,7 @@ void Profile::removeArmingDisarmingPosition(QString channel, QString action, QSt
 
 void Profile::save() {
     T_JSON data = Config::getInstance().getData();
+
     unsigned long long i = 0;
     for (T_JSON::iterator it = data["profiles"].begin(); it != data["profiles"].end(); ++it) {
         T_JSON profile = it.value();
