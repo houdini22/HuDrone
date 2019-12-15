@@ -23,8 +23,14 @@ private:
     void setValueForChannel(QString, QString, QString);
     void setFunctionValueForChannel(int, QString);
     void showEvent(QShowEvent *) override;
+    void renderChannels();
+    void renderArming();
+    void renderDisarming();
+    void addArmingDisarmingRow(QString, QString, bool, int, int);
 public slots:
     void textEdited(QString, QString);
     void myComboBoxTextChanged(QString, int);
     void slotMyPushButton(MyPushButton *);
+    void slotMyPushButtonDelete(MyPushButton *);
+    void slotMyTextEdited(MyLineEdit *);
 };

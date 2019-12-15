@@ -63,6 +63,7 @@ HEADERS += \
     drone.h \
     dronemodes.h \
     filesystem.h \
+    gridlayoututils.h \
     include.h \
     json.hpp \
     mainwindow.h \
