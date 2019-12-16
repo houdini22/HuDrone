@@ -31,12 +31,12 @@ void Profile::loadArmingValues() {
         sums[_function] = 0;
         for (T_JSON::iterator it = arming.begin(); it != arming.end(); ++it) {
             T_JSON val = it.value();
-            this->_armingValues[_function][sums[_function]] = val["value"].get<int>();
+            QMap<int, int> map;
+            map.insert(sums[_function], val["value"].get<int>());
+            this->_armingValues[_function].push_back(map);
             sums[_function] += val["time"].get<int>();
         }
     }
-
-    return;
 }
 
 QVector<QString> Profile::getFunctions() {
@@ -45,14 +45,11 @@ QVector<QString> Profile::getFunctions() {
 }
 
 int Profile::getArmingSeqenceValueInTime(QString _function, int time) {
-    for (auto j = this->_armingValues[_function].end() - 1; ; --j) {
-         if (j == this->_armingValues[_function].begin()) {
-             return this->_armingValues[_function][j.key()];
-         } else {
-            if (j.key() <= time) {
-                return this->_armingValues[_function][j.key()];
-            }
-         }
+    for (int i = 0; i < this->_armingValues[_function].size(); i += 1) {
+        QMap<int, int> map = this->_armingValues[_function].at(i);
+        if (map.keys()[0] <= time) {
+            return map[map.keys()[0]];
+        }
     }
 }
 

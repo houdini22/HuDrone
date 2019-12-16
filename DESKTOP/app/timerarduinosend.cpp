@@ -60,13 +60,15 @@ void TimerArduinoSend::execute() {
             bool send = true;
 
             for (int i = 1; i < _functions.size(); i += 1) {
-                if (!(_values[_functions.at(i - 1)] == -1 && _values[_functions.at(i)] == -1)) {
+                if ((_values[_functions.at(i - 1)] != -1 && _values[_functions.at(i)] == -1)) {
                     send = false;
                     break;
                 }
             }
 
             if (send) {
+                qDebug() << true;
+
                 this->setRadioValues(
                             _values["roll"] != -1 ? _values["roll"] : this->_profile->getLeftX(buttons.leftX),
                             _values["throttle"] != -1 ? _values["throttle"] : this->_profile->getLeftY(buttons.leftY),
@@ -79,7 +81,9 @@ void TimerArduinoSend::execute() {
                 this->radioSend();
             }
         } else {
-            this->radioSend();
+            if (this->_miliseconds % 40 == 0) {
+                this->radioSend();
+            }
         }
 
         if (this->_lock > 0) {
