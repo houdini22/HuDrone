@@ -35,17 +35,15 @@ void TimerArduinoSend::execute() {
             if (this->_armingInProgress) {
                 QVector<QString> _functions = this->_profile->getFunctions();
                 QMap<QString, int> _values;
-                bool notSend = true;
+                bool send = false;
                 for (int i = 0; i < _functions.size(); i += 1) {
                     _values[_functions.at(i)] = this->_profile->getArmingSeqenceValueInTime(_functions.at(i), this->_armingSequenceTime);
                     if (_values[_functions.at(i)] != -1) {
-                        notSend = false;
+                        send = true;
                     }
                 }
-                if (!notSend) {
-                    this->_armingInProgress = false;
-                    this->_armingSequenceTime = -1;
-                } else {
+
+                if (send) {
                     this->setRadioValues(
                                 _values["pitch"],
                                 _values["throttle"],
@@ -56,6 +54,9 @@ void TimerArduinoSend::execute() {
                                _values["throttle"],
                                _values["roll"],
                                _values["yaw"]), false, false);
+                } else {
+                    this->_armingInProgress = false;
+                    this->_armingSequenceTime = -1;
                 }
 
             } else {
