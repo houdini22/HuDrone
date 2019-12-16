@@ -16,6 +16,25 @@ int TimerArduinoSend::getMiliseconds() {
     return EXECUTE_TIMEOUT;
 }
 
+void TimerArduinoSend::radioSend() {
+    Modes * modes = this->_drone->getModes();
+    SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
+
+    if (modes->throttleModeActive) {
+        this->setRadioValues(
+                    this->_profile->getLeftX(buttons.leftX),
+                    this->_leftYthrottle,
+                    this->_profile->getRightX(buttons.rightX),
+                    this->_profile->getRightY(buttons.rightY));
+    } else {
+        this->setRadioValues(
+                    this->_profile->getLeftX(buttons.leftX),
+                    std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
+                    this->_profile->getRightX(buttons.rightX),
+                    this->_profile->getRightY(buttons.rightY));
+    }
+}
+
 void TimerArduinoSend::execute() {
     if (this->_steerings_data.contains("gamepad0")) {
         if (this->_lock > 0) {
@@ -31,59 +50,36 @@ void TimerArduinoSend::execute() {
         Modes * modes = this->_drone->getModes();
         SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
 
-        if (this->_miliseconds % 40 == 0) {
-            if (this->_armingInProgress) {
-                QVector<QString> _functions = this->_profile->getFunctions();
-                QMap<QString, int> _values;
-                bool send = false;
-                for (int i = 0; i < _functions.size(); i += 1) {
-                    _values[_functions.at(i)] = this->_profile->getArmingSeqenceValueInTime(_functions.at(i), this->_armingSequenceTime);
-                    if (_values[_functions.at(i)] != -1) {
-                        send = true;
-                    }
-                }
+        if (this->_armingInProgress) {
+            QVector<QString> _functions = this->_profile->getFunctions();
+            QMap<QString, int> _values;
+            for (int i = 0; i < _functions.size(); i += 1) {
+                _values[_functions.at(i)] = this->_profile->getArmingSeqenceValueInTime(_functions.at(i), this->_armingSequenceTime);
+            }
 
-                if (send) {
-                    this->setRadioValues(
-                                _values["pitch"],
-                                _values["throttle"],
-                                _values["roll"],
-                                _values["yaw"]);
+            bool send = true;
 
-                    this->send(this->createAxisBuffer(_values["pitch"],
-                               _values["throttle"],
-                               _values["roll"],
-                               _values["yaw"]), false, false);
-                } else {
-                    this->_armingInProgress = false;
-                    this->_armingSequenceTime = -1;
-                }
-
-            } else {
-                if (modes->throttleModeActive) {
-                    this->setRadioValues(
-                                this->_profile->getLeftX(buttons.leftX),
-                                this->_leftYthrottle,
-                                this->_profile->getRightX(buttons.rightX),
-                                this->_profile->getRightY(buttons.rightY));
-
-                    this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                                      this->_leftYthrottle,
-                                                      this->_profile->getRightX(buttons.rightX),
-                                                      this->_profile->getRightY(buttons.rightY)), false, false);
-                } else {
-                    this->setRadioValues(
-                                this->_profile->getLeftX(buttons.leftX),
-                                std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
-                                this->_profile->getRightX(buttons.rightX),
-                                this->_profile->getRightY(buttons.rightY));
-
-                    this->send(this->createAxisBuffer(this->_profile->getLeftX(buttons.leftX),
-                                                      std::max(this->_profile->getLeftY(buttons.leftY), this->_profile->getMinLeftY()),
-                                                      this->_profile->getRightX(buttons.rightX),
-                                                      this->_profile->getRightY(buttons.rightY)), false, false);
+            for (int i = 1; i < _functions.size(); i += 1) {
+                if (!(_values[_functions.at(i - 1)] == -1 && _values[_functions.at(i)] == -1)) {
+                    send = false;
+                    break;
                 }
             }
+
+            if (send) {
+                this->setRadioValues(
+                            _values["roll"] != -1 ? _values["roll"] : this->_profile->getLeftX(buttons.leftX),
+                            _values["throttle"] != -1 ? _values["throttle"] : this->_profile->getLeftY(buttons.leftY),
+                            _values["pitch"] != -1 ? _values["pitch"] : this->_profile->getRightX(buttons.rightX),
+                            _values["yaw"] != -1 ? _values["yaw"] : this->_profile->getRightY(buttons.rightY));
+            } else {
+                this->_armingInProgress = false;
+                this->_armingSequenceTime = -1;
+
+                this->radioSend();
+            }
+        } else {
+            this->radioSend();
         }
 
         if (this->_lock > 0) {
@@ -227,5 +223,11 @@ void TimerArduinoSend::setRadioValues(int leftX, int leftY, int rightX, int righ
     modes->leftY = leftY;
     modes->rightX = rightX;
     modes->rightY = rightY;
+
     this->_drone->setModes(modes);
+
+    this->send(this->createAxisBuffer(leftX,
+                                      leftY,
+                                      rightX,
+                                      rightY), false, false);
 }

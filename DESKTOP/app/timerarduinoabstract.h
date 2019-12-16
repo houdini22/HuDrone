@@ -61,6 +61,7 @@ private:
     void setMotorsArmed(bool);
     void setThrottleMode(bool);
     void setRadioValues(int, int, int, int);
+    void radioSend();
     int _leftX = 0;
     int _leftY = 0;
     int _rightX = 0;

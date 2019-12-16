@@ -40,29 +40,20 @@ void Profile::loadArmingValues() {
 }
 
 QVector<QString> Profile::getFunctions() {
-    QVector<QString> result;
-
-    T_JSON radio = this->_configuration["radio"];
-    for (int i = 1; i < 9; i += 1) {
-        QString _function = QString(radio[QString("channel").append(QString::number(i)).toStdString()]["function"].get<T_String>().c_str());
-        result.push_back(_function);
-    }
-
+    QVector<QString> result {"pitch", "roll", "yaw", "throttle", "other_1", "other_2", "other_3", "other_4"};
     return result;
 }
 
 int Profile::getArmingSeqenceValueInTime(QString _function, int time) {
-    auto iterator = this->_armingValues[_function].constEnd();
-
-    while (iterator != this->_armingValues[_function].constBegin()) {
-        int _time = *iterator;
-        if (_time <= time) {
-            return this->_armingValues[_function][_time];
-        }
-        --iterator;
+    for (auto j = this->_armingValues[_function].end() - 1; ; --j) {
+         if (j == this->_armingValues[_function].begin()) {
+             return this->_armingValues[_function][j.key()];
+         } else {
+            if (j.key() <= time) {
+                return this->_armingValues[_function][j.key()];
+            }
+         }
     }
-
-    return -1;
 }
 
 int Profile::getMinLeftY() {
