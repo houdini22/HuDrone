@@ -116,24 +116,20 @@ void DialogEditProfile::renderChannels() {
         connect(minInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
         connect(middleInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
         connect(maxInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
-        connect(defaultInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
 
         this->_inputs[i]["min"] = minInput;
         this->_inputs[i]["middle"] = middleInput;
         this->_inputs[i]["max"] = maxInput;
-        this->_inputs[i]["default"] = defaultInput;
 
         QLabel * functionLabel = new QLabel;
         QLabel * minLabel = new QLabel;
         QLabel * middleLabel = new QLabel;
         QLabel * maxLabel = new QLabel;
-        QLabel * defaultLabel = new QLabel;
 
         functionLabel->setText("Function");
         minLabel->setText("Minimum sent value");
         middleLabel->setText("Middle sent value");
         maxLabel->setText("Maximum sent value");
-        defaultLabel->setText("Initial sent value");
 
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(minInput);
@@ -143,9 +139,6 @@ void DialogEditProfile::renderChannels() {
 
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(maxLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(maxInput);
-
-        _tabs->getTab(0)->getTab(i)->layout()->addWidget(defaultLabel);
-        _tabs->getTab(0)->getTab(i)->layout()->addWidget(defaultInput);
 
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(functionLabel);
         _tabs->getTab(0)->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
@@ -254,18 +247,15 @@ void DialogEditProfile::showEvent(QShowEvent *) {
         MyLineEdit * minInput = this->_inputs[i]["min"];
         MyLineEdit * middleInput = this->_inputs[i]["middle"];
         MyLineEdit * maxInput = this->_inputs[i]["max"];
-        MyLineEdit * defaultInput = this->_inputs[i]["default"];
 
         QString minValue = QString::number(this->getValueFromChannel(channelNumber, "min"));
         QString middleValue = QString::number(this->getValueFromChannel(channelNumber, "middle"));
         QString maxValue = QString::number(this->getValueFromChannel(channelNumber, "max"));
-        QString defaultValue = QString::number(this->getValueFromChannel(channelNumber, "default"));
         QString functionValue = this->getStringValueFromChannel(channelNumber, "function");
 
         minInput->setText(minValue);
         middleInput->setText(middleValue);
         maxInput->setText(maxValue);
-        defaultInput->setText(defaultValue);
 
         this->_combos[channelNumber]->setCurrentText(functionValue);
     }

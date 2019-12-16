@@ -3,6 +3,8 @@
 Profile::Profile(T_JSON configuration, QString name) {
     this->_configuration = configuration;
     this->_name = name;
+
+    this->loadArmingValues();
 }
 
 Profile * Profile::byName(QString name) {
@@ -16,6 +18,51 @@ Profile * Profile::byName(QString name) {
     }
 
     return nullptr;
+}
+
+void Profile::loadArmingValues() {
+    T_JSON radio = this->_configuration["radio"];
+    QMap<QString, int> sums;
+
+    for (int i = 1; i < 9; i += 1) {
+        T_JSON channel = radio[QString("channel").append(QString::number(i)).toStdString()];
+        T_JSON arming = channel["arming"];
+        auto _function = QString(channel["function"].get<T_String>().c_str());
+        sums[_function] = 0;
+        for (T_JSON::iterator it = arming.begin(); it != arming.end(); ++it) {
+            T_JSON val = it.value();
+            this->_armingValues[_function][sums[_function]] = val["value"].get<int>();
+            sums[_function] += val["time"].get<int>();
+        }
+    }
+
+    return;
+}
+
+QVector<QString> Profile::getFunctions() {
+    QVector<QString> result;
+
+    T_JSON radio = this->_configuration["radio"];
+    for (int i = 1; i < 9; i += 1) {
+        QString _function = QString(radio[QString("channel").append(QString::number(i)).toStdString()]["function"].get<T_String>().c_str());
+        result.push_back(_function);
+    }
+
+    return result;
+}
+
+int Profile::getArmingSeqenceValueInTime(QString _function, int time) {
+    auto iterator = this->_armingValues[_function].constEnd();
+
+    while (iterator != this->_armingValues[_function].constBegin()) {
+        int _time = *iterator;
+        if (_time <= time) {
+            return this->_armingValues[_function][_time];
+        }
+        --iterator;
+    }
+
+    return -1;
 }
 
 int Profile::getMinLeftY() {
