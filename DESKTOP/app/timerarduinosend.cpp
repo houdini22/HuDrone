@@ -53,32 +53,37 @@ void TimerArduinoSend::execute() {
         if (this->_armingInProgress) {
             QVector<QString> _functions = this->_profile->getFunctions();
             QMap<QString, int> _values;
+            int numberOfEnd = 0;
             for (int i = 0; i < _functions.size(); i += 1) {
                 _values[_functions.at(i)] = this->_profile->getArmingSeqenceValueInTime(_functions.at(i), this->_armingSequenceTime);
-            }
-
-            bool send = true;
-
-            for (int i = 1; i < _functions.size(); i += 1) {
-                if ((_values[_functions.at(i - 1)] != -1 && _values[_functions.at(i)] == -1)) {
-                    send = false;
-                    break;
+                if (_values[_functions.at(i)] == -1) {
+                    numberOfEnd++;
                 }
             }
 
-            if (send) {
-                qDebug() << true;
+            bool end = false;
+            if (numberOfEnd == _functions.size()) {
+                end = true;
+            }
 
+            if (this->_armingSequenceTime > 5001) {
+                qDebug() << true;
+            }
+
+            if (end) {
+                this->_armingInProgress = false;
+                this->_armingSequenceTime = -1;
+
+                if (this->_miliseconds % 40 == 0) {
+                    this->radioSend();
+                    return;
+                }
+            } else {
                 this->setRadioValues(
                             _values["roll"] != -1 ? _values["roll"] : this->_profile->getLeftX(buttons.leftX),
                             _values["throttle"] != -1 ? _values["throttle"] : this->_profile->getLeftY(buttons.leftY),
                             _values["pitch"] != -1 ? _values["pitch"] : this->_profile->getRightX(buttons.rightX),
                             _values["yaw"] != -1 ? _values["yaw"] : this->_profile->getRightY(buttons.rightY));
-            } else {
-                this->_armingInProgress = false;
-                this->_armingSequenceTime = -1;
-
-                this->radioSend();
             }
         } else {
             if (this->_miliseconds % 40 == 0) {

@@ -30,7 +30,7 @@ private:
     int getValueToSend(QMap<QString, QString>, double, bool, bool fromMin = false);
     QMap<QString, QString> _channelNumbers;
     QMap<QString, QMap<QString, QString>> _channelFunctions;
-    QMap<QString, QVector<QMap<int, int>>> _armingValues;
+    QMap<QString, QVector<QVector<int>>> _armingValues;
     int _throttleSteps = 0;
     QString _name = "";
     void loadArmingValues();

@@ -31,11 +31,16 @@ void Profile::loadArmingValues() {
         sums[_function] = 0;
         for (T_JSON::iterator it = arming.begin(); it != arming.end(); ++it) {
             T_JSON val = it.value();
-            QMap<int, int> map;
-            map.insert(sums[_function], val["value"].get<int>());
-            this->_armingValues[_function].push_back(map);
+
+            QVector<int> vec;
+            vec.push_back(sums[_function]);
+            vec.push_back(sums[_function] + val["time"].get<int>());
+            vec.push_back(val["value"].get<int>());
+
+            this->_armingValues[_function].push_back(vec);
             sums[_function] += val["time"].get<int>();
         }
+        std::reverse(this->_armingValues[_function].begin(), this->_armingValues[_function].end());
     }
 }
 
@@ -46,11 +51,15 @@ QVector<QString> Profile::getFunctions() {
 
 int Profile::getArmingSeqenceValueInTime(QString _function, int time) {
     for (int i = 0; i < this->_armingValues[_function].size(); i += 1) {
-        QMap<int, int> map = this->_armingValues[_function].at(i);
-        if (map.keys()[0] <= time) {
-            return map[map.keys()[0]];
+        QVector<int> vec = this->_armingValues[_function].at(i);
+        for (auto it = vec.begin(); it != vec.end(); ++it) {
+            if (it[0] <= time && it[1] >= time) {
+                return it[2];
+            }
         }
     }
+
+    return -1;
 }
 
 int Profile::getMinLeftY() {
