@@ -25,4 +25,5 @@ struct Modes {
     int motorsArmed = MOTORS_DISARMED;
     bool throttleModeActive = false;
     double thrust = 0.0;
+    double buttons = 0.0;
 };

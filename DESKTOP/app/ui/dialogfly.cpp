@@ -110,6 +110,7 @@ void DialogFly::slotModesChanged(Modes * modes) {
     }
 
     this->ui->labelThrottleLevel->setText(QString::number(this->_modes->thrust * 100.0) + "%");
+    this->ui->labelButtonsLevel->setText(QString::number(this->_modes->buttons * 100.0) + "%");
 }
 
 void DialogFly::closeEvent(QCloseEvent *) {

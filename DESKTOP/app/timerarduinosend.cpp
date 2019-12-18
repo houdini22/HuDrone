@@ -104,7 +104,7 @@ void TimerArduinoSend::execute() {
             return;
         }
 
-        if (buttons.left) {
+        if (buttons.l1) {
             modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
             if (modes->thrust < 0.0) {
                 modes->thrust = 0.0;
@@ -115,7 +115,7 @@ void TimerArduinoSend::execute() {
             return;
         }
 
-        if (buttons.right) {
+        if (buttons.r1) {
             modes->thrust += (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
             if (modes->thrust > 1.0) {
                 modes->thrust = 1.0;
@@ -123,6 +123,26 @@ void TimerArduinoSend::execute() {
             this->_stepThrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
             this->_drone->setModes(modes);
             this->_lock = BUTTON_TIMEOUT;
+            return;
+        }
+
+        if (buttons.left) {
+            modes->buttons -= 0.05;
+            if (modes->buttons < 0.0) {
+                modes->buttons = 0.0;
+            }
+            this->_lock = BUTTON_TIMEOUT;
+            this->_drone->setModes(modes);
+            return;
+        }
+
+        if (buttons.right) {
+            modes->buttons += 0.05;
+            if (modes->buttons > 1.0) {
+                modes->buttons = 1.0;
+            }
+            this->_lock = BUTTON_TIMEOUT;
+            this->_drone->setModes(modes);
             return;
         }
 
