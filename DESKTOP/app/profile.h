@@ -22,7 +22,7 @@ public:
     void saveValueForChannel(QString, QString, QString);
     void removeArmingDisarmingPosition(QString, QString, QString);
     void addArmingDisarmingValueForChannel(QString, QString, QString, QString, QString);
-    int getArmingSeqenceValueInTime(QString, int);
+    QMap<QString, int> getArmingSeqenceValueInTime(int, int);
     QVector<QString> getFunctions();
 private:
     T_JSON _configuration;
@@ -31,7 +31,8 @@ private:
     QMap<QString, QString> _channelNumbers;
     QMap<QString, QMap<QString, QString>> _channelFunctions;
     QMap<QString, QVector<QVector<int>>> _armingValues;
+    QMap<QString, QVector<QVector<int>>> _disarmingValues;
     int _throttleSteps = 0;
     QString _name = "";
-    void loadArmingValues();
+    void loadArmingDisarmingValues();
 };

@@ -85,10 +85,22 @@ void DialogFly::slotModesChanged(Modes * modes) {
         this->ui->labelRadioSending->setText("no");
     }
 
-    if (this->_modes->motorsArmed) {
-        this->ui->labelMotorsArmed->setText("yes");
-    } else {
-        this->ui->labelMotorsArmed->setText("no");
+    switch (this->_modes->motorsArmed) {
+        case MOTORS_ARMED:
+            this->ui->labelMotorsArmed->setText("armed");
+            break;
+
+        case MOTORS_ARMING_IN_PROGRESS:
+            this->ui->labelMotorsArmed->setText("arming...");
+            break;
+
+        case MOTORS_DISARMED:
+            this->ui->labelMotorsArmed->setText("disarmed");
+            break;
+
+        case MOTORS_DISARMING_IN_PROGRESS:
+            this->ui->labelMotorsArmed->setText("disarming...");
+            break;
     }
 
     if (this->_modes->throttleModeActive) {

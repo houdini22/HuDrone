@@ -58,7 +58,7 @@ private:
     QString createAxisBuffer(double, double, double, double);
     QString createAxisBuffer(int, int, int, int);
     void setRadioSending(bool);
-    void setMotorsArmed(bool);
+    void setMotorsArmed(int);
     void setThrottleMode(bool);
     void setRadioValues(int, int, int, int);
     void radioSend();
@@ -67,8 +67,8 @@ private:
     int _rightX = 0;
     int _rightY = 0;
     int _lock = 0;
-    int _leftYthrottle = 0;
+    int _stepThrottle = 0;
     unsigned long long _miliseconds = 0;
-    bool _armingInProgress = false;
-    int _armingSequenceTime = -1;
+    bool _sequenceInProgress = false;
+    int _sequenceTime = -1;
 };

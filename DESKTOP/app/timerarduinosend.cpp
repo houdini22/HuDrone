@@ -9,7 +9,7 @@ TimerArduinoSend::TimerArduinoSend(TimersArduino * timers, Drone * drone, Sendin
     connect(this->_drone, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
 
-    this->_leftYthrottle = this->_profile->getMinLeftY();
+    this->_stepThrottle = this->_profile->getMinLeftY();
 }
 
 int TimerArduinoSend::getMiliseconds() {
@@ -23,7 +23,7 @@ void TimerArduinoSend::radioSend() {
     if (modes->throttleModeActive) {
         this->setRadioValues(
                     this->_profile->getLeftX(buttons.leftX),
-                    this->_leftYthrottle,
+                    this->_stepThrottle,
                     this->_profile->getRightX(buttons.rightX),
                     this->_profile->getRightY(buttons.rightY));
     } else {
@@ -43,36 +43,35 @@ void TimerArduinoSend::execute() {
 
         this->_miliseconds++;
 
-        if (this->_armingInProgress) {
-            this->_armingSequenceTime++;
+        if (this->_sequenceInProgress) {
+            this->_sequenceTime++;
         }
 
         Modes * modes = this->_drone->getModes();
         SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
 
-        if (this->_armingInProgress) {
-            QVector<QString> _functions = this->_profile->getFunctions();
-            QMap<QString, int> _values;
+        if (this->_sequenceInProgress) {
+            QMap<QString, int> values = this->_profile->getArmingSeqenceValueInTime(modes->motorsArmed, this->_sequenceTime);
             int numberOfEnd = 0;
-            for (int i = 0; i < _functions.size(); i += 1) {
-                _values[_functions.at(i)] = this->_profile->getArmingSeqenceValueInTime(_functions.at(i), this->_armingSequenceTime);
-                if (_values[_functions.at(i)] == -1) {
+            for (auto it = values.begin(); it != values.end(); ++it) {
+                if (it.value() == -1) {
                     numberOfEnd++;
                 }
             }
-
-            bool end = false;
-            if (numberOfEnd == _functions.size()) {
-                end = true;
-            }
-
-            if (this->_armingSequenceTime > 5001) {
-                qDebug() << true;
-            }
+            bool end = numberOfEnd == values.size();
 
             if (end) {
-                this->_armingInProgress = false;
-                this->_armingSequenceTime = -1;
+                this->_sequenceInProgress = false;
+                this->_sequenceTime = -1;
+
+                if (modes->motorsArmed == MOTORS_ARMING_IN_PROGRESS) {
+                    this->setMotorsArmed(MOTORS_ARMING_IN_PROGRESS);
+                    this->setMotorsArmed(MOTORS_ARMED);
+                    return;
+                } else if (modes->motorsArmed == MOTORS_DISARMING_IN_PROGRESS) {
+                    this->setMotorsArmed(MOTORS_DISARMED);
+                    return;
+                }
 
                 if (this->_miliseconds % 40 == 0) {
                     this->radioSend();
@@ -80,10 +79,10 @@ void TimerArduinoSend::execute() {
                 }
             } else {
                 this->setRadioValues(
-                            _values["roll"] != -1 ? _values["roll"] : this->_profile->getLeftX(buttons.leftX),
-                            _values["throttle"] != -1 ? _values["throttle"] : this->_profile->getLeftY(buttons.leftY),
-                            _values["pitch"] != -1 ? _values["pitch"] : this->_profile->getRightX(buttons.rightX),
-                            _values["yaw"] != -1 ? _values["yaw"] : this->_profile->getRightY(buttons.rightY));
+                            values["roll"] != -1 ? values["roll"] : this->_profile->getLeftX(buttons.leftX),
+                            values["throttle"] != -1 ? values["throttle"] : this->_profile->getLeftY(buttons.leftY),
+                            values["pitch"] != -1 ? values["pitch"] : this->_profile->getRightX(buttons.rightX),
+                            values["yaw"] != -1 ? values["yaw"] : this->_profile->getRightY(buttons.rightY));
             }
         } else {
             if (this->_miliseconds % 40 == 0) {
@@ -110,7 +109,7 @@ void TimerArduinoSend::execute() {
             if (modes->thrust < 0.0) {
                 modes->thrust = 0.0;
             }
-            this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
+            this->_stepThrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
             this->_drone->setModes(modes);
             this->_lock = BUTTON_TIMEOUT;
             return;
@@ -121,7 +120,7 @@ void TimerArduinoSend::execute() {
             if (modes->thrust > 1.0) {
                 modes->thrust = 1.0;
             }
-            this->_leftYthrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
+            this->_stepThrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
             this->_drone->setModes(modes);
             this->_lock = BUTTON_TIMEOUT;
             return;
@@ -141,14 +140,15 @@ void TimerArduinoSend::execute() {
 
         if (modes->radioSending) {
             if (buttons.l2 && buttons.r2) {
-                if (!modes->motorsArmed) {
-                    // send
-                    this->setMotorsArmed(true);
-                } else {
-                    this->setMotorsArmed(false);
+                if (modes->motorsArmed == MOTORS_DISARMED) {
+                    this->setMotorsArmed(MOTORS_ARMING_IN_PROGRESS);
+                    this->_lock = BUTTON_TIMEOUT;
+                    return;
+                } else if (modes->motorsArmed == MOTORS_ARMED) {
+                    this->setMotorsArmed(MOTORS_DISARMING_IN_PROGRESS);
+                    this->_lock = BUTTON_TIMEOUT;
+                    return;
                 }
-                this->_lock = BUTTON_TIMEOUT;
-                return;
             }
         }
     }
@@ -204,16 +204,14 @@ void TimerArduinoSend::setRadioSending(bool value) {
     }
 }
 
-void TimerArduinoSend::setMotorsArmed(bool value) {
+void TimerArduinoSend::setMotorsArmed(int value) {
     Modes * modes = this->_drone->getModes();
     if (modes->motorsArmed != value) {
         modes->motorsArmed = value;
         this->_drone->setModes(modes);
-        if (value) {
-            this->_armingInProgress = true;
-            this->_armingSequenceTime = -1;
-        } else {
-
+        if (value == MOTORS_ARMING_IN_PROGRESS || value == MOTORS_DISARMING_IN_PROGRESS) {
+            this->_sequenceInProgress = true;
+            this->_sequenceTime = -1;
         }
     }
 }

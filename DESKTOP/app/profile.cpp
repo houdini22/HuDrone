@@ -4,7 +4,7 @@ Profile::Profile(T_JSON configuration, QString name) {
     this->_configuration = configuration;
     this->_name = name;
 
-    this->loadArmingValues();
+    this->loadArmingDisarmingValues();
 }
 
 Profile * Profile::byName(QString name) {
@@ -20,27 +20,48 @@ Profile * Profile::byName(QString name) {
     return nullptr;
 }
 
-void Profile::loadArmingValues() {
+void Profile::loadArmingDisarmingValues() {
     T_JSON radio = this->_configuration["radio"];
-    QMap<QString, int> sums;
+    QMap<QString, int> sumsArming;
+    QMap<QString, int> sumsDisarming;
 
     for (int i = 1; i < 9; i += 1) {
         T_JSON channel = radio[QString("channel").append(QString::number(i)).toStdString()];
         T_JSON arming = channel["arming"];
+        T_JSON disarming = channel["disarming"];
         auto _function = QString(channel["function"].get<T_String>().c_str());
-        sums[_function] = 0;
+
+        sumsArming[_function] = 0;
+        sumsDisarming[_function] = 0;
+
         for (T_JSON::iterator it = arming.begin(); it != arming.end(); ++it) {
             T_JSON val = it.value();
 
-            QVector<int> vec;
-            vec.push_back(sums[_function]);
-            vec.push_back(sums[_function] + val["time"].get<int>());
-            vec.push_back(val["value"].get<int>());
+            QVector<int> vecArming;
+            vecArming.push_back(sumsArming[_function]);
+            vecArming.push_back(sumsArming[_function] + val["time"].get<int>());
+            vecArming.push_back(val["value"].get<int>());
 
-            this->_armingValues[_function].push_back(vec);
-            sums[_function] += val["time"].get<int>();
+            this->_armingValues[_function].push_back(vecArming);
+
+            sumsArming[_function] += val["time"].get<int>();
         }
+
+        for (T_JSON::iterator it = disarming.begin(); it != disarming.end(); ++it) {
+            T_JSON val = it.value();
+
+            QVector<int> vecDisarming;
+            vecDisarming.push_back(sumsDisarming[_function]);
+            vecDisarming.push_back(sumsDisarming[_function] + val["time"].get<int>());
+            vecDisarming.push_back(val["value"].get<int>());
+
+            this->_disarmingValues[_function].push_back(vecDisarming);
+
+            sumsDisarming[_function] += val["time"].get<int>();
+        }
+
         std::reverse(this->_armingValues[_function].begin(), this->_armingValues[_function].end());
+        std::reverse(this->_disarmingValues[_function].begin(), this->_disarmingValues[_function].end());
     }
 }
 
@@ -49,17 +70,25 @@ QVector<QString> Profile::getFunctions() {
     return result;
 }
 
-int Profile::getArmingSeqenceValueInTime(QString _function, int time) {
-    for (int i = 0; i < this->_armingValues[_function].size(); i += 1) {
-        QVector<int> vec = this->_armingValues[_function].at(i);
-        for (auto it = vec.begin(); it != vec.end(); ++it) {
-            if (it[0] <= time && it[1] >= time) {
-                return it[2];
+QMap<QString, int> Profile::getArmingSeqenceValueInTime(int motorMode, int time) {
+    QVector<QString> _functions = this->getFunctions();
+    QMap<QString, int> result;
+    QMap<QString, QVector<QVector<int>>> values = motorMode == MOTORS_ARMING_IN_PROGRESS ? this->_armingValues : this->_disarmingValues;
+
+    for (int i = 0; i < _functions.size(); i += 1) {
+        result[_functions.at(i)] = -1;
+
+        for (int j = 0; j < values[_functions.at(i)].size(); j += 1) {
+            QVector<int> vec = values[_functions.at(i)].at(j);
+            for (auto it = vec.begin(); it != vec.end(); ++it) {
+                if (it[0] <= time && it[1] >= time) {
+                    result[_functions.at(i)] = it[2];
+                }
             }
         }
     }
 
-    return -1;
+    return result;
 }
 
 int Profile::getMinLeftY() {
