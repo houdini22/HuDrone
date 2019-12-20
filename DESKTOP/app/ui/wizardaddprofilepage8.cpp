@@ -22,11 +22,12 @@ WizardAddProfilePage8::WizardAddProfilePage8(Config * configuration, Receivers *
 
 void WizardAddProfilePage8::showEvent(QShowEvent *) {
     QString name = QString(this->_configuration->getString({"receiver"}).c_str());
-    name += "; ";
+    name += " - ";
     name += QString(this->_configuration->getString({"device"}).c_str());
 
     this->_name_input->setText(name);
     this->_configuration->modify("add", "/name", name);
+    this->_configuration->modify("add", "/id", generate_random_string(32));
 }
 
 void WizardAddProfilePage8::nameInputTextEdited(const QString & text) {

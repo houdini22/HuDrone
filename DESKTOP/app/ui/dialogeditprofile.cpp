@@ -31,6 +31,11 @@ void DialogEditProfile::renderArming() {
 
          connect(addButton, SIGNAL(myReleased(MyPushButton *)), this, SLOT(slotMyPushButton(MyPushButton *)));
 
+         _tabs
+                 ->getTab(1)
+                 ->getTabWidget()
+                 ->setTabText(i, this->_profile->getFunctionNameFromChannel(channelNumber));
+
          WizardConfigGeneralChannelTab * tab = _tabs
                  ->getTab(1)
                  ->getTab(i);
@@ -54,6 +59,8 @@ void DialogEditProfile::renderArming() {
                  j++;
              }
          }
+
+
     }
 }
 
@@ -65,6 +72,11 @@ void DialogEditProfile::renderDisarming() {
                 ->setParameter("action", "disarming");
 
         connect(addButton, SIGNAL(myReleased(MyPushButton *)), this, SLOT(slotMyPushButton(MyPushButton *)));
+
+        _tabs
+                ->getTab(1)
+                ->getTabWidget()
+                ->setTabText(i, this->_profile->getFunctionNameFromChannel(channelNumber));
 
         WizardConfigGeneralChannelTab * tab = _tabs
                 ->getTab(2)

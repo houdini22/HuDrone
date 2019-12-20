@@ -24,6 +24,7 @@ public:
     void addArmingDisarmingValueForChannel(QString, QString, QString, QString, QString);
     QMap<QString, int> getArmingSeqenceValueInTime(int, int);
     QVector<QString> getFunctions();
+    QString getFunctionNameFromChannel(int);
 private:
     T_JSON _configuration;
     QMap<QString, QString> getFunction(QString);

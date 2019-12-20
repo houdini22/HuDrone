@@ -235,3 +235,7 @@ int Profile::getValueFromChannel(int channelNumber, T_String value) {
 QString Profile::getStringValueFromChannel(int channelNumber, T_String value) {
     return QString(this->_configuration["radio"][QString("channel").append(QString::number(channelNumber)).toStdString()][value].get<T_String>().c_str());
 }
+
+QString Profile::getFunctionNameFromChannel(int channelNumber) {
+    return this->getStringValueFromChannel(channelNumber, "function");
+}

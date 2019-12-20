@@ -55,7 +55,8 @@ SOURCES += \
     ui/wizarduploadpage1.cpp \
     ui/wizarduploadpage2.cpp \
     ui/wizarduploadpage3.cpp \
-    ui/wizarduploadpage4.cpp
+    ui/wizarduploadpage4.cpp \
+    utils.cpp
 
 HEADERS += \
     buttons.h \
@@ -103,7 +104,8 @@ HEADERS += \
     ui/wizarduploadpage1.h \
     ui/wizarduploadpage2.h \
     ui/wizarduploadpage3.h \
-    ui/wizarduploadpage4.h
+    ui/wizarduploadpage4.h \
+    utils.h
 
 FORMS += \
     dialogfly.ui \

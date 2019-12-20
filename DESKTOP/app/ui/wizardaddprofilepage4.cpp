@@ -19,39 +19,32 @@ WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers *
         MyLineEdit * minInput = new MyLineEdit();
         MyLineEdit * middleInput = new MyLineEdit();
         MyLineEdit * maxInput = new MyLineEdit();
-        MyLineEdit * defaultInput = new MyLineEdit();
 
         minInput->setID("channel" + QString::number(channelNumber) + "/min");
         middleInput->setID("channel" + QString::number(channelNumber) + "/middle");
         maxInput->setID("channel" + QString::number(channelNumber) + "/max");
-        defaultInput->setID("channel" + QString::number(channelNumber) + "/default");
 
         minInput->setValidator(new QIntValidator(0, 2000));
         middleInput->setValidator(new QIntValidator(0, 2000));
         maxInput->setValidator(new QIntValidator(0, 2000));
-        defaultInput->setValidator(new QIntValidator(0, 2000));
 
         connect(minInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
         connect(middleInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
         connect(maxInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
-        connect(defaultInput, SIGNAL(myTextEdited(QString, QString)), this, SLOT(textEdited(QString, QString)));
 
         this->_inputs[i]["min"] = minInput;
         this->_inputs[i]["middle"] = middleInput;
         this->_inputs[i]["max"] = maxInput;
-        this->_inputs[i]["default"] = defaultInput;
 
+        QLabel * functionLabel = new QLabel;
         QLabel * minLabel = new QLabel;
         QLabel * middleLabel = new QLabel;
         QLabel * maxLabel = new QLabel;
-        QLabel * defaultLabel = new QLabel;
-        QLabel * functionLabel = new QLabel;
 
         functionLabel->setText("Function");
         minLabel->setText("Minimum sent value");
         middleLabel->setText("Middle sent value");
         maxLabel->setText("Maximum sent value");
-        defaultLabel->setText("Initial sent value");
 
         _tabs->getTab(i)->layout()->addWidget(minLabel);
         _tabs->getTab(i)->layout()->addWidget(minInput);
@@ -61,9 +54,6 @@ WizardAddProfilePage4::WizardAddProfilePage4(Config * configuration, Receivers *
 
         _tabs->getTab(i)->layout()->addWidget(maxLabel);
         _tabs->getTab(i)->layout()->addWidget(maxInput);
-
-        _tabs->getTab(i)->layout()->addWidget(defaultLabel);
-        _tabs->getTab(i)->layout()->addWidget(defaultInput);
 
         _tabs->getTab(i)->layout()->addWidget(functionLabel);
         _tabs->getTab(i)->layout()->addWidget(this->_combos[channelNumber]);
@@ -82,22 +72,18 @@ void WizardAddProfilePage4::showEvent(QShowEvent *) {
         MyLineEdit * minInput = this->_inputs[i]["min"];
         MyLineEdit * middleInput = this->_inputs[i]["middle"];
         MyLineEdit * maxInput = this->_inputs[i]["max"];
-        MyLineEdit * defaultInput = this->_inputs[i]["default"];
 
         QString minValue = QString::number(this->getValueFromChannel(channelNumber, "min"));
         QString middleValue = QString::number(this->getValueFromChannel(channelNumber, "middle"));
         QString maxValue = QString::number(this->getValueFromChannel(channelNumber, "max"));
-        QString defaultValue = QString::number(this->getValueFromChannel(channelNumber, "default"));
 
         minInput->setText(minValue);
         middleInput->setText(middleValue);
         maxInput->setText(maxValue);
-        defaultInput->setText(defaultValue);
 
         this->_configuration->modify("add", "/radio/" + minInput->getID(), minValue);
         this->_configuration->modify("add", "/radio/" + middleInput->getID(), middleValue);
         this->_configuration->modify("add", "/radio/" + maxInput->getID(), maxValue);
-        this->_configuration->modify("add", "/radio/" + defaultInput->getID(), defaultValue);
     }
 
     this->validate();
@@ -141,10 +127,6 @@ void WizardAddProfilePage4::validate() {
             break;
         }
         if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["middle"].get<T_String>().length() == 0) {
-            enabled = false;
-            break;
-        }
-        if (this->_configuration->getData()["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["default"].get<T_String>().length() == 0) {
             enabled = false;
             break;
         }

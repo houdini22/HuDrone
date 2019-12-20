@@ -106,7 +106,7 @@ void TimerArduinoSend::execute() {
 
         if (buttons.l1) {
             modes->thrust -= (double) (((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY()) / (double) this->_profile->getThrottleSteps()) / ((double) this->_profile->getMaxLeftY() - (double) this->_profile->getMinLeftY());
-            if (modes->thrust < 0.0) {
+            if (modes->thrust < 0.0001) {
                 modes->thrust = 0.0;
             }
             this->_stepThrottle = this->_profile->getMinLeftY() + ((double) (this->_profile->getMaxLeftY() - this->_profile->getMinLeftY()) * modes->thrust);
@@ -128,7 +128,7 @@ void TimerArduinoSend::execute() {
 
         if (buttons.left) {
             modes->buttons -= 0.05;
-            if (modes->buttons < 0.0) {
+            if (modes->buttons < 0.0001) {
                 modes->buttons = 0.0;
             }
             this->_lock = BUTTON_TIMEOUT;

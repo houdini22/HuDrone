@@ -71,6 +71,7 @@
 #endif
 
 #include "json.hpp"
+#include "utils.h"
 
 #include "mymenuaction.h"
 #include "mylineedit.h"
