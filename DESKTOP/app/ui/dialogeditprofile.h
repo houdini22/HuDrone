@@ -17,6 +17,10 @@ private:
     std::map<int, MyComboBox *> _combos;
     std::map<int, std::map<int, int>> _add_buttons;
     Profile * _profile = nullptr;
+    MyLineEdit * _input_throttle_steps = nullptr;
+    QGroupBox * _group_box_throttle_steps = nullptr;
+    QLabel * _label_throttle_label = nullptr;
+    QLabel * _label_throttle_value = nullptr;
     int getValueFromChannel(int, T_String);
     QString getStringValueFromChannel(int, T_String);
     void setValueForChannel(QString, QString, QString);
@@ -25,6 +29,7 @@ private:
     void renderChannels();
     void renderArming();
     void renderDisarming();
+    void renderOther();
     void addArmingDisarmingRow(QString, QString, bool, int, int);
 public slots:
     void textEdited(QString, QString);
@@ -32,4 +37,5 @@ public slots:
     void slotMyPushButton(MyPushButton *);
     void slotMyPushButtonDelete(MyPushButton *);
     void slotMyTextEdited(MyLineEdit *);
+    int slotThrottleStepsEdited(const QString &, QString);
 };

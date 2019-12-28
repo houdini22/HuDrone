@@ -20,6 +20,7 @@ LIBS += -lstdc++fs
 
 SOURCES += \
     myserialport.cpp \
+    tabseditprofileothertab.cpp \
     timerarduinoabstract.cpp \
     timerarduinoping.cpp \
     timerarduinosend.cpp \
@@ -83,6 +84,7 @@ HEADERS += \
     steeringregistry.h \
     tabseditprofile.h \
     tabseditprofilegeneraltab.h \
+    tabseditprofileothertab.h \
     threadboxconnect.h \
     timerarduinoabstract.h \
     timersarduino.h \

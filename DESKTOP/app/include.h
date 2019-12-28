@@ -107,6 +107,7 @@ typedef nlohmann::json T_JSON;
 #include "ui/dialogfly.h"
 #include "drone.h"
 #include "tabseditprofilegeneraltab.h"
+#include "tabseditprofileothertab.h"
 #include "tabseditprofile.h"
 #include "ui/wizardconfiggeneralchanneltab.h"
 #include "ui/wizardconfigchanneltabs.h"

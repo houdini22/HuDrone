@@ -5,6 +5,7 @@ TabsEditProfile::TabsEditProfile(QWidget * parent) : QWidget(parent) {
     _tab_widget->addTab(new TabsEditProfileGeneralTab, "Radio");
     _tab_widget->addTab(new TabsEditProfileGeneralTab, "Arming");
     _tab_widget->addTab(new TabsEditProfileGeneralTab, "Disarming");
+    _tab_widget->addTab(new TabsEditProfileOtherTab, "Other");
 
     QSizePolicy sizePolicy;
     sizePolicy.setVerticalStretch(1);

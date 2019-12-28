@@ -12,4 +12,11 @@ private:
     Config * _configuration = nullptr;
     Receivers * _receivers = nullptr;
     WizardConfigChannelTabs * _tabs = nullptr;
+    std::map<int, std::map<int, int>> _add_buttons;
+    void addArmingDisarmingRow(QString, QString, bool, int, int);
+    void renderArming();
+private slots:
+    void slotMyPushButton(MyPushButton *);
+    void slotMyPushButtonDelete(MyPushButton *);
+    void slotMyTextEdited(MyLineEdit *);
 };
