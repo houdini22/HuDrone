@@ -25,6 +25,8 @@ public:
     QMap<QString, int> getArmingSeqenceValueInTime(int, int);
     QVector<QString> getFunctions();
     QString getFunctionNameFromChannel(int);
+    int getThrottleRange();
+    void setThrottleSteps(int);
 private:
     T_JSON _configuration;
     QMap<QString, QString> getFunction(QString);

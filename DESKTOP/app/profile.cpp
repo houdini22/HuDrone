@@ -239,3 +239,25 @@ QString Profile::getStringValueFromChannel(int channelNumber, T_String value) {
 QString Profile::getFunctionNameFromChannel(int channelNumber) {
     return this->getStringValueFromChannel(channelNumber, "function");
 }
+
+int Profile::getThrottleRange() {
+    for (int i = 0, channelNumber = 1; i < 8; i += 1, channelNumber += 1) {
+        try {
+            T_String _function = this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["function"].get<T_String>();
+            if (_function.compare("throttle") == 0) {
+                T_String min = this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["min"].get<T_String>();
+                T_String max = this->_configuration["radio"][(QString("channel") + QString::number(channelNumber)).toStdString()]["max"].get<T_String>();
+
+                return (QString(max.c_str()).toInt() - QString(min.c_str()).toInt());
+            }
+        } catch(std::domain_error) {}
+    }
+
+    return 0;
+}
+
+void Profile::setThrottleSteps(int value) {
+    this->_configuration["radio"]["throttleSteps"] = value;
+    this->_throttleSteps = value;
+    this->save();
+}
