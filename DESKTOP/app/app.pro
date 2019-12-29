@@ -41,6 +41,7 @@ SOURCES += \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
     threadboxconnect.cpp \
+    ui/widgets/armingsettings.cpp \
     ui/wizardaddprofile.cpp \
     ui/wizardaddprofilepage1.cpp \
     ui/wizardaddprofilepage2.cpp \
@@ -91,6 +92,7 @@ HEADERS += \
     timerthread.h \
     ui/dialogeditprofile.h \
     ui/dialogfly.h \
+    ui/widgets/armingsettings.h \
     ui/wizardaddprofile.h \
     ui/wizardaddprofilepage1.h \
     ui/wizardaddprofilepage2.h \

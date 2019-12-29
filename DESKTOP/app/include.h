@@ -106,6 +106,7 @@ typedef nlohmann::json T_JSON;
 #include "receivers.h"
 #include "ui/dialogfly.h"
 #include "drone.h"
+#include "ui/widgets/armingsettings.h"
 #include "tabseditprofilegeneraltab.h"
 #include "tabseditprofileothertab.h"
 #include "tabseditprofile.h"

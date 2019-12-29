@@ -5,6 +5,7 @@ class TabsEditProfile;
 class MyLineEdit;
 class MyComboBox;
 class MyPushButton;
+class ArmingDisarmingSettings;
 
 class DialogEditProfile : public QDialog {
     Q_OBJECT
@@ -15,7 +16,6 @@ private:
     TabsEditProfile * _tabs = nullptr;
     std::map<int, std::map<T_String, MyLineEdit *>> _inputs;
     std::map<int, MyComboBox *> _combos;
-    std::map<int, std::map<int, int>> _add_buttons;
     Profile * _profile = nullptr;
     MyLineEdit * _input_throttle_steps = nullptr;
     QGroupBox * _group_box_throttle_steps = nullptr;
@@ -30,12 +30,11 @@ private:
     void renderArming();
     void renderDisarming();
     void renderOther();
-    void addArmingDisarmingRow(QString, QString, bool, int, int);
+
+    ArmingDisarmingSettings * _armingSettings = nullptr;
+    ArmingDisarmingSettings * _disarmingSettings = nullptr;
 public slots:
     void textEdited(QString, QString);
     void myComboBoxTextChanged(QString, int);
-    void slotMyPushButton(MyPushButton *);
-    void slotMyPushButtonDelete(MyPushButton *);
-    void slotMyTextEdited(MyLineEdit *);
     int slotThrottleStepsEdited(const QString &, QString);
 };
