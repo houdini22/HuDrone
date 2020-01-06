@@ -7,8 +7,6 @@ class WizardAddProfile;
 class WizardUpload;
 class DialogEditProfile;
 class DialogFly;
-class SteeringGamepad0;
-class SteeringGamepad1;
 class SendingArduino;
 
 class Drone : public QObject
@@ -51,7 +49,7 @@ private slots:
     void handleWizardUploadClosed();
     void handleDialogEditProfileClosed();
     void slotSteeringDataChanged(SteeringData);
-    void slotSteeringsDataChanged(QHash<QString, SteeringData>);
+    void slotSteeringsDataChanged(QVector<SteeringData>);
     void slotSendingsDataChanged(QHash<QString, SendingData>);
     void slotArduinoConnected(QSerialPort *);
 signals:
@@ -59,5 +57,5 @@ signals:
     void signalModesChanged(Modes *);
     void signalSteeringDataChanged(SteeringData);
     void signalSendingsDataChanged(QHash<QString, SendingData>);
-    void signalSteeringsDataChanged(QHash<QString, SteeringData>);
+    void signalSteeringsDataChanged(QVector<SteeringData>);
 };

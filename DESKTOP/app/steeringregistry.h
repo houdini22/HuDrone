@@ -2,26 +2,30 @@
 #include "include.h"
 
 class Drone;
-class SteeringInterface;
 struct SteeringData;
+class SteeringInterface;
 
 class SteeringRegistry : public QObject {
     Q_OBJECT
 public:
-    SteeringRegistry(Drone * _drone);
+    SteeringRegistry(Drone *);
     ~SteeringRegistry() override;
-    void add(SteeringInterface * handler);
+    void add(SteeringInterface *);
     void start();
     void stop();
-    QHash<QString, SteeringData> getData();
+    QVector<SteeringData> getData();
 private:
     QList<SteeringInterface *> _registry;
     Drone * _drone = nullptr;
-    QHash<QString, SteeringData> _steerings_data;
+    QVector<SteeringData> _steerings_data;
+    QGamepadManager * _gamepads = nullptr;
     void startThreads();
     void stopThreads();
 public slots:
     void slotSteeringDataChanged(SteeringData);
+private slots:
+    void slotGamepadConnected(int);
+    void slotGamepadDisconnected(int);
 signals:
-    void signalSteeringsDataChanged(QHash<QString, SteeringData>);
+    void signalSteeringsDataChanged(QVector<SteeringData>);
 };

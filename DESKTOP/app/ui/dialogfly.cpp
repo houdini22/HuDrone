@@ -14,9 +14,9 @@ void DialogFly::showEvent(QShowEvent *) {
             this,
             SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     connect(this->_drone,
-            SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)),
+            SIGNAL(signalSteeringsDataChanged(QVector<SteeringData>)),
             this,
-            SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
+            SLOT(slotSteeringsDataChanged(QVector<SteeringData>)));
     connect(this->_drone,
             SIGNAL(signalModesChanged(Modes *)),
             this,
@@ -44,31 +44,31 @@ void DialogFly::slotSendingsDataChanged(QHash<QString, SendingData> data) {
     }
 }
 
-void DialogFly::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
-    if (data.contains("gamepad0")) {
-        SteeringData gamepad0 = data["gamepad0"];
+void DialogFly::slotSteeringsDataChanged(QVector<SteeringData> data) {
+    int counter = 0;
+    bool found = false;
+    QLabel * label = this->ui->labelDeviceGamepad0;
 
-        QLabel * label = this->ui->labelDeviceGamepad0;
-        if (gamepad0.isConnected) {
-            label->setDisabled(false);
-            label->setText("connected");
-        } else {
-            label->setDisabled(true);
-            label->setText("connect...");
+    for (int i = 0; i < data.size(); i += 1) {
+        if (data.at(i).type.compare("gamepad") == 0 && counter == 0) {
+            SteeringData gamepad0 = data.at(i);
+
+            if (gamepad0.isConnected) {
+                label->setDisabled(false);
+                label->setText("connected");
+                found = true;
+            }
+
+            break;
         }
+
+        counter++;
     }
 
-    /*
-    SteeringData * gamepad1 = data->take("gamepad1");
-    QLabel * label2 = this->ui->labelDeviceGamepad1;
-    if (gamepad1->isConnected) {
-        label2->setDisabled(false);
-        label2->setText("connected");
-    } else {
-        label2->setDisabled(true);
-        label2->setText("connect...");
+    if (!found) {
+        label->setDisabled(true);
+        label->setText("connect...");
     }
-    */
 }
 
 void DialogFly::slotModesChanged(Modes * modes) {
@@ -119,9 +119,9 @@ void DialogFly::closeEvent(QCloseEvent *) {
                this,
                SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
     disconnect(this->_drone,
-               SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)),
+               SIGNAL(signalSteeringsDataChanged(QVector<SteeringData>)),
                this,
-               SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
+               SLOT(slotSteeringsDataChanged(QVector<SteeringData>)));
     disconnect(this->_drone,
                SIGNAL(signalModesChanged(Modes *)),
                this,

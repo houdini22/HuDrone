@@ -7,7 +7,7 @@ TimerArduinoSend::TimerArduinoSend(TimersArduino * timers, Drone * drone, Sendin
     : TimerArduinoAbstract(timers, drone, sendingRegistry, steeringRegistry, profile) {
     connect(this->_timer, SIGNAL(timeout()), this, SLOT(execute()), Qt::DirectConnection);
     connect(this->_drone, SIGNAL(signalSendingsDataChanged(QHash<QString, SendingData>)), this, SLOT(slotSendingsDataChanged(QHash<QString, SendingData>)));
-    connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QHash<QString, SteeringData>)), this, SLOT(slotSteeringsDataChanged(QHash<QString, SteeringData>)));
+    connect(this->_drone, SIGNAL(signalSteeringsDataChanged(QVector<SteeringData>)), this, SLOT(slotSteeringsDataChanged(QVector<SteeringData>)));
 
     this->_stepThrottle = this->_profile->getMinLeftY();
 }
@@ -16,9 +16,37 @@ int TimerArduinoSend::getMiliseconds() {
     return EXECUTE_TIMEOUT;
 }
 
+SteeringGamepadButtons TimerArduinoSend::getButtons(QString type, int index) {
+    int counter = 0;
+
+    for (int i = 0; i < this->_steerings_data.size(); i += 1) {
+        if (this->_steerings_data.at(i).type.compare(type) == 0 && counter == index) {
+            return this->_steerings_data.at(i).buttons;
+        }
+
+        counter++;
+    }
+
+    return SteeringGamepadButtons();
+}
+
+bool TimerArduinoSend::hasButtons(QString type, int index) {
+    int counter = 0;
+
+    for (int i = 0; i < this->_steerings_data.size(); i += 1) {
+        if (this->_steerings_data.at(i).type.compare(type) == 0 && counter == index) {
+            return true;
+        }
+
+        counter++;
+    }
+
+    return false;
+}
+
 void TimerArduinoSend::radioSend() {
     Modes * modes = this->_drone->getModes();
-    SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
+    SteeringGamepadButtons buttons = this->getButtons("gamepad", 0);
 
     if (modes->throttleModeActive) {
         this->setRadioValues(
@@ -36,7 +64,7 @@ void TimerArduinoSend::radioSend() {
 }
 
 void TimerArduinoSend::execute() {
-    if (this->_steerings_data.contains("gamepad0")) {
+    if (this->hasButtons("gamepad", 0)) {
         if (this->_lock > 0) {
             this->_lock--;
         }
@@ -48,7 +76,7 @@ void TimerArduinoSend::execute() {
         }
 
         Modes * modes = this->_drone->getModes();
-        SteeringGamepadButtons buttons = this->_steerings_data["gamepad0"].buttons;
+        SteeringGamepadButtons buttons = this->getButtons("gamepad", 0);
 
         if (this->_sequenceInProgress) {
             QMap<QString, int> values = this->_profile->getArmingSeqenceValueInTime(modes->motorsArmed, this->_sequenceTime);

@@ -21,7 +21,7 @@ private:
     Modes * _modes;
 private slots:
     void slotSendingsDataChanged(QHash<QString,SendingData>);
-    void slotSteeringsDataChanged(QHash<QString,SteeringData>);
+    void slotSteeringsDataChanged(QVector<SteeringData>);
     void slotModesChanged(Modes *);
 signals:
     void signalModesChanged(Modes *);

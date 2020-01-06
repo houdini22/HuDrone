@@ -36,7 +36,6 @@ SOURCES += \
     sendingarduino.cpp \
     sendinginterface.cpp \
     sendingregistry.cpp \
-    steering.cpp \
     steeringregistry.cpp \
     tabseditprofile.cpp \
     tabseditprofilegeneraltab.cpp \
@@ -58,7 +57,8 @@ SOURCES += \
     ui/wizarduploadpage2.cpp \
     ui/wizarduploadpage3.cpp \
     ui/wizarduploadpage4.cpp \
-    utils.cpp
+    utils.cpp \
+    steeringgamepad.cpp
 
 HEADERS += \
     buttons.h \

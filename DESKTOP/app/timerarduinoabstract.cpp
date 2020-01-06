@@ -15,7 +15,7 @@ void TimerArduinoAbstract::slotSendingsDataChanged(QHash<QString, SendingData> d
     this->_sendings_data = data;
 }
 
-void TimerArduinoAbstract::slotSteeringsDataChanged(QHash<QString, SteeringData> data) {
+void TimerArduinoAbstract::slotSteeringsDataChanged(QVector<SteeringData> data) {
     this->_steerings_data = data;
 }
 
