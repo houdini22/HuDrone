@@ -13,7 +13,7 @@ public:
     void start();
 private:
     Drone * _drone = nullptr;
-    MySerialPort * _arduino = nullptr;
+    QTcpSocket * _arduino = nullptr;
     SendingRegistry * _sending_registry = nullptr;
     SteeringRegistry * _steering_registry = nullptr;
     bool _is_running = false;
@@ -21,7 +21,7 @@ private:
     void timeout();
     SendingData _sending_data;
 signals:
-    void arduinoConnected(QSerialPort *);
+    //void arduinoConnected(QSerialPort *);
     void signalSendingDataChanged(SendingData);
 public slots:
     void terminate();

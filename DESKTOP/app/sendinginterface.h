@@ -9,7 +9,7 @@ class MySerialPort;
 struct SendingData {
     QString name = "";
     int mode = MODE_ARDUINO_DISCONNECTED;
-    MySerialPort * service = nullptr;
+    QTcpSocket * service = nullptr;
 };
 
 class SendingInterface {

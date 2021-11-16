@@ -7,9 +7,9 @@ TimerArduinoPing::TimerArduinoPing(TimersArduino * timers, Drone * drone, Sendin
 }
 
 int TimerArduinoPing::getMiliseconds() {
-    return 500;
+    return 100;
 }
 
 void TimerArduinoPing::execute() {
-    this->send("p", true, true);
+    this->send("T", true, true);
 }

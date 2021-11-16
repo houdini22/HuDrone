@@ -15,8 +15,8 @@ private:
     Profile * _profile = nullptr;
 public slots:
     void slotSendingDataChanged(SendingData);
-    void slotArduinoConnected(QSerialPort *);
+    //void slotArduinoConnected(QSerialPort *);
 signals:
     void signalSendingDataChanged(SendingData);
-    void signalArduinoConnected(QSerialPort *);
+    //void signalArduinoConnected(QSerialPort *);
 };

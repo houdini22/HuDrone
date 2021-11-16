@@ -33,6 +33,6 @@ void SendingArduino::slotSendingDataChanged(SendingData data) {
     }
 }
 
-void SendingArduino::slotArduinoConnected(QSerialPort * arduino) {
-    emit signalArduinoConnected(arduino);
-}
+//void SendingArduino::slotArduinoConnected(QSerialPort * arduino) {
+//    emit signalArduinoConnected(arduino);
+//}

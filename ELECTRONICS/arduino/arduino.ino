@@ -439,9 +439,9 @@ void ESP__processIncomingChar(const char inByte) {
             break;
 
           case '3': // ESP client connected
-            if (RUN_MODE__is(RUN_MODE_READY)) {
-              RUN_MODE__prepare__testing();
-            }
+            //if (RUN_MODE__is(RUN_MODE_READY)) {
+            //  RUN_MODE__prepare__testing();
+            //}
             resetInCommand();
             break;
 

@@ -31,7 +31,7 @@ public:
     void deleteArduino();
     void start(Profile *);
     void stop();
-    void setArduino(QSerialPort *);
+    //void setArduino(QSerialPort *);
     void startSendingTimers(Profile *);
     void stopSendingTimers();
 private:
@@ -39,7 +39,7 @@ private:
     SteeringRegistry * _steering_registry = nullptr;
     SendingRegistry * _sending_registry = nullptr;
     bool _has_arduino = false;
-    QSerialPort * _arduino = nullptr;
+    //QSerialPort * _arduino = nullptr;
     SendingArduino * _sending_arduino = nullptr;
     TimersArduino * _timers;
 private slots:
@@ -51,7 +51,7 @@ private slots:
     void slotSteeringDataChanged(SteeringData);
     void slotSteeringsDataChanged(QVector<SteeringData>);
     void slotSendingsDataChanged(QHash<QString, SendingData>);
-    void slotArduinoConnected(QSerialPort *);
+    //void slotArduinoConnected(QSerialPort *);
 signals:
     void configurationChanged();
     void signalModesChanged(Modes *);

@@ -28,17 +28,18 @@
 #include <QMenuBar>
 #include <QtQml>
 #include <QtQuick/QQuickView>
-#include <QtSerialPort/QSerialPortInfo>
+//#include <QtSerialPort/QSerialPortInfo>
 #include <QList>
 #include <QApplication>
 #include <QMessageBox>
 #include <QDialogButtonBox>
-#include <QSerialPort>
+//#include <QSerialPort>
 #include <QComboBox>
 #include <QGamepadManager>
 #include <QGamepad>
 #include <QTimer>
 #include <QtConcurrent/QtConcurrent>
+#include <QTcpSocket>
 
 #include <vector>
 #include <list>
@@ -83,7 +84,7 @@ typedef std::string T_String;
 typedef nlohmann::json T_JSON;
 
 #include "gridlayoututils.h"
-#include "myserialport.h"
+//#include "myserialport.h"
 #include "timerarduinoabstract.h"
 #include "timerthread.h"
 #include "timersarduino.h"
@@ -97,7 +98,7 @@ typedef nlohmann::json T_JSON;
 #include "sendingregistry.h"
 #include "sendingarduino.h"
 #include "ui/dialogeditprofile.h"
-#include "serialportutilities.h"
+//#include "serialportutilities.h"
 #include "threadboxconnect.h"
 #include "filesystem.h"
 #include "config.h"

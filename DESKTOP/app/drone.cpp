@@ -112,14 +112,14 @@ Modes * Drone::getModes() {
     return this->_modes;
 }
 
-void Drone::slotArduinoConnected(QSerialPort * arduino) {
-    this->setArduino(arduino);
-}
+//void Drone::slotArduinoConnected(QSerialPort * arduino) {
+//    this->setArduino(arduino);
+//}
 
-void Drone::setArduino(QSerialPort * arduino) {
-    this->_arduino = arduino;
-    this->_has_arduino = true;
-}
+//void Drone::setArduino(QSerialPort * arduino) {
+//    this->_arduino = arduino;
+//    this->_has_arduino = true;
+//}
 
 bool Drone::hasArduino() {
     return this->_has_arduino;
@@ -128,9 +128,6 @@ bool Drone::hasArduino() {
 void Drone::deleteArduino() {
     if (this->_has_arduino) {
         this->_has_arduino = false;
-        this->_arduino->close();
-        delete this->_arduino;
-        this->_arduino = nullptr;
     }
 }
 

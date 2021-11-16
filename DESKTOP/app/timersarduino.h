@@ -18,7 +18,7 @@ public:
     void stop();
     void timeout();
 private:
-    TimerArduinoPing * _timer_arduino_ping = nullptr;
+    //TimerArduinoPing * _timer_arduino_ping = nullptr;
     TimerArduinoSend * _timer_arduino_send = nullptr;
     Drone * _drone = nullptr;
 };

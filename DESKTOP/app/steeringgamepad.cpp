@@ -25,7 +25,8 @@ int SteeringGamepad::getDeviceId() {
 
 void SteeringGamepad::start() {
     this->_gamepad = new QGamepad(this->_device_id, this);
-    this->_data.isConnected = this->_gamepads->isGamepadConnected(this->_device_id);
+    this->_data.isConnected = true;
+    qDebug() << "Gamepad device id: " << this->_device_id;
 
     connect(this->_gamepad, &QGamepad::axisLeftXChanged, this, [this](double value) {
         this->_data.buttons.leftX = value;

@@ -1,6 +1,6 @@
 #include "include.h"
 
-MySerialPort::MySerialPort(QSerialPortInfo portInfo) : QObject() {
+/*MySerialPort::MySerialPort(QSerialPortInfo portInfo) : QObject() {
     this->_device = new QSerialPort(this);
     this->_device->open(QIODevice::ReadWrite);
     this->_device->setPort(portInfo);
@@ -22,10 +22,12 @@ bool MySerialPort::open() {
     while (!this->_device->isOpen()) {
         this->_device->open(QIODevice::ReadWrite);
         if (this->_device->isOpen()) {
+            qDebug() << "Is open.";
             return true;
         }
         attempts--;
         if (attempts == 0) {
+            qDebug() << "Attempts = 0";
             break;
         }
     }
@@ -53,9 +55,12 @@ int MySerialPort::write(QString buffer) {
 bool MySerialPort::connectDevice() {
     this->_device->write("h", 1);
     if (this->_device->waitForBytesWritten(1000)) {
-        if (this->_device->waitForReadyRead(1000)) {
+        qDebug() << "Written hi.";
+        if (this->_device->waitForReadyRead(5000)) {
+            qDebug() << "Received...";
             char d;
             this->_device->read(&d, 1);
+            qDebug() << d;
             if (d == 'h') {
                 qDebug() << "Connected.";
                 this->_is_connected = true;
@@ -73,3 +78,4 @@ void MySerialPort::slotReadyRead() {
 void MySerialPort::slotBytesWritten(qint64 bytes) {
     qDebug() << "bytes written" << bytes;
 }
+*/

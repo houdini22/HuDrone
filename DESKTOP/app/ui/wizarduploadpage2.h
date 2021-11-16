@@ -17,5 +17,5 @@ private:
 private slots:
     void showEvent(QShowEvent *) override;
     void onWizardClose();
-    void handleArduinoConnected(QSerialPort *);
+    void handleArduinoConnected();
 };

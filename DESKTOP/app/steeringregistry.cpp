@@ -15,6 +15,7 @@ SteeringRegistry::~SteeringRegistry() {
 }
 
 void SteeringRegistry::slotGamepadConnected(int deviceId) {
+    qDebug() << "Gamepad connected.";
     SteeringInterface * _h = new SteeringGamepad(this->_drone, this, deviceId);
     this->add(_h);
 }

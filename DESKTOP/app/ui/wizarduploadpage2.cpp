@@ -46,7 +46,7 @@ void WizardUploadPage2::showEvent(QShowEvent *) {
     }
 }
 
-void WizardUploadPage2::handleArduinoConnected(QSerialPort * arduino) {
+void WizardUploadPage2::handleArduinoConnected() {
     _label_status->setStyleSheet("QLabel { color: green; font-size: 20px; }");
     _label_status->setText("detected");
 
@@ -54,8 +54,6 @@ void WizardUploadPage2::handleArduinoConnected(QSerialPort * arduino) {
     _thread_box_connect->wait();
     delete _thread_box_connect;
     _thread_box_connect = nullptr;
-
-    this->_drone->setArduino(arduino);
 
     this->wizard()->button(QWizard::NextButton)->setEnabled(true);
 }

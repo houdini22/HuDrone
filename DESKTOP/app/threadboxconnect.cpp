@@ -42,39 +42,28 @@ void ThreadBoxConnect::terminate() {
 void ThreadBoxConnect::run() {
     while (this->_is_running) {
         if (this->_sending_data.mode == MODE_ARDUINO_CONNECTED) {
-            QThread::msleep(1000);
-            continue;
-        }
-
-        QList<QSerialPortInfo> ports = SerialPortUtilities::getAvailablePorts();
-
-        for (int i = 0; i < ports.size(); i += 1) {
-            if (this->_arduino != nullptr) {
+            this->_arduino->write("T");
+            QThread::msleep(50);
+        } else {
+            if (this->_arduino) {
                 delete this->_arduino;
             }
 
-            this->_arduino = new MySerialPort(ports.at(i));
-            bool isOpened = this->_arduino->open();
-            if (isOpened) {
+            this->_arduino = new QTcpSocket(this);
+            this->_arduino->connectToHost("192.168.4.1", 23);
+            this->_arduino->waitForReadyRead(3000);
+            char * c = new char;
+            this->_arduino->read(c, 1);
+            char _c = *c;
+            if (_c == 'C') {
+                this->_arduino->write("M 0003");
+                this->_arduino->write("T");
+                this->_sending_data.mode = MODE_ARDUINO_CONNECTED;
                 this->_sending_data.service = this->_arduino;
-                this->_sending_data.mode = MODE_ARDUINO_DETECTED;
                 emit signalSendingDataChanged(this->_sending_data);
-
-                bool isConnected = this->_arduino->connectDevice();
-                if (isConnected) {
-                    this->_sending_data.mode = MODE_ARDUINO_CONNECTED;
-                    emit signalSendingDataChanged(this->_sending_data);
-                    qDebug() << "connected";
-                    continue;
-                } else {
-                    this->timeout();
-                }
-            } else {
-                this->timeout();
+                QThread::msleep(50);
             }
         }
-
-        QThread::msleep(2000);
     }
 }
 

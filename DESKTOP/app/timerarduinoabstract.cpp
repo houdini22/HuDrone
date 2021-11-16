@@ -46,10 +46,11 @@ void TimerArduinoAbstract::send(const QString & buffer, bool check, bool read) {
     if (this->_sendings_data.contains("arduino0")) {
         SendingData data = this->_sendings_data["arduino0"];
         if (data.mode == MODE_ARDUINO_CONNECTED && data.service != nullptr) {
-            MySerialPort * arduino = data.service;
-            if (arduino->isConnected()) {
+            QTcpSocket * arduino = data.service;
+            if (arduino->isWritable()) {
                 if (buffer.length() > 0) {
-                    arduino->write(buffer);
+                    qDebug() << "Sending: " << buffer;
+                    arduino->write(buffer.toStdString().c_str());
                 }
             }
         }

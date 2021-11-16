@@ -1,6 +1,7 @@
 #pragma once
 #include "include.h"
 
+/*
 class MySerialPort : public QObject {
     Q_OBJECT
 public:
@@ -16,3 +17,4 @@ private slots:
     void slotReadyRead();
     void slotBytesWritten(qint64);
 };
+*/
