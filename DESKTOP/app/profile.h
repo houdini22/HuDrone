@@ -9,8 +9,8 @@ public:
     int getLeftY(double);
     int getMinLeftY();
     int getMaxLeftY();
-    int getRightX(double);
-    int getRightY(double);
+    int getRightX(double, double);
+    int getRightY(double, double);
     int getThrottleSteps();
     QString getChannelNumberOf(QString);
     T_JSON getArmingValuesForChannel(int);

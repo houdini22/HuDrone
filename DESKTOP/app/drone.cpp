@@ -121,21 +121,21 @@ Modes * Drone::getModes() {
 //    this->_has_arduino = true;
 //}
 
-bool Drone::hasArduino() {
-    return this->_has_arduino;
-}
+//bool Drone::hasArduino() {
+//    return this->_has_arduino;
+//}
 
-void Drone::deleteArduino() {
-    if (this->_has_arduino) {
-        this->_has_arduino = false;
-    }
-}
+//void Drone::deleteArduino() {
+//    if (this->_has_arduino) {
+//        this->_has_arduino = false;
+//    }
+//}
 
 void Drone::start(Profile * profile) {
     this->_steering_registry = new SteeringRegistry(this);
     this->_sending_registry = new SendingRegistry(this);
 
-    this->startSendingTimers(profile);
+    //this->startSendingTimers(profile);
 
     this->_sending_registry->add(new SendingArduino(this, this->_sending_registry, this->_steering_registry, profile));
 
@@ -149,13 +149,13 @@ void Drone::stop() {
     this->_sending_registry->stop();
     this->_steering_registry->stop();
 
-    this->stopSendingTimers();
-    this->deleteArduino();
+    //this->stopSendingTimers();
+    //this->deleteArduino();
 
     delete this->_steering_registry;
     delete this->_sending_registry;
 }
-
+/*
 void Drone::stopSendingTimers() {
     if (this->_timers != nullptr) {
         this->_timers->stop();
@@ -168,3 +168,4 @@ void Drone::startSendingTimers(Profile * profile) {
     this->_timers = new TimersArduino(this, this->_sending_registry, this->_steering_registry, profile);
     this->_timers->start();
 }
+*/

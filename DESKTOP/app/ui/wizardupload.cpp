@@ -22,5 +22,5 @@ void WizardUpload::accept() {
 }
 
 void WizardUpload::onFinish() {
-    this->_drone->deleteArduino();
+    //this->_drone->deleteArduino();
 }

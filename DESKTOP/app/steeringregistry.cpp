@@ -8,6 +8,10 @@ SteeringRegistry::SteeringRegistry(Drone * drone) {
     this->_gamepads = QGamepadManager::instance();
     connect(this->_gamepads, SIGNAL(gamepadConnected(int)), this, SLOT(slotGamepadConnected(int)));
     connect(this->_gamepads, SIGNAL(gamepadDisconnected(int)), this, SLOT(slotGamepadDisconnected(int)));
+
+    if (this->_gamepads->connectedGamepads().size()) {
+        this->slotGamepadConnected(this->_gamepads->connectedGamepads().at(0));
+    }
 }
 
 SteeringRegistry::~SteeringRegistry() {
@@ -15,7 +19,7 @@ SteeringRegistry::~SteeringRegistry() {
 }
 
 void SteeringRegistry::slotGamepadConnected(int deviceId) {
-    qDebug() << "Gamepad connected.";
+    qDebug() << "Gamepad connected: " << deviceId;
     SteeringInterface * _h = new SteeringGamepad(this->_drone, this, deviceId);
     this->add(_h);
 }

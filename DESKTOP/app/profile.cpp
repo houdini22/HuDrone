@@ -107,12 +107,12 @@ int Profile::getLeftY(double value) {
     return this->getValueToSend(this->getFunction("throttle"), value, true, true);
 }
 
-int Profile::getRightX(double value) {
-    return this->getValueToSend(this->getFunction("pitch"), value, false);
+int Profile::getRightX(double value, double multiplier) {
+    return this->getValueToSend(this->getFunction("pitch"), value * multiplier, false);
 }
 
-int Profile::getRightY(double value) {
-    return this->getValueToSend(this->getFunction("yaw"), value, true);
+int Profile::getRightY(double value, double multiplier) {
+    return this->getValueToSend(this->getFunction("yaw"), value * multiplier, true);
 }
 
 int Profile::getThrottleSteps() {

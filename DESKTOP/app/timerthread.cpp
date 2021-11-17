@@ -1,5 +1,5 @@
 #include "include.h"
-
+/*
 TimerThread::TimerThread() : QThread() {}
 
 void TimerThread::run() {
@@ -19,3 +19,4 @@ void TimerThread::terminate() {
 void TimerThread::setTimer(QTimer * timer) {
     this->_timer = timer;
 }
+*/

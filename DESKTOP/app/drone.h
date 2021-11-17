@@ -32,8 +32,8 @@ public:
     void start(Profile *);
     void stop();
     //void setArduino(QSerialPort *);
-    void startSendingTimers(Profile *);
-    void stopSendingTimers();
+    //void startSendingTimers(Profile *);
+    //void stopSendingTimers();
 private:
     Modes * _modes;
     SteeringRegistry * _steering_registry = nullptr;
@@ -41,7 +41,7 @@ private:
     bool _has_arduino = false;
     //QSerialPort * _arduino = nullptr;
     SendingArduino * _sending_arduino = nullptr;
-    TimersArduino * _timers;
+    //TimersArduino * _timers;
 private slots:
     void handleMenuActionsSettingsTriggered(bool);
     void handleMenuActionsExitTriggered(bool);

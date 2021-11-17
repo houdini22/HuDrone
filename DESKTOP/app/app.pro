@@ -21,10 +21,6 @@ LIBS += -lstdc++fs
 SOURCES += \
     myserialport.cpp \
     tabseditprofileothertab.cpp \
-    timerarduinoabstract.cpp \
-    timerarduinoping.cpp \
-    timerarduinosend.cpp \
-    timersarduino.cpp \
     timerthread.cpp \
     ui/dialogeditprofile.cpp \
     ui/dialogfly.cpp \
@@ -87,9 +83,6 @@ HEADERS += \
     tabseditprofilegeneraltab.h \
     tabseditprofileothertab.h \
     threadboxconnect.h \
-    timerarduinoabstract.h \
-    timersarduino.h \
-    timerthread.h \
     ui/dialogeditprofile.h \
     ui/dialogfly.h \
     ui/widgets/armingsettings.h \

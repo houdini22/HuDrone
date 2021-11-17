@@ -85,9 +85,9 @@ typedef nlohmann::json T_JSON;
 
 #include "gridlayoututils.h"
 //#include "myserialport.h"
-#include "timerarduinoabstract.h"
-#include "timerthread.h"
-#include "timersarduino.h"
+//#include "timerarduinoabstract.h"
+//#include "timerthread.h"
+//#include "timersarduino.h"
 #include "profile.h"
 #include "threadgamepad.h"
 #include "buttons.h"

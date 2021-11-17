@@ -4,6 +4,8 @@
 
 int main(int argc, char *argv[])
 {
+    QLoggingCategory::setFilterRules(QStringLiteral("qt.gamepad.debug=true"));
+
     qRegisterMetaType<SteeringData>("SteeringData");
     qRegisterMetaType<SendingData>("SendingData");
 

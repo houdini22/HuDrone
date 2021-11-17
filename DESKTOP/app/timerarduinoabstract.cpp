@@ -1,5 +1,5 @@
 #include "include.h"
-
+/*
 TimerArduinoAbstract::TimerArduinoAbstract(TimersArduino * timers, Drone * drone, SendingRegistry * sendingRegistry, SteeringRegistry * steeringRegistry, Profile * profile) {
     this->_thread = new TimerThread();
     this->_timer = new QTimer(this->_thread);
@@ -56,3 +56,4 @@ void TimerArduinoAbstract::send(const QString & buffer, bool check, bool read) {
         }
     }
 }
+*/

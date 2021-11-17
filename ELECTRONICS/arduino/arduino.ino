@@ -1,5 +1,3 @@
-#include <EZPROM.h>
-
 ////////////////////// PPM CONFIGURATION ///////////////////////////////
 #define CHANNELS_NUMBER       8           // set the number of chanels
 #define DEFAULT_SERVO_VALUE   1500        // set the default servo value
@@ -36,8 +34,10 @@ int ppm[CHANNELS_NUMBER] = {1500, 1500, 1100, 1500, 1100, 1100, 1100, 1100};
 #define MESSAGE__TYPE_MESSAGE 'M'
 #define MESSAGE__TYPE_BUTTON 'B'
 #define MESSAGE__TYPE_BUTTON_RELEASE 'N'
-#define MESSAGE__TYPE_IMU__PITCH 'I'
-#define MESSAGE__TYPE_IMU__ROLL 'R'
+#define MESSAGE__TYPE_AXIS_1 '1'
+#define MESSAGE__TYPE_AXIS_2 '2'
+#define MESSAGE__TYPE_AXIS_3 '3'
+#define MESSAGE__TYPE_AXIS_4 '4'
 
 #define COMMAND_LED_PURPLE 0
 #define COMMAND_LED_RED 1
@@ -73,10 +73,14 @@ int _run_mode__testing__currentButton = 0;
 bool _run_mode__testing__waiting = false;
 bool _radio__sending = false;
 
-String _pitch_str;
-String _roll_str;
-float _pitch = 0;
-float _roll = 0;
+String _axis1;
+String _axis2;
+String _axis3;
+String _axis4;
+float __axis1 = 0;
+float __axis2 = 0;
+float __axis3 = 0;
+float __axis4 = 0;
 
 bool _run_mode__testing_imu__x1 = false;
 bool _run_mode__testing_imu__x2 = false;
@@ -197,62 +201,6 @@ void LED__white() {
 float averageColor(float v1, float v2, float _max) {
   return round(min(((v1 + v2) / (float) 2), _max));
 }
-
-void LED__rgb__pitch_roll() {
-  float pitch = _pitch / (float) 90;
-  float roll = _roll / (float) 90;
-
-  float r1_r;
-  float r1_g;
-  float r1_b;
-
-  float r2_r;
-  float r2_g;
-  float r2_b;
-  
-  if (pitch > 0) {
-    // red
-    r1_r = LED_R_HIGH * pitch;
-    r1_g = 0;
-    r1_b = 0;
-      
-    if (roll > 0) {
-      // purple
-      r2_r = LED_R_HIGH * roll;
-      r2_g = 0;
-      r2_b = LED_B_HIGH * roll;
-      
-    } else {
-      // lightblue
-      r2_r = 0;
-      r2_g = LED_G_HIGH * abs(roll);
-      r2_b = LED_B_HIGH * abs(roll);
-    }
-  } else {
-    // green
-    r1_r = 0;
-    r1_g = LED_G_HIGH * abs(pitch);
-    r1_b = 0;
-
-    if (roll > 0) {
-      // purple
-      r2_r = LED_R_HIGH * roll;
-      r2_g = 0;
-      r2_b = LED_B_HIGH * roll;
-      
-    } else {
-      // lightblue
-      r2_r = 0;
-      r2_g = LED_G_HIGH * abs(roll);
-      r2_b = LED_B_HIGH * abs(roll);
-    }
-  }
-  
-  analogWrite(LED_R_PIN, (int) averageColor(r1_r, r2_r, (float) LED_R_HIGH));
-  analogWrite(LED_G_PIN, (int) averageColor(r1_g, r2_g, (float) LED_G_HIGH));
-  analogWrite(LED_B_PIN, (int) averageColor(r1_b, r2_b, (float) LED_B_HIGH));
-}
-
 void resetInCommand() {
   _message__started = false;
   _message__type = '\0';
@@ -386,30 +334,44 @@ void ESP__processIncomingChar(const char inByte) {
         _message__type_length = 0;
         break;
 
-      case MESSAGE__TYPE_BUTTON: // type button (B 0x) started
+      //case MESSAGE__TYPE_BUTTON: // type button (B 0x) started
+      //  _message__started = true;
+      //  _message__type = MESSAGE__TYPE_BUTTON;
+      //  _message__type_length = 0;
+      //  break;
+
+      //case MESSAGE__TYPE_BUTTON_RELEASE: // type button released (N 0x) started
+      //  _message__started = true;
+      //  _message__type = MESSAGE__TYPE_BUTTON_RELEASE;
+      //  _message__type_length = 0;
+      //  break;
+
+      case '1':
         _message__started = true;
-        _message__type = MESSAGE__TYPE_BUTTON;
+        _message__type = MESSAGE__TYPE_AXIS_1;
         _message__type_length = 0;
+        _axis1 = "";
         break;
 
-      case MESSAGE__TYPE_BUTTON_RELEASE: // type button released (N 0x) started
+      case '2':
         _message__started = true;
-        _message__type = MESSAGE__TYPE_BUTTON_RELEASE;
+        _message__type = MESSAGE__TYPE_AXIS_2;
         _message__type_length = 0;
+        _axis2 = "";
         break;
-
-      case MESSAGE__TYPE_IMU__PITCH:
+        
+      case '3':
         _message__started = true;
-        _message__type = MESSAGE__TYPE_IMU__PITCH;
+        _message__type = MESSAGE__TYPE_AXIS_3;
         _message__type_length = 0;
-        _pitch_str = "";
+        _axis3 = "";
         break;
-
-      case MESSAGE__TYPE_IMU__ROLL:
+        
+      case '4':
         _message__started = true;
-        _message__type = MESSAGE__TYPE_IMU__ROLL;
+        _message__type = MESSAGE__TYPE_AXIS_4;
         _message__type_length = 0;
-        _roll_str = "";
+        _axis4 = "";
         break;
     }
   } else { // messsageStarted
@@ -439,9 +401,10 @@ void ESP__processIncomingChar(const char inByte) {
             break;
 
           case '3': // ESP client connected
-            //if (RUN_MODE__is(RUN_MODE_READY)) {
-            //  RUN_MODE__prepare__testing();
-            //}
+            if (!_run_mode__preparing__send) {
+              _run_mode__preparing__send = true;
+              RUN_MODE__prepare__send();
+            }
             resetInCommand();
             break;
 
@@ -457,7 +420,7 @@ void ESP__processIncomingChar(const char inByte) {
             break;
         }
       }
-    } else if (_message__type == MESSAGE__TYPE_BUTTON || _message__type == MESSAGE__TYPE_BUTTON_RELEASE) { // type button
+    }/* else if (_message__type == MESSAGE__TYPE_BUTTON || _message__type == MESSAGE__TYPE_BUTTON_RELEASE) { // type button
       if (RUN_MODE__is(RUN_MODE_TESTING)) {
         if (_message__type_length >= 0 && _message__type_length <= 1) {
           if (inByte == '0') {
@@ -493,40 +456,56 @@ void ESP__processIncomingChar(const char inByte) {
           resetInCommand();
         }
       }
-    } else if (_message__type == MESSAGE__TYPE_IMU__PITCH || _message__type == MESSAGE__TYPE_IMU__ROLL) {
+    } */else if (_message__type == MESSAGE__TYPE_AXIS_1 || _message__type == MESSAGE__TYPE_AXIS_2 || _message__type == MESSAGE__TYPE_AXIS_3 || _message__type == MESSAGE__TYPE_AXIS_4) {
       if (inByte == ' ') {
         _message__type_length += 1;
       } else if (_message__type_length == 1) {
         if (inByte == '$') {
-          if (_message__type == MESSAGE__TYPE_IMU__PITCH) {
-            _pitch = _pitch_str.toFloat();
+          if (_message__type == MESSAGE__TYPE_AXIS_1) {
+            char ___axis1[50];
+            _axis1.toCharArray(___axis1, 50);
+            __axis1 = atof(___axis1);
 
-            if (RUN_MODE__is(RUN_MODE_TESTING_IMU)) {
-              if (_pitch > ((float) 45) && !_run_mode__testing_imu__x1) {
-                _run_mode__testing_imu__x1 = true;
-              } else if (_pitch < ((float) -45) && !_run_mode__testing_imu__x2) {
-                _run_mode__testing_imu__x2 = true;
-              }
-            }
+            //if (RUN_MODE__is(RUN_MODE_TESTING_IMU)) {
+            //  if (_pitch > ((float) 45) && !_run_mode__testing_imu__x1) {
+            //    _run_mode__testing_imu__x1 = true;
+            //  } else if (_pitch < ((float) -45) && !_run_mode__testing_imu__x2) {
+            //   _run_mode__testing_imu__x2 = true;
+            //  }
+            //}
             
-          } else {
-            _roll = _roll_str.toFloat();
+          } else if (_message__type == MESSAGE__TYPE_AXIS_2) {
+            char ___axis2[50];
+            _axis2.toCharArray(___axis2, 50);
+            __axis2 = atof(___axis2);
 
-            if (RUN_MODE__is(RUN_MODE_TESTING_IMU)) {
-              if (_roll > ((float) 45) && !_run_mode__testing_imu__y1) {
-                _run_mode__testing_imu__y1 = true;
-              } else if (_roll < ((float) -45) && !_run_mode__testing_imu__y2) {
-                _run_mode__testing_imu__y2 = true;
-              }
-            }
+            //if (RUN_MODE__is(RUN_MODE_TESTING_IMU)) {
+            //  if (_roll > ((float) 45) && !_run_mode__testing_imu__y1) {
+            //    _run_mode__testing_imu__y1 = true;
+            //  } else if (_roll < ((float) -45) && !_run_mode__testing_imu__y2) {
+            //    _run_mode__testing_imu__y2 = true;
+            //  }
+            //}
+          } else if (_message__type == MESSAGE__TYPE_AXIS_3) {
+            char ___axis3[50];
+            _axis3.toCharArray(___axis3, 50);
+            __axis3 = atof(___axis3);
+          } else if (_message__type == MESSAGE__TYPE_AXIS_4) {
+            char ___axis4[50];
+            _axis4.toCharArray(___axis4, 50);
+            __axis4 = atof(___axis4);
           }
           
           resetInCommand();
         } else {
-          if (_message__type == MESSAGE__TYPE_IMU__PITCH) {
-            _pitch_str += String(inByte);
-          } else {
-            _roll_str += String(inByte);
+          if (_message__type == MESSAGE__TYPE_AXIS_1) {
+            _axis1 += String(inByte);
+          } else if (_message__type == MESSAGE__TYPE_AXIS_2) {
+            _axis2 += String(inByte);
+          } else if (_message__type == MESSAGE__TYPE_AXIS_3) {
+            _axis3 += String(inByte);
+          } else if (_message__type == MESSAGE__TYPE_AXIS_4) {
+            _axis4 += String(inByte);
           }
         }
       }
@@ -748,27 +727,43 @@ bool _run() {
           return true;
         }
       } else {
-        LED__rgb__pitch_roll();
+        //LED__rgb__pitch_roll();
       }
     } else if (RUN_MODE__is(RUN_MODE_SENDING)) {
-      float axis0 = (float) defaultPpmValues[0];  // left right -> 1500
-      float axis1 = (float) defaultPpmValues[1];  // forward backward -> 1500
-      float multiplier = 0.3;
+      float axis1 = (float) defaultPpmValues[0];  // left right -> 1500
+      float axis2 = (float) defaultPpmValues[1];  // forward backward -> 1500
+      float axis3 = (float) defaultPpmValues[2];
+      float axis4 = (float) defaultPpmValues[3];
+      float multiplier = 1.0;
 
-      if (_roll >= 0) {
-        axis0 += (((float) 500) * ((_roll / ((float) 90)))) * multiplier; // right
+      if (__axis1 >= 0) {
+        axis1 += (((float) 500) * ((__axis1 / ((float) 90)))) * multiplier; // right
       } else {
-        axis0 -= (((float) 500) * ((abs(_roll) / ((float) 90)))) * multiplier; // left
+        axis1 -= (((float) 500) * ((abs(__axis1) / ((float) 90)))) * multiplier; // left
       }
 
-      if (_pitch >= 0) {
-        axis1 -= (((float) 500) * ((_pitch / ((float) 90)))) * multiplier; // backward
+      if (__axis2 >= 0) {
+        axis2 -= (((float) 500) * ((__axis2 / ((float) 90)))) * multiplier; // backward
       } else {
-        axis1 += (((float) 500) * ((abs(_pitch) / ((float) 90)))) * multiplier; // forward
+        axis2 += (((float) 500) * ((abs(__axis2) / ((float) 90)))) * multiplier; // forward
       }
 
-      ppm[0] = (int) axis0;
-      ppm[1] = (int) axis1;
+      if (__axis3 >= 0) {
+        axis3 -= (((float) 500) * ((__axis3 / ((float) 90)))) * multiplier; // backward
+      } else {
+        axis3 += (((float) 500) * ((abs(__axis3) / ((float) 90)))) * multiplier; // forward
+      }
+
+      if (__axis4 >= 0) {
+        axis4 -= (((float) 500) * ((__axis4 / ((float) 90)))) * multiplier; // backward
+      } else {
+        axis4 += (((float) 500) * ((abs(__axis4) / ((float) 90)))) * multiplier; // forward
+      }
+
+      ppm[0] = (int) axis1;
+      ppm[1] = (int) axis2;
+      ppm[2] = (int) axis3;
+      ppm[3] = (int) axis4;
     }
   }
 

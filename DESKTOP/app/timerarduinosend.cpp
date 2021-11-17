@@ -1,5 +1,5 @@
 #include "include.h"
-
+/*
 #define EXECUTE_TIMEOUT 1
 #define BUTTON_TIMEOUT 200
 
@@ -286,3 +286,4 @@ void TimerArduinoSend::setRadioValues(int leftX, int leftY, int rightX, int righ
                                       rightX,
                                       rightY), false, false);
 }
+*/

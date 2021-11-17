@@ -1,6 +1,6 @@
 #pragma once
 #include "include.h"
-
+/*
 class TimersArduino;
 class Drone;
 class SendingRegistry;
@@ -75,3 +75,4 @@ private:
     bool _sequenceInProgress = false;
     int _sequenceTime = -1;
 };
+*/
